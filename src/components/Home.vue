@@ -8,7 +8,7 @@
         <el-submenu index="2">
           <template slot="title">数据类型</template>
           <el-menu-item index="2-1">来源</el-menu-item>
-          <el-menu-item index="2-2">区域</el-menu-item>
+          <el-menu-item index="2-2">地区</el-menu-item>
         </el-submenu>
         <el-menu-item index="3" disabled>消息中心</el-menu-item>
         <el-menu-item index="4">管理</el-menu-item>
