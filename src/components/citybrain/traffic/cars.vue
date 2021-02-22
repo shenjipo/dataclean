@@ -28,8 +28,10 @@
     <!--卡片视图区域-->
     <el-card>
       <!--用户列表区域-->
-      <el-table :data="CarsDirtyList" border stripe>
+      <el-table :data="CarsDirtyList" border stripe
+                :header-cell-class-name="cellClass">
         <!--缩印列-->
+        <el-table-column type="selection" label="#"></el-table-column>
         <el-table-column type="index" label="#"></el-table-column>
         <el-table-column label="姓名" prop="username"></el-table-column>
         <el-table-column label="邮箱" prop="email"></el-table-column>
@@ -84,8 +86,7 @@
       </el-table>
     </el-card>
     <!--分页区域-->
-    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                   :current-page="queryInfo.pagenum" :page-sizes="[1, 2, 5, 10]" :page-size="queryInfo.pagesize"
+    <el-pagination :current-page="queryInfo.pagenum" :page-sizes="[1, 2, 5, 10]" :page-size="queryInfo.pagesize"
                    layout="total, sizes, prev, pager, next, jumper" :total="total">
 
     </el-pagination>
@@ -130,6 +131,14 @@
           time:'20s'
         }
       }
+    },
+    methods:{
+        cellClass(row){
+            console.log(row);
+            if(row.columnIndex === 0){
+                return 'disabledSelection';
+            }
+        }
     }
   }
 </script>
@@ -137,5 +146,14 @@
 <style lang="less" scoped>
   .el-card{
     height: 350px;
+  }
+
+  .el-table /deep/.disabledSelection .cell .el-checkbox__inner{
+      display: none;
+      position: relative;
+  }
+  .el-table /deep/.disabledSelection .cell::before {
+      content: '选择';
+      position: absolute;
   }
 </style>

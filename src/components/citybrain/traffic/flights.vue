@@ -1,5 +1,6 @@
 <template>
     <div>
+        <el-button type="primary" @click="query"></el-button>
       <el-form :inline="true" :model="result">
         <el-form-item label="清洗记录条数">
           <el-input v-model="result.total" placeholder="MB"></el-input>
@@ -49,28 +50,12 @@
 </template>
 
 <script>
+    import axios from 'axios'
 export default {
     data(){
       return{
-        flightsCleanList:[{username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12}],
-        flightsDirtyList:[{username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12}],
+        flightsCleanList:[],
+        flightsDirtyList:[],
         queryInfo: {
           query: '',
           //当前的页数
@@ -86,6 +71,13 @@ export default {
           time:'20s'
         }
       }
+    },
+    methods:{
+        async query(){
+            const res = await axios.get('detection_dirty_data',{},
+                {'Access-Control-Allow-Origin':'*'});
+            console.log(res);
+        },
     }
 }
 </script>
