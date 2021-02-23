@@ -19,6 +19,7 @@ import Humidity3 from '../components/sensor/humidity/humidity003'
 import Travel from '../components/citybrain/travel/travel'
 import advantage from '@/components/DataSource/compare/advantage'
 import advantageVisualization from '@/components/DataSource/compare/AdvantageVisualization'
+import dataCleanResult from '@/components/DataSource/StructedData/dataCleanResult'
 Vue.use(VueRouter)
 
 const routes = [
@@ -39,9 +40,11 @@ const routes = [
       {path:'/sensor/humidity/sensor002', component: Humidity2},
       {path:'/sensor/humidity/sensor003', component: Humidity3},
       {path:'/citybrain/travel/travel', component: Travel},
-      {path:'/dataclean/datasource/advantage', component: advantage},
-      {path:'/dataclean/datasource/AdvantageVisualization', component: advantageVisualization}
-    ]}
+      {path:'/dataclean/datasource/dataCleanResult', component: dataCleanResult,children: [
+          {path:'/dataclean/datasource/AdvantageVisualization', component: advantageVisualization}]},
+
+    ]},
+
 ];
 
 const router = new VueRouter({

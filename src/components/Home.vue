@@ -178,7 +178,7 @@
 
 .el-main {
     background-color: #eaedf1;
-    padding: 100px 50px;
+
 }
 
 </style>

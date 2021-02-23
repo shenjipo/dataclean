@@ -15,7 +15,7 @@
         </el-col>
       </el-row>
       <!--用户列表区域-->
-      <el-table :data="DataList" border stripe>
+      <el-table :data="DataList" border stripe max-height="250">
         <!--缩印列-->
         <el-table-column type="selection" label="#"></el-table-column>
         <el-table-column type="index" label="#"></el-table-column>
@@ -26,14 +26,19 @@
         <el-table-column label="传输协议" prop="role_name"></el-table-column>
         <el-table-column label="数据来源" prop="role_name"></el-table-column>
         <el-table-column label="操作" width="180px" >
-          <!--修改按钮-->
-          <el-button type="primary" icon="el-icon-edit" size="mini" @click="compare"></el-button>
-          <!--删除按钮-->
-          <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
-          <!--配置结点按钮-->
-          <el-tooltip class="item" effect="dark" content="配置结点" :enterable="false" placement="top">
-              <el-button type="warning" icon="el-icon-setting" size="mini" @click="setConfig"></el-button>
-          </el-tooltip>
+            <template slot-scope="scope">
+                <!--查看数据详情结点按钮-->
+                <el-tooltip class="item" effect="dark" content="查看详情" :enterable="false" placement="top">
+                    <!--修改按钮-->
+                    <el-button type="primary" icon="el-icon-view" size="mini" @click="gotoDataclean(scope.row)"></el-button>
+                </el-tooltip>
+                <!--配置结点按钮-->
+                <el-tooltip class="item" effect="dark" content="配置结点" :enterable="false" placement="top">
+                    <el-button type="warning" icon="el-icon-setting" size="mini" @click="setConfig"></el-button>
+                </el-tooltip>
+                <!--删除按钮-->
+                <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+            </template>
         </el-table-column>
       </el-table>
     </el-card>
@@ -200,8 +205,10 @@
         this.$refs.addFormRef.resetFields()
       },
       //进入对比页面
-      compare(){
-        this.$router.push('/dataclean/datasource/advantageVisualization');
+        gotoDataclean(val){
+        this.$router.push({path:'/dataclean/datasource/dataCleanResult',query:{
+            dataId:val
+            }});
       }
     }
   }

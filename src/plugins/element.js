@@ -3,7 +3,7 @@ import Vue from 'vue'
 import {Button,Form,FormItem,Input,Message,Container,Header,Aside,Main
   ,Menu,Submenu,MenuItem,MenuItemGroup,Breadcrumb,BreadcrumbItem,Card
   ,Row,Col,Table,TableColumn,Switch,Tooltip,Pagination,Dialog
-  ,Divider, Checkbox,Option,Select,DatePicker,Transfer} from 'element-ui'
+  ,Divider, Checkbox,Option,Select,DatePicker,Transfer,Progress} from 'element-ui'
 
 Vue.use(Button);
 Vue.use(Form);
@@ -34,5 +34,6 @@ Vue.use(Option);
 Vue.use(Select);
 Vue.use(DatePicker);
 Vue.use(Transfer);
+Vue.use(Progress);
 //全局挂载
 Vue.prototype.$message = Message;
