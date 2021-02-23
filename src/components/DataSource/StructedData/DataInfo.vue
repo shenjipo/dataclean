@@ -15,7 +15,7 @@
         </el-col>
       </el-row>
       <!--用户列表区域-->
-      <el-table :data="DataList" border stripe max-height="250">
+      <el-table :data="DataList" border stripe max-height="650">
         <!--缩印列-->
         <el-table-column type="selection" label="#"></el-table-column>
         <el-table-column type="index" label="#"></el-table-column>
@@ -216,7 +216,7 @@
 
 <style scoped>
   .el-card{
-    height: 350px;
+    height: 750px;
   }
   .data-oper {
     padding: 20px;
