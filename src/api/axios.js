@@ -1,5 +1,5 @@
 import axios from 'axios';
-axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+axios.defaults.baseURL = 'http://10.0.105.87:8002/dataclean/'
 axios.defaults.crossDomain = true;
 //axios.defaults.withCredentials = true;
 axios.defaults.timeout = 120000;
