@@ -57,7 +57,7 @@
 </template>
 
 <script>
-  import axios from 'axios'
+  import axios from '@/api/axios.js'
   export default {
     data(){
       return{
@@ -80,12 +80,10 @@
       }
     },
     methods:{
-      async query(){
-        const res = await axios.get('raha_detection',{params: this.flightstarget},
-                {'Access-Control-Allow-Origin':'*'});
-        console.log(res)
-        this.flightstarget=res.data
-        console.log(this.flightstarget)
+      query(){
+        axios.$get('login',{username:'admin',password:123456}).then(res => {
+            console.log(res);
+        });
       },
     }
   }
