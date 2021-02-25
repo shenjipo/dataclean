@@ -11,7 +11,7 @@ import camera from './camera'
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', redirect: '/introduct' },
+  { path: '/', redirect: '/login' },
   { path: '/login', component: Login },
   { path: '/home', component: Home,children:[
           {path:'/introduct',component:Introduct},
