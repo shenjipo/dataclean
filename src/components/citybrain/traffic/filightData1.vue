@@ -1,6 +1,5 @@
 <template>
     <div>
-        <el-button type="primary" @click="query">读取数据</el-button>
         <el-card>
             <el-table  :data="DataList"  border stripe max-height="650">
                 <el-table-column label="tuple_id" property="tuple_id"></el-table-column>
@@ -10,7 +9,12 @@
                 <el-table-column label="act_dep_time" property="act_dep_time"></el-table-column>
                 <el-table-column label="sched_arr_time" property="sched_arr_time"></el-table-column>
                 <el-table-column label="act_arr_time" property="act_arr_time"></el-table-column>
+                <el-table-column label="是否正确" property=""></el-table-column>
             </el-table>
+            <el-row class="btns">
+                <el-button type="primary">检测</el-button>
+                <el-button type="success">修复</el-button>
+            </el-row>
 <!--            {{DataList}}-->
         </el-card>
     </div>
@@ -21,20 +25,26 @@ import axios from 'axios'
     export default {
         data(){
             return {
-                DataList:[{"tuple_id":"sdasda","src":"sdasdaf"},],
+                DataList:[],
             }
         },
+        created() {
+            axios.get('detection_dirty_data',{params: this.flightstarget},
+                {'Access-Control-Allow-Origin':'*'}).then(res => {
+                    console.log(res);
+                    this.DataList=res.data
+            })
+        },
         methods:{
-            async query(){
-                const res = await axios.get('detection_dirty_data',{params: this.flightstarget},
-                    {'Access-Control-Allow-Origin':'*'});
-                this.DataList=res.data;
-                console.log(this.DataList)
-            },
+
         }
     }
 </script>
 
 <style lang="less" scoped>
-
+    .btns {
+        padding-top: 20px;
+        display: flex;
+        justify-content: flex-end;
+    }
 </style>
