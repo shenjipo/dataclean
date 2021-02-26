@@ -3,16 +3,14 @@
     <!--卡片视图区域-->
     <el-card>
       <!--搜索与添加区域-->
-      <el-row :gutter="20">
-        <el-col :span="7">
+      <el-row :gutter=20>
+        <el-col :span=7>
           <!--搜索与添加区域-->
           <el-input placeholder="请输入数据名称" v-model="queryInfo.query" :clearable="true" @clear="">
             <el-button slot="append" icon="el-icon-search" @click=""></el-button>
           </el-input>
         </el-col>
-        <el-col :span="4">
-          <el-button type="primary" @click="addDialogVisible = true">添加数据</el-button>
-        </el-col>
+
       </el-row>
       <!--用户列表区域-->
       <el-table :data="DataList" border stripe max-height="650">
@@ -41,6 +39,23 @@
             </template>
         </el-table-column>
       </el-table>
+        <el-row style="margin-top: 20px">
+            <el-col :span=4>
+                <el-button type="primary" @click="addDialogVisible = true">添加外部数据</el-button>
+            </el-col>
+            <el-col :span=8>
+                <el-upload
+                        ref="upload"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :on-preview="handlePreview"
+                        :on-remove="handleRemove"
+                        :file-list="fileList"
+                        :auto-upload="false">
+                    <el-button slot="trigger"  type="primary">添加本地数据</el-button>
+                    <el-button style="margin-left: 10px;"  type="success" @click="submitUpload">上传到服务器</el-button>
+                </el-upload>
+            </el-col>
+        </el-row>
     </el-card>
 
     <!-- 添加数据源的对话框 -->
@@ -56,11 +71,6 @@
         </el-form-item>
         <el-form-item label="应用领域" prop="region">
           <el-input v-model="addDataForm.region"></el-input>
-        </el-form-item>
-        <el-form-item label="清洗算法">
-          <el-select v-model="selectAlgorithmType" placeholder="选择算法">
-            <el-option v-for="item in AlgorithmType" :label="item.label" :value="item.value" :key="item.value"></el-option>
-          </el-select>
         </el-form-item>
         <el-form-item label="选择类型">
           <el-select v-model="selectType" placeholder="选择类型">
@@ -101,12 +111,22 @@
             <el-option v-for="item in Node" :label="item.label" :value="item.value" :key="item.value"></el-option>
           </el-select>
         </el-form-item>
+          <el-form-item label="清洗算法">
+              <el-select v-model="selectAlgorithmType" placeholder="选择算法">
+                  <el-option v-for="item in AlgorithmType" :label="item.label" :value="item.value" :key="item.value"></el-option>
+              </el-select>
+          </el-form-item>
         <h3>云边协同清洗结点配置</h3>
         <el-form-item label="云端服务器">
           <el-select v-model="selectNode" placeholder="选择类型">
             <el-option v-for="item in Node" :label="item.label" :value="item.value" :key="item.value"></el-option>
           </el-select>
         </el-form-item>
+          <el-form-item label="清洗算法">
+              <el-select v-model="selectAlgorithmType2" placeholder="选择算法">
+                  <el-option v-for="item in AlgorithmType" :label="item.label" :value="item.value" :key="item.value"></el-option>
+              </el-select>
+          </el-form-item>
         <el-form-item label="边缘端服务器">
           <el-transfer v-model="edgeServer" :data="data"></el-transfer>
         </el-form-item>
@@ -173,13 +193,13 @@
           {value:3,label:'webSocket'},
           {value:4,label:'ftp'},
         ],
-        selectAgreementType:0,
+        selectAlgorithmType:0,
+        selectAlgorithmType2:0,
         AlgorithmType:[
           {value:0,label:'规则校验'},
           {value:1,label:'概率统计'},
           {value:2,label:'自动选择'},
         ],
-        selectAlgorithmType:2,
         addNodeVisible: false,
         addNodeForm:{},
         selectNode:0,
@@ -187,7 +207,8 @@
           {value:0,label:'cloudServer01'},
           {value:1,label:'cloudServer02'},
           {value:2,label:'cloudServer03'},
-        ]
+        ],
+          fileList:[]
       }
 
     },
@@ -209,17 +230,31 @@
         this.$router.push({path:'/dataclean/datasource/dataCleanResult',query:{
             dataId:val
             }});
-      }
+      },
+        submitUpload() {
+            this.$refs.upload.submit();
+        },
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePreview(file) {
+            console.log(file);
+        }
     }
   }
 </script>
 
 <style scoped>
   .el-card{
-    height: 750px;
+    height: 850px;
   }
   .data-oper {
     padding: 20px;
     float:right;
+  }
+  .upload{
+      box-sizing: border-box;
+      display: block;
+      height: 40px;
   }
 </style>
