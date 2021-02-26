@@ -98,7 +98,7 @@
       <span slot="footer" class="dialog-footer">
           <el-button  type="info" @click="testDataSource">测 试</el-button>
           <el-button @click="addDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
+          <el-button type="primary" @click="addDataSource">确 定</el-button>
         </span>
     </el-dialog>
     <!-- 配置结点的对话框 -->
@@ -141,6 +141,7 @@
 </template>
 
 <script>
+    import axios from '../../../api/axios'
   export default {
     data(){
       const generateData = _ => {
@@ -219,26 +220,55 @@
       },
       //测试数据源
       testDataSource(){
+        let param = {
+          name:null,
+          region:null,
+          type:null,
+          socket:null,
+          address:null,
+          port:null,
+          username:null,
+          password:null
+        };
+        axios.$get('testData',param).then(res => {
+
+        });
         this.$message.success('数据源连接成功！！！');
+      },
+      addDataSource(){
+        let param = {
+          name:null,
+          region:null,
+          type:null,
+          socket:null,
+          address:null,
+          port:null,
+          username:null,
+          password:null
+        };
+        axios.$get('addData',param).then(res => {
+
+        });
+        this.addDialogVisible = false;
       },
       // 监听 添加用户对话框的关闭事件
       addDialogClosed () {
         this.$refs.addFormRef.resetFields()
       },
       //进入对比页面
-        gotoDataclean(val){
+      gotoDataclean(val){
         this.$router.push({path:'/dataclean/datasource/dataCleanResult',query:{
-            dataId:val
-            }});
-      },
+          dataId:val
+        }});
+       },
         submitUpload() {
-            this.$refs.upload.submit();
+          this.$refs.upload.submit();
         },
         handleRemove(file, fileList) {
-            console.log(file, fileList);
+          console.log(file, fileList);
         },
         handlePreview(file) {
-            console.log(file);
+          console.log(file);
         }
     }
   }
