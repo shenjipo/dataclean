@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-card>
-            <el-table  :data="DataList.slice((currentPage-1)*pagesize,currentPage*pagesize)"  border stripe max-height="650">
+            <el-table :data="DataList.slice((currentPage-1)*pagesize,currentPage*pagesize)"  border stripe max-height="650">
                 <el-table-column label="tuple_id" property="tuple_id"></el-table-column>
                 <el-table-column label="src" property="src"></el-table-column>
                 <el-table-column label="flight" property="flight"></el-table-column>
@@ -9,7 +9,8 @@
                 <el-table-column label="act_dep_time" property="act_dep_time"></el-table-column>
                 <el-table-column label="sched_arr_time" property="sched_arr_time"></el-table-column>
                 <el-table-column label="act_arr_time" property="act_arr_time"></el-table-column>
-                <el-table-column label="是否正确" property=""></el-table-column>
+                <el-table-column label="是否正确" property="是否正确数据"></el-table-column>
+                <el-table-column label="错误字段是" property="错误字段是"></el-table-column>
             </el-table>
             <el-pagination small layout="total, prev, pager, next,jumper"
                            :total="DataList.length"
@@ -20,7 +21,7 @@
             >
             </el-pagination>
             <el-row class="btns">
-                <el-button type="primary">检测</el-button>
+                <el-button type="primary" @click="testing">检测</el-button>
                 <el-button type="success">修复</el-button>
             </el-row>
 <!--            {{DataList}}-->
@@ -48,6 +49,13 @@ import axios from 'axios'
         methods:{
             handleCurrentChange(val){
                 this.currentPage=val;
+            },
+            testing(){
+                axios.get('detection_run_detected_cell_XY',{params: this.flightstarget},
+                    {'Access-Control-Allow-Origin':'*'}).then(res2 => {
+                    console.log(res2);
+                    this.DataList=res2.data
+                })
             }
         }
     }
