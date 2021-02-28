@@ -1,7 +1,20 @@
 <template>
     <div>
+        <el-form inline="true" :v-model="flightstarget">
+            <el-form-item label="查准率">
+                <el-input v-model="flightstarget.p" placeholder=""></el-input>
+            </el-form-item>
+            <el-form-item label="召回率">
+                <el-input v-model="flightstarget.r" placeholder=""></el-input>
+            </el-form-item>
+            <el-form-item label="F1">
+                <el-input v-model="flightstarget.f" placeholder=""></el-input>
+            </el-form-item>
+        </el-form>
+
+
         <el-card>
-            <el-table :data="DataList.slice((currentPage-1)*pagesize,currentPage*pagesize)"  border stripe max-height="650">
+            <el-table :data="DataList.slice((currentPage-1)*pagesize,currentPage*pagesize)"  border stripe max-height="650" :row-class-name="tableRowClassName">
                 <el-table-column label="tuple_id" property="tuple_id"></el-table-column>
                 <el-table-column label="src" property="src"></el-table-column>
                 <el-table-column label="flight" property="flight"></el-table-column>
@@ -41,6 +54,7 @@ import axios from 'axios'
         data(){
             return {
                 DataList:[{tuple_id:1,"是否正确数据":"是"},{tuple_id:2,"是否正确数据":"否"}],
+                flightstarget:{},
                 pagesize:10,
                 currentPage:1,
             }
@@ -53,6 +67,12 @@ import axios from 'axios'
             })
         },
         methods:{
+            query(){
+                axios.$get('raha_detection',{username:'admin',password:123456}).then(res => {
+                    console.log(res);
+                    this.flightstarget=res
+                });
+            },
             handleCurrentChange(val){
                 this.currentPage=val;
             },
@@ -61,6 +81,7 @@ import axios from 'axios'
                     {'Access-Control-Allow-Origin':'*'}).then(res2 => {
                     console.log(res2);
                     this.DataList=res2.data
+                    this.$message('检测成功')
                 })
             },
           filterTag(value, row){
@@ -68,15 +89,33 @@ import axios from 'axios'
             console.log(value);
             console.log(row.是否正确数据);
             return row.是否正确数据 == value;
-          }
+          },
+            tableRowClassName({row,rowIndex}){
+                if(row.是否正确数据=='否'){
+                    return 'warning-row';
+                }
+                else if(row.是否正确数据=='是'){
+                    return 'success-row';
+                }
+                console.log(rowIndex);
+                return '';
+            }
         }
     }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
     .btns {
         padding-top: 20px;
         display: flex;
         justify-content: flex-end;
+    }
+
+    .el-table .success-row {
+        color: red !important;
+    }
+
+    .el-table .warning-row {
+        color: #34c934 !important;
     }
 </style>

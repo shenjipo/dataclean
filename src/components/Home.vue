@@ -6,10 +6,20 @@
                background-color="#545c64" text-color="#fff">
         <el-menu-item index="1">处理中心</el-menu-item>
         <el-submenu index="2">
-          <template slot="title">数据类型</template>
-          <el-menu-item index="2-1">来源</el-menu-item>
-          <el-menu-item index="2-2">地区</el-menu-item>
+          <template slot="title">余杭区</template>
+            <el-submenu index="2-1">
+                <template slot="title">浙江省</template>
+                <el-submenu index="2-1-1">
+                    <template slot="title">杭州市</template>
+                    <el-menu-item index="2-1">余杭区</el-menu-item>
+                    <el-menu-item index="2-2">江干区</el-menu-item>
+                </el-submenu>
+
+            </el-submenu>
+
         </el-submenu>
+
+
         <el-menu-item index="3" disabled>消息中心</el-menu-item>
         <el-menu-item index="4">管理</el-menu-item>
       </el-menu>
