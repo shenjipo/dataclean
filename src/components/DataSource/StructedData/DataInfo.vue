@@ -18,11 +18,17 @@
         <el-table-column type="selection" label="#"></el-table-column>
         <el-table-column type="index" label="#"></el-table-column>
         <el-table-column label="名称" prop="username"></el-table-column>
-        <el-table-column label="类型" prop="email"></el-table-column>
         <el-table-column label="应用领域" prop="mobile"></el-table-column>
+        <el-table-column label="设备类型" prop="email"></el-table-column>
+          <el-table-column label="数据源类型" prop="mobile"></el-table-column>
+          <el-table-column label="数据类型" prop="mobile"></el-table-column>
+          <el-table-column label="清洗状态" prop="role_name">
+              <el-tag>未清洗</el-tag>
+          </el-table-column>
         <el-table-column label="算法" prop="role_name"></el-table-column>
-        <el-table-column label="传输协议" prop="role_name"></el-table-column>
-        <el-table-column label="数据来源" prop="role_name"></el-table-column>
+        <el-table-column label="清洗结果(F1)" prop="role_name">
+            <el-tag type="success" @click="showResult">0.8<i class="el-icon-view"></i></el-tag>
+        </el-table-column>
         <el-table-column label="操作" width="180px" >
             <template slot-scope="scope">
                 <!--查看数据详情结点按钮-->
@@ -39,7 +45,7 @@
             </template>
         </el-table-column>
       </el-table>
-        <el-row style="margin-top: 20px">
+      <el-row style="margin-top: 20px">
             <el-col :span=4>
                 <el-button type="primary" @click="addDialogVisible = true">添加外部数据</el-button>
             </el-col>
@@ -70,13 +76,25 @@
           <el-input v-model="addDataForm.name"></el-input>
         </el-form-item>
         <el-form-item label="应用领域" prop="region">
-          <el-input v-model="addDataForm.region"></el-input>
+            <el-select v-model="selectType04" placeholder="选择类型">
+                <el-option v-for="item in regionType" :label="item.label" :value="item.value" :key="item.value"></el-option>
+            </el-select>
         </el-form-item>
-        <el-form-item label="选择类型">
-          <el-select v-model="selectType" placeholder="选择类型">
-            <el-option v-for="item in dataType" :label="item.label" :value="item.value" :key="item.value"></el-option>
+        <el-form-item label="设备类型">
+          <el-select v-model="selectType01" placeholder="选择类型">
+            <el-option v-for="item in equipmentType" :label="item.label" :value="item.value" :key="item.value"></el-option>
           </el-select>
         </el-form-item>
+          <el-form-item label="数据源类型">
+              <el-select v-model="selectType02" placeholder="选择类型">
+                  <el-option v-for="item in dataSourceType" :label="item.label" :value="item.value" :key="item.value"></el-option>
+              </el-select>
+          </el-form-item>
+          <el-form-item label="数据类型">
+              <el-select v-model="selectType03" placeholder="选择类型">
+                  <el-option v-for="item in dataType" :label="item.label" :value="item.value" :key="item.value"></el-option>
+              </el-select>
+          </el-form-item>
         <el-form-item label="协议">
           <el-select v-model="selectAgreementType" placeholder="选择协议">
             <el-option v-for="item in AgreementType" :label="item.label" :value="item.value" :key="item.value"></el-option>
@@ -137,6 +155,10 @@
           <el-button type="primary" @click="addNodeVisible = false">确 定</el-button>
         </span>
     </el-dialog>
+    <!-- 添加数据源的对话框 -->
+    <el-dialog title="结果对比" :visible.sync="resultDialogVisible" width="50%" @close="addDialogClosed">
+      <router-view></router-view>
+    </el-dialog>
   </div>
 </template>
 
@@ -156,6 +178,7 @@
         return data;
       };
       return{
+        resultDialogVisible:false,
         data: generateData(),
         edgeServer: [1],
         queryInfo: {
@@ -179,14 +202,27 @@
         addDialogVisible: false,
         addDataForm:{},
         addUserFormRules:{},
-        dataType:[
-          {value:0,label:'物理设备'},
-          {value:1,label:'虚拟设备'},
-          {value:2,label:'数据流'},
-          {value:3,label:'第三方系统'},
-          {value:4,label:'文件'},
+        regionType:[{value:0,label:'其它'},
+          {value:1,label:'城市汽车'},
+          {value:2,label:'飞机航班'},],
+        equipmentType:[
+            {value:0,label:'物理设备'},
+            {value:1,label:'虚拟设备'}],
+        dataSourceType:[
+          {value:0,label:'流式数据'},
+          {value:1,label:'非流式数据'},
         ],
-        selectType:0,
+        dataType:[
+          {value:0,label:'数值'},
+          {value:1,label:'文本'},
+          {value:2,label:'视频'},
+          {value:3,label:'结构化'},
+          {value:4,label:'轨迹'},
+        ],
+        selectType01:0,
+        selectType02:0,
+        selectType03:0,
+        selectType04:0,
         AgreementType:[
           {value:0,label:'http'},
           {value:1,label:'https'},
@@ -261,15 +297,19 @@
           dataId:val
         }});
        },
-        submitUpload() {
-          this.$refs.upload.submit();
-        },
-        handleRemove(file, fileList) {
-          console.log(file, fileList);
-        },
-        handlePreview(file) {
-          console.log(file);
-        }
+      submitUpload() {
+      this.$refs.upload.submit();
+    },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      showResult(){
+        this.resultDialogVisible = true;
+        this.$router.push('/dataclean/datasource/AdvantageVisualization')
+      }
     }
   }
 </script>
