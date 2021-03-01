@@ -21,7 +21,7 @@
         <el-table-column label="应用领域" prop="mobile"></el-table-column>
         <el-table-column label="设备类型" prop="email"></el-table-column>
           <el-table-column label="数据源类型" prop="mobile"></el-table-column>
-          <el-table-column label="数据类型" prop="mobile"></el-table-column>
+          <!--<el-table-column label="数据类型" prop="mobile"></el-table-column>-->
           <el-table-column label="清洗状态" prop="role_name">
               <el-tag>未清洗</el-tag>
           </el-table-column>
@@ -29,16 +29,21 @@
         <el-table-column label="清洗结果(F1)" prop="role_name">
             <el-tag type="success" @click="showResult">0.8<i class="el-icon-view"></i></el-tag>
         </el-table-column>
-        <el-table-column label="操作" width="180px" >
+        <el-table-column label="操作" width="240px" >
             <template slot-scope="scope">
+                <!--配置结点按钮-->
+                <el-tooltip class="item" effect="dark" content="配置结点" :enterable="false" placement="top">
+                    <el-button type="warning" icon="el-icon-setting" size="mini" @click="setConfig"></el-button>
+                </el-tooltip>
+                <!--开始清洗按钮-->
+                <el-tooltip class="item" effect="dark" content="开始清洗" :enterable="false" placement="top">
+                    <!--开始清洗-->
+                    <el-button type="success" icon="el-icon-video-play" size="mini"></el-button>
+                </el-tooltip>
                 <!--查看数据详情结点按钮-->
                 <el-tooltip class="item" effect="dark" content="查看详情" :enterable="false" placement="top">
                     <!--修改按钮-->
                     <el-button type="primary" icon="el-icon-view" size="mini" @click="gotoDataclean(scope.row)"></el-button>
-                </el-tooltip>
-                <!--配置结点按钮-->
-                <el-tooltip class="item" effect="dark" content="配置结点" :enterable="false" placement="top">
-                    <el-button type="warning" icon="el-icon-setting" size="mini" @click="setConfig"></el-button>
                 </el-tooltip>
                 <!--删除按钮-->
                 <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
@@ -90,13 +95,13 @@
                   <el-option v-for="item in dataSourceType" :label="item.label" :value="item.value" :key="item.value"></el-option>
               </el-select>
           </el-form-item>
-          <el-form-item label="数据类型">
-              <el-select v-model="selectType03" placeholder="选择类型">
-                  <el-option v-for="item in dataType" :label="item.label" :value="item.value" :key="item.value"></el-option>
-              </el-select>
-          </el-form-item>
+          <!--<el-form-item label="数据类型">-->
+              <!--<el-select v-model="selectType03" placeholder="选择类型">-->
+                  <!--<el-option v-for="item in dataType" :label="item.label" :value="item.value" :key="item.value"></el-option>-->
+              <!--</el-select>-->
+          <!--</el-form-item>-->
         <el-form-item label="协议">
-          <el-select v-model="selectAgreementType" placeholder="选择协议">
+          <el-select v-model="selectType05" placeholder="选择协议">
             <el-option v-for="item in AgreementType" :label="item.label" :value="item.value" :key="item.value"></el-option>
           </el-select>
         </el-form-item>
@@ -223,6 +228,7 @@
         selectType02:0,
         selectType03:0,
         selectType04:0,
+        selectType05:0,
         AgreementType:[
           {value:0,label:'http'},
           {value:1,label:'https'},

@@ -130,6 +130,18 @@
               <template slot="title">视频数据管理</template>
               <el-menu-item index="/dataclean/datasource/VideoData/DataInfo">查看数据</el-menu-item>
             </el-submenu>
+              <el-submenu index="3-3">
+                  <template slot="title">文本数据管理</template>
+                  <el-menu-item index="/dataclean/datasource/VideoData/DataInfo">查看数据</el-menu-item>
+              </el-submenu>
+              <el-submenu index="3-4">
+                  <template slot="title">数值数据管理</template>
+                  <el-menu-item index="/dataclean/datasource/VideoData/DataInfo">查看数据</el-menu-item>
+              </el-submenu>
+              <el-submenu index="3-5">
+                  <template slot="title">轨迹数据管理</template>
+                  <el-menu-item index="/dataclean/datasource/VideoData/DataInfo">查看数据</el-menu-item>
+              </el-submenu>
           </el-submenu>
         </el-menu>
       </el-aside>
