@@ -91,11 +91,8 @@ import axios from 'axios'
             return row.是否正确数据 == value;
           },
             tableRowClassName({row,rowIndex}){
-                if(row.是否正确数据=='否'){
+                if(row.是否正确数据==='否'){
                     return 'warning-row';
-                }
-                else if(row.是否正确数据=='是'){
-                    return 'success-row';
                 }
                 console.log(rowIndex);
                 return '';
@@ -111,11 +108,8 @@ import axios from 'axios'
         justify-content: flex-end;
     }
 
-    .el-table .success-row {
-        color: red !important;
-    }
-
     .el-table .warning-row {
         color: #34c934 !important;
+        background: rgba(0,255,255);
     }
 </style>
