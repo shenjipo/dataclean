@@ -1,176 +1,227 @@
 <template>
-  <div>
-    <!--卡片视图区域-->
-    <el-card>
-      <!--搜索与添加区域-->
-      <el-row :gutter=20>
-        <el-col :span=7>
-          <!--搜索与添加区域-->
-          <el-input placeholder="请输入数据名称" v-model="queryInfo.query" :clearable="true" @clear="">
-            <el-button slot="append" icon="el-icon-search" @click=""></el-button>
-          </el-input>
-        </el-col>
+    <div>
+        <!--卡片视图区域-->
+        <el-card>
+            <!--搜索与添加区域-->
+            <el-row :gutter=20>
+                <el-col :span=7>
+                    <!--搜索与添加区域-->
+                    <el-input placeholder="请输入数据名称" v-model="queryInfo.query" :clearable="true" @clear="">
+                        <el-button slot="append" icon="el-icon-search" @click=""></el-button>
+                    </el-input>
+                </el-col>
+                <el-col :span=5>
+                    <div class="block">
+                        <el-cascader
+                                style="width: 100%"
+                                :options="options"
+                                :props="props"
+                                collapse-tags
+                                clearable>
+                        </el-cascader>
+                    </div>
+                </el-col>
+                <el-col :span=5>
+                    <el-button type="primary">筛选</el-button>
+                </el-col>
+            </el-row>
+            <!--用户列表区域-->
+            <el-table :data="DataList" border stripe max-height="650">
+                <!--缩印列-->
+                <el-table-column type="selection" label="#"></el-table-column>
+                <el-table-column type="index" label="#"></el-table-column>
+                <el-table-column label="名称" prop="username"></el-table-column>
+                <el-table-column label="应用领域" prop="mobile"></el-table-column>
+                <el-table-column label="设备类型" prop="email"></el-table-column>
+                <el-table-column label="数据源类型" prop="mobile"></el-table-column>
+                <el-table-column label="设备物理地址" prop="mobile"></el-table-column>
+                <el-table-column label="设备网络地址" prop="mobile"></el-table-column>
+                <!--<el-table-column label="数据类型" prop="mobile"></el-table-column>-->
+                <el-table-column label="清洗状态" prop="role_name">
+                    <el-tag>未清洗</el-tag>
+                </el-table-column>
+                <el-table-column label="算法" prop="role_name"></el-table-column>
+                <el-table-column label="清洗结果(F1)" prop="role_name">
+                    <el-tag type="success" @click="showResult">0.8<i class="el-icon-view"></i></el-tag>
+                </el-table-column>
+                <el-table-column label="操作" width="240px">
+                    <template slot-scope="scope">
+                        <!--配置结点按钮-->
+                        <el-tooltip class="item" effect="dark" content="配置结点" :enterable="false" placement="top">
+                            <el-button type="warning" icon="el-icon-setting" size="mini" @click="setConfig"></el-button>
+                        </el-tooltip>
+                        <!--开始清洗按钮-->
+                        <el-tooltip class="item" effect="dark" content="开始清洗" :enterable="false" placement="top">
+                            <!--开始清洗-->
+                            <el-button type="success" icon="el-icon-video-play" size="mini"></el-button>
+                        </el-tooltip>
+                        <!--查看数据详情结点按钮-->
+                        <el-tooltip class="item" effect="dark" content="查看详情" :enterable="false" placement="top">
+                            <!--修改按钮-->
+                            <el-button type="primary" icon="el-icon-view" size="mini"
+                                       @click="gotoDataclean(scope.row)"></el-button>
+                        </el-tooltip>
+                        <!--删除按钮-->
+                        <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-row style="margin-top: 20px">
+                <el-col :span=4>
+                    <el-button type="primary" @click="addDialogVisible = true">添加外部数据</el-button>
+                </el-col>
+                <el-col :span=8>
+                    <el-upload
+                            ref="upload"
+                            action="https://jsonplaceholder.typicode.com/posts/"
+                            :on-preview="handlePreview"
+                            :on-remove="handleRemove"
+                            :file-list="fileList"
+                            :auto-upload="false">
+                        <el-button slot="trigger" type="primary">添加本地数据</el-button>
+                        <el-button style="margin-left: 10px;" type="success" @click="submitUpload">上传到服务器</el-button>
+                    </el-upload>
+                </el-col>
+            </el-row>
+        </el-card>
 
-      </el-row>
-      <!--用户列表区域-->
-      <el-table :data="DataList" border stripe max-height="650">
-        <!--缩印列-->
-        <el-table-column type="selection" label="#"></el-table-column>
-        <el-table-column type="index" label="#"></el-table-column>
-        <el-table-column label="名称" prop="username"></el-table-column>
-        <el-table-column label="应用领域" prop="mobile"></el-table-column>
-        <el-table-column label="设备类型" prop="email"></el-table-column>
-          <el-table-column label="数据源类型" prop="mobile"></el-table-column>
-          <!--<el-table-column label="数据类型" prop="mobile"></el-table-column>-->
-          <el-table-column label="清洗状态" prop="role_name">
-              <el-tag>未清洗</el-tag>
-          </el-table-column>
-        <el-table-column label="算法" prop="role_name"></el-table-column>
-        <el-table-column label="清洗结果(F1)" prop="role_name">
-            <el-tag type="success" @click="showResult">0.8<i class="el-icon-view"></i></el-tag>
-        </el-table-column>
-        <el-table-column label="操作" width="240px" >
-            <template slot-scope="scope">
-                <!--配置结点按钮-->
-                <el-tooltip class="item" effect="dark" content="配置结点" :enterable="false" placement="top">
-                    <el-button type="warning" icon="el-icon-setting" size="mini" @click="setConfig"></el-button>
-                </el-tooltip>
-                <!--开始清洗按钮-->
-                <el-tooltip class="item" effect="dark" content="开始清洗" :enterable="false" placement="top">
-                    <!--开始清洗-->
-                    <el-button type="success" icon="el-icon-video-play" size="mini"></el-button>
-                </el-tooltip>
-                <!--查看数据详情结点按钮-->
-                <el-tooltip class="item" effect="dark" content="查看详情" :enterable="false" placement="top">
-                    <!--修改按钮-->
-                    <el-button type="primary" icon="el-icon-view" size="mini" @click="gotoDataclean(scope.row)"></el-button>
-                </el-tooltip>
-                <!--删除按钮-->
-                <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
-            </template>
-        </el-table-column>
-      </el-table>
-      <el-row style="margin-top: 20px">
-            <el-col :span=4>
-                <el-button type="primary" @click="addDialogVisible = true">添加外部数据</el-button>
-            </el-col>
-            <el-col :span=8>
-                <el-upload
-                        ref="upload"
-                        action="https://jsonplaceholder.typicode.com/posts/"
-                        :on-preview="handlePreview"
-                        :on-remove="handleRemove"
-                        :file-list="fileList"
-                        :auto-upload="false">
-                    <el-button slot="trigger"  type="primary">添加本地数据</el-button>
-                    <el-button style="margin-left: 10px;"  type="success" @click="submitUpload">上传到服务器</el-button>
-                </el-upload>
-            </el-col>
-        </el-row>
-    </el-card>
-
-    <!-- 添加数据源的对话框 -->
-    <el-dialog title="添加数据" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
-      <!-- 内容主体 -->
-      <el-form
-        :model="addDataForm"
-        ref="addFormRef"
-        label-width="100px"
-      >
-        <el-form-item label="名称" prop="name">
-          <el-input v-model="addDataForm.name"></el-input>
-        </el-form-item>
-        <el-form-item label="应用领域" prop="region">
-            <el-select v-model="selectType04" placeholder="选择类型">
-                <el-option v-for="item in regionType" :label="item.label" :value="item.value" :key="item.value"></el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item label="设备类型">
-          <el-select v-model="selectType01" placeholder="选择类型">
-            <el-option v-for="item in equipmentType" :label="item.label" :value="item.value" :key="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-          <el-form-item label="数据源类型">
-              <el-select v-model="selectType02" placeholder="选择类型">
-                  <el-option v-for="item in dataSourceType" :label="item.label" :value="item.value" :key="item.value"></el-option>
-              </el-select>
-          </el-form-item>
-          <!--<el-form-item label="数据类型">-->
-              <!--<el-select v-model="selectType03" placeholder="选择类型">-->
-                  <!--<el-option v-for="item in dataType" :label="item.label" :value="item.value" :key="item.value"></el-option>-->
-              <!--</el-select>-->
-          <!--</el-form-item>-->
-        <el-form-item label="协议">
-          <el-select v-model="selectType05" placeholder="选择协议">
-            <el-option v-for="item in AgreementType" :label="item.label" :value="item.value" :key="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="地址" prop="address">
-          <el-input v-model="addDataForm.address"></el-input>
-        </el-form-item>
-        <el-form-item label="端口" prop="port">
-          <el-input v-model="addDataForm.port"></el-input>
-        </el-form-item>
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="addDataForm.username"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="addDataForm.password"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-          <el-button  type="info" @click="testDataSource">测 试</el-button>
+        <!-- 添加数据源的对话框 -->
+        <el-dialog title="添加数据" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
+            <!-- 内容主体 -->
+            <el-form
+                    :model="addDataForm"
+                    ref="addFormRef"
+                    label-width="100px"
+            >
+                <el-form-item label="名称" prop="name">
+                    <el-input v-model="addDataForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="应用领域" prop="region">
+                    <el-select v-model="selectType04" placeholder="选择类型">
+                        <el-option v-for="item in regionType" :label="item.label" :value="item.value"
+                                   :key="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="设备类型">
+                    <el-select v-model="selectType01" placeholder="选择类型">
+                        <el-option v-for="item in equipmentType" :label="item.label" :value="item.value"
+                                   :key="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="数据源类型">
+                    <el-select v-model="selectType02" placeholder="选择类型">
+                        <el-option v-for="item in dataSourceType" :label="item.label" :value="item.value"
+                                   :key="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+                <!--<el-form-item label="数据类型">-->
+                <!--<el-select v-model="selectType03" placeholder="选择类型">-->
+                <!--<el-option v-for="item in dataType" :label="item.label" :value="item.value" :key="item.value"></el-option>-->
+                <!--</el-select>-->
+                <!--</el-form-item>-->
+                <el-form-item label="协议">
+                    <el-select v-model="selectType05" placeholder="选择协议">
+                        <el-option v-for="item in AgreementType" :label="item.label" :value="item.value"
+                                   :key="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="设备物理地址" prop="address">
+                    <div class="block">
+                        <el-cascader
+                                v-model="value"
+                                :options="options"
+                                :props="{ expandTrigger: 'hover' }"
+                                @change="handleChange"></el-cascader>
+                    </div>
+                </el-form-item>
+                <el-form-item label="设备详细地址" prop="address">
+                    <el-input v-model="addDataForm.physicaladdress"></el-input>
+                </el-form-item>
+                <el-form-item label="网络地址" prop="address">
+                    <el-input v-model="addDataForm.address"></el-input>
+                </el-form-item>
+                <el-form-item label="端口" prop="port">
+                    <el-input v-model="addDataForm.port"></el-input>
+                </el-form-item>
+                <el-form-item label="用户名" prop="username">
+                    <el-input v-model="addDataForm.username"></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="password">
+                    <el-input v-model="addDataForm.password"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+          <el-button type="info" @click="testDataSource">测 试</el-button>
           <el-button @click="addDialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="addDataSource">确 定</el-button>
         </span>
-    </el-dialog>
-    <!-- 配置结点的对话框 -->
-    <el-dialog title="配置结点" :visible.sync="addNodeVisible" width="70%" @close="addDialogClosed">
-      <!-- 内容主体 -->
-      <el-form :model="addNodeForm" ref="addFormRef" label-width="130px">
-        <h3>云端清洗结点配置</h3>
-        <el-form-item label="云端服务器">
-          <el-select v-model="selectNode" placeholder="选择云端结点">
-            <el-option v-for="item in Node" :label="item.label" :value="item.value" :key="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-          <el-form-item label="清洗算法">
-              <el-select v-model="selectAlgorithmType" placeholder="选择算法">
-                  <el-option v-for="item in AlgorithmType" :label="item.label" :value="item.value" :key="item.value"></el-option>
-              </el-select>
-          </el-form-item>
-        <h3>云边协同清洗结点配置</h3>
-        <el-form-item label="云端服务器">
-          <el-select v-model="selectNode" placeholder="选择类型">
-            <el-option v-for="item in Node" :label="item.label" :value="item.value" :key="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-          <el-form-item label="清洗算法">
-              <el-select v-model="selectAlgorithmType2" placeholder="选择算法">
-                  <el-option v-for="item in AlgorithmType" :label="item.label" :value="item.value" :key="item.value"></el-option>
-              </el-select>
-          </el-form-item>
-        <el-form-item label="边缘端服务器">
-          <el-transfer v-model="edgeServer" :data="data"></el-transfer>
-        </el-form-item>
+        </el-dialog>
+        <!-- 配置结点的对话框 -->
+        <el-dialog title="配置结点" :visible.sync="addNodeVisible" width="70%" @close="addDialogClosed">
+            <!-- 内容主体 -->
+            <el-form :model="addNodeForm" ref="addFormRef" label-width="130px">
+                <h3>云端清洗结点配置</h3>
+                <el-form-item label="是否开启">
+                    <el-switch
+                            v-model="value01"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949">
+                    </el-switch>
+                </el-form-item>
+                <el-form-item label="云端服务器" v-if="value01">
+                    <el-select v-model="selectNode" placeholder="选择云端结点">
+                        <el-option v-for="item in Node" :label="item.label" :value="item.value"
+                                   :key="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="清洗算法" v-if="value01">
+                    <el-select v-model="selectAlgorithmType" placeholder="选择算法">
+                        <el-option v-for="item in AlgorithmType" :label="item.label" :value="item.value"
+                                   :key="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+                <h3>云边协同清洗结点配置</h3>
+                <el-form-item label="是否开启">
+                    <el-switch
+                            v-model="value02"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949">
+                    </el-switch>
+                </el-form-item>
+                <el-form-item label="云端服务器" v-if="value02">
+                    <el-select v-model="selectNode" placeholder="选择类型">
+                        <el-option v-for="item in Node" :label="item.label" :value="item.value"
+                                   :key="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="清洗算法" v-if="value02">
+                    <el-select v-model="selectAlgorithmType2" placeholder="选择算法">
+                        <el-option v-for="item in AlgorithmType" :label="item.label" :value="item.value"
+                                   :key="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="边缘端服务器" v-if="value02">
+                    <el-transfer v-model="edgeServer" :data="data"></el-transfer>
+                </el-form-item>
 
-      </el-form>
-      <span slot="footer" class="dialog-footer">
+            </el-form>
+            <span slot="footer" class="dialog-footer">
           <el-button @click="addNodeVisible = false">取 消</el-button>
           <el-button type="primary" @click="addNodeVisible = false">确 定</el-button>
         </span>
-    </el-dialog>
-    <!-- 添加数据源的对话框 -->
-    <el-dialog title="结果对比" :visible.sync="resultDialogVisible" width="50%" @close="addDialogClosed">
-      <router-view></router-view>
-    </el-dialog>
-  </div>
+        </el-dialog>
+        <!-- 添加数据源的对话框 -->
+        <el-dialog title="结果对比" :visible.sync="resultDialogVisible" width="50%" @close="addDialogClosed">
+            <router-view></router-view>
+        </el-dialog>
+    </div>
 </template>
 
 <script>
-    import axios from '../../../api/axios'
+  import axios from '../../../api/axios'
+
   export default {
-    data(){
+    data() {
       const generateData = _ => {
         const data = [];
         for (let i = 1; i <= 5; i++) {
@@ -182,8 +233,31 @@
         }
         return data;
       };
-      return{
-        resultDialogVisible:false,
+      return {
+        value01: true,
+        value02: true,
+        props: {multiple: true},
+        options: [
+          {
+            value: 1,
+            label: '浙江',
+            children: [{
+              value: 2,
+              label: '杭州',
+              children: [
+                {value: 3, label: '上城区'},
+                {value: 4, label: '下城区'},
+                {value: 6, label: '拱墅区'},
+                {value: 7, label: '西湖区'},
+                {value: 8, label: '滨江区'},
+                {value: 9, label: '萧山区'},
+                {value: 10, label: '余杭区'},
+              ]
+            }
+            ]
+          }
+        ],
+        resultDialogVisible: false,
         data: generateData(),
         edgeServer: [1],
         queryInfo: {
@@ -193,126 +267,128 @@
           //当前每页显示多少条数据
           pagesize: 2
         },
-        DataList:[{username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12},
-          {username:"1aw2fr",email:'1243',mobile:12345678909,role_name:'afw',mg_state:12}],
+        DataList: [{username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
+          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
+          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
+          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
+          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
+          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
+          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
+          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
+          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
+          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12}],
         // 添加用户对话框
         addDialogVisible: false,
-        addDataForm:{},
-        addUserFormRules:{},
-        regionType:[{value:0,label:'其它'},
-          {value:1,label:'城市汽车'},
-          {value:2,label:'飞机航班'},],
-        equipmentType:[
-            {value:0,label:'物理设备'},
-            {value:1,label:'虚拟设备'}],
-        dataSourceType:[
-          {value:0,label:'流式数据'},
-          {value:1,label:'非流式数据'},
+        addDataForm: {},
+        addUserFormRules: {},
+        regionType: [{value: 0, label: '其它'},
+          {value: 1, label: '城市汽车'},
+          {value: 2, label: '飞机航班'},],
+        equipmentType: [
+          {value: 0, label: '物理设备'},
+          {value: 1, label: '虚拟设备'}],
+        dataSourceType: [
+          {value: 0, label: '流式数据'},
+          {value: 1, label: '非流式数据'},
         ],
-        dataType:[
-          {value:0,label:'数值'},
-          {value:1,label:'文本'},
-          {value:2,label:'视频'},
-          {value:3,label:'结构化'},
-          {value:4,label:'轨迹'},
+        dataType: [
+          {value: 0, label: '数值'},
+          {value: 1, label: '文本'},
+          {value: 2, label: '视频'},
+          {value: 3, label: '结构化'},
+          {value: 4, label: '轨迹'},
         ],
-        selectType01:0,
-        selectType02:0,
-        selectType03:0,
-        selectType04:0,
-        selectType05:0,
-        AgreementType:[
-          {value:0,label:'http'},
-          {value:1,label:'https'},
-          {value:2,label:'mqtt'},
-          {value:3,label:'webSocket'},
-          {value:4,label:'ftp'},
+        selectType01: 0,
+        selectType02: 0,
+        selectType03: 0,
+        selectType04: 0,
+        selectType05: 0,
+        AgreementType: [
+          {value: 0, label: 'http'},
+          {value: 1, label: 'https'},
+          {value: 2, label: 'mqtt'},
+          {value: 3, label: 'webSocket'},
+          {value: 4, label: 'ftp'},
         ],
-        selectAlgorithmType:0,
-        selectAlgorithmType2:0,
-        AlgorithmType:[
-          {value:0,label:'规则校验'},
-          {value:1,label:'概率统计'},
-          {value:2,label:'自动选择'},
+        selectAlgorithmType: 0,
+        selectAlgorithmType2: 0,
+        AlgorithmType: [
+          {value: 0, label: '规则校验'},
+          {value: 1, label: '概率统计'},
+          {value: 2, label: '自动选择'},
         ],
         addNodeVisible: false,
-        addNodeForm:{},
-        selectNode:0,
-        Node:[
-          {value:0,label:'cloudServer01'},
-          {value:1,label:'cloudServer02'},
-          {value:2,label:'cloudServer03'},
+        addNodeForm: {},
+        selectNode: 0,
+        Node: [
+          {value: 0, label: 'cloudServer01'},
+          {value: 1, label: 'cloudServer02'},
+          {value: 2, label: 'cloudServer03'},
         ],
-          fileList:[]
+        fileList: []
       }
 
     },
-    methods:{
+    methods: {
       //配置云边协同操作
-      setConfig(row){
+      setConfig(row) {
         this.addNodeVisible = true;
       },
       //测试数据源
-      testDataSource(){
+      testDataSource() {
         let param = {
-          name:null,
-          region:null,
-          type:null,
-          socket:null,
-          address:null,
-          port:null,
-          username:null,
-          password:null
+          name: null,
+          region: null,
+          type: null,
+          socket: null,
+          address: null,
+          port: null,
+          username: null,
+          password: null
         };
-        axios.$get('testData',param).then(res => {
+        axios.$get('testData', param).then(res => {
 
         });
         this.$message.success('数据源连接成功！！！');
       },
-      addDataSource(){
+      addDataSource() {
         let param = {
-          name:null,
-          region:null,
-          type:null,
-          socket:null,
-          address:null,
-          port:null,
-          username:null,
-          password:null
+          name: null,
+          region: null,
+          type: null,
+          socket: null,
+          address: null,
+          port: null,
+          username: null,
+          password: null
         };
-        axios.$get('addData',param).then(res => {
+        axios.$get('addData', param).then(res => {
 
         });
         this.addDialogVisible = false;
       },
       // 监听 添加用户对话框的关闭事件
-      addDialogClosed () {
+      addDialogClosed() {
         this.$refs.addFormRef.resetFields()
       },
       //进入对比页面
-      gotoDataclean(val){
-        this.$router.push({path:'/dataclean/datasource/dataCleanResult',query:{
-          dataId:val
-        }});
-       },
+      gotoDataclean(val) {
+        this.$router.push({
+          path: '/dataclean/datasource/dataCleanResult', query: {
+            dataId: val
+          }
+        });
+      },
       submitUpload() {
-      this.$refs.upload.submit();
-    },
+        this.$refs.upload.submit();
+      },
       handleRemove(file, fileList) {
         console.log(file, fileList);
       },
       handlePreview(file) {
         console.log(file);
       },
-      showResult(){
+      showResult() {
         this.resultDialogVisible = true;
         this.$router.push('/dataclean/datasource/AdvantageVisualization')
       }
@@ -320,17 +396,20 @@
   }
 </script>
 
-<style scoped>
-  .el-card{
-    height: 850px;
-  }
-  .data-oper {
-    padding: 20px;
-    float:right;
-  }
-  .upload{
-      box-sizing: border-box;
-      display: block;
-      height: 40px;
-  }
+<style scoped lang="less">
+    .el-card {
+        height: 850px;
+    }
+
+    .data-oper {
+        padding: 20px;
+        float: right;
+    }
+
+    .upload {
+        box-sizing: border-box;
+        display: block;
+        height: 40px;
+    }
+
 </style>
