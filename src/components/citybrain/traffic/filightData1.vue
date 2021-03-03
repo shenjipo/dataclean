@@ -14,8 +14,9 @@
 
 
         <el-card>
-            <el-table :data="DataList.slice((currentPage-1)*pagesize,currentPage*pagesize)"  border stripe max-height="650" :row-class-name="tableRowClassName">
-                <el-table-column label="tuple_id" property="tuple_id"></el-table-column>
+            <el-table :data="DataList.slice((currentPage-1)*pagesize,currentPage*pagesize)"  border max-height="650"
+                      :row-class-name="tableRowClassName" :cell-class-name="isRight">
+                <el-table-column label="tuple_id" property="tuple_id" ></el-table-column>
                 <el-table-column label="src" property="src"></el-table-column>
                 <el-table-column label="flight" property="flight"></el-table-column>
                 <el-table-column label="sched_dep_time" property="sched_dep_time"></el-table-column>
@@ -62,14 +63,14 @@ import axios from 'axios'
         created() {
             axios.get('detection_dirty_data',{params: this.flightstarget},
                 {'Access-Control-Allow-Origin':'*'}).then(res => {
-                    console.log(res);
+                    // console.log(res);
                     this.DataList=res.data
             })
         },
         methods:{
             query(){
                 axios.$get('raha_detection',{username:'admin',password:123456}).then(res => {
-                    console.log(res);
+                    // console.log(res);
                     this.flightstarget=res
                 });
             },
@@ -79,23 +80,30 @@ import axios from 'axios'
             testing(){
                 axios.get('detection_run_detected_cell_XY',{params: this.flightstarget},
                     {'Access-Control-Allow-Origin':'*'}).then(res2 => {
-                    console.log(res2);
+                    // console.log(res2);
                     this.DataList=res2.data
                     this.$message('检测成功')
                 })
             },
           filterTag(value, row){
-              console.log(row);
-            console.log(value);
-            console.log(row.是否正确数据);
+              // console.log(row);
+            // console.log(value);
+            // console.log(row.是否正确数据);
             return row.是否正确数据 == value;
           },
             tableRowClassName({row,rowIndex}){
                 if(row.是否正确数据==='否'){
                     return 'warning-row';
                 }
-                console.log(rowIndex);
+                // console.log(rowIndex);
                 return '';
+            },
+            isRight({row,column,rowIndex,columnIndex}){
+                if((row.是否正确数据==='否')&&(columnIndex!=8)&&(row.错误字段是.indexOf(column.label)>-1)){
+                    return 'column-warning';
+                }
+                console.log(column);
+                console.log(column.label);
             }
         }
     }
@@ -109,7 +117,11 @@ import axios from 'axios'
     }
 
     .el-table .warning-row {
-        color: #34c934 !important;
-        background: rgba(0,255,255);
+        /*color: #34c934 !important;*/
+        background: rgba(0,255,255,0.5);
+    }
+
+    .el-table .column-warning{
+        background: rgba(125,125,125,0.5) ;
     }
 </style>
