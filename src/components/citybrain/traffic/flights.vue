@@ -31,14 +31,26 @@
         <!--缩印列-->
         <el-table-column type="selection" label="#"></el-table-column>
         <el-table-column type="index" label="#"></el-table-column>
-        <el-table-column label="数据源" prop="username"></el-table-column>
-        <el-table-column label="类型" prop="email"></el-table-column>
-        <el-table-column label="应用领域" prop="mobile"></el-table-column>
+        <el-table-column label="名称" prop="username"></el-table-column>
+        <el-table-column label="应用领域" prop="app_area"></el-table-column>
+        <el-table-column label="设备类型" prop="equ_type"></el-table-column>
+        <el-table-column label="数据源类型" prop="source_type"></el-table-column>
+        <el-table-column label="设备物理地址" prop="phy_address"></el-table-column>
+        <el-table-column label="设备网络地址" prop="ip_address"></el-table-column>
+        <!--<el-table-column label="数据类型" prop="mobile"></el-table-column>-->
+        <el-table-column label="清洗状态" prop="role_name">
+          <el-tag>未清洗</el-tag>
+        </el-table-column>
         <el-table-column label="算法" prop="role_name"></el-table-column>
-        <el-table-column label="传输协议" prop="role_name"></el-table-column>
-        <el-table-column label="数据来源" prop="role_name"></el-table-column>
+        <el-table-column label="清洗结果(F1)" prop="role_name">
+          <el-tag type="success" @click="showResult">0.8<i class="el-icon-view"></i></el-tag>
+        </el-table-column>
         <el-table-column label="操作" width="180px" >
           <template slot-scope="scope">
+            <!--配置结点按钮-->
+            <el-tooltip class="item" effect="dark" content="配置结点" :enterable="false" placement="top">
+              <el-button type="warning" icon="el-icon-setting" size="mini" @click="setConfig"></el-button>
+            </el-tooltip>
             <!--查看数据详情结点按钮-->
             <el-tooltip class="item" effect="dark" content="查看详情" :enterable="false" placement="top">
               <!--修改按钮-->
@@ -83,10 +95,10 @@
           //当前每页显示多少条数据
           pagesize: 2
         },
-        DataList:[{username:"数据源1",email:'1243',mobile:'飞机航班',role_name:'raha',mg_state:12},
-          {username:"数据源2",email:'1243',mobile:'飞机航班',role_name:'afw',mg_state:12},
-          {username:"数据源3",email:'1243',mobile:'飞机航班',role_name:'afw',mg_state:12},
-          {username:"数据源4",email:'1243',mobile:'飞机航班',role_name:'afw',mg_state:12},],
+        DataList: [{username: "数据源1", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.50" , role_name: 'raha'},
+          {username: "数据源2", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.51" , role_name: 'raha'},
+          {username: "数据源3", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.52" , role_name: 'raha'},
+          {username: "数据源4", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.53" , role_name: 'raha'}],
         total: 0,
         result:{
           total:'10万条',

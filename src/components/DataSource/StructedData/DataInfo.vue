@@ -31,11 +31,11 @@
                 <el-table-column type="selection" label="#"></el-table-column>
                 <el-table-column type="index" label="#"></el-table-column>
                 <el-table-column label="名称" prop="username"></el-table-column>
-                <el-table-column label="应用领域" prop="mobile"></el-table-column>
-                <el-table-column label="设备类型" prop="email"></el-table-column>
-                <el-table-column label="数据源类型" prop="mobile"></el-table-column>
-                <el-table-column label="设备物理地址" prop="mobile"></el-table-column>
-                <el-table-column label="设备网络地址" prop="mobile"></el-table-column>
+                <el-table-column label="应用领域" prop="app_area"></el-table-column>
+                <el-table-column label="设备类型" prop="equ_type"></el-table-column>
+                <el-table-column label="数据源类型" prop="source_type"></el-table-column>
+                <el-table-column label="设备物理地址" prop="phy_address"></el-table-column>
+                <el-table-column label="设备网络地址" prop="ip_address"></el-table-column>
                 <!--<el-table-column label="数据类型" prop="mobile"></el-table-column>-->
                 <el-table-column label="清洗状态" prop="role_name">
                     <el-tag>未清洗</el-tag>
@@ -269,16 +269,14 @@
           //当前每页显示多少条数据
           pagesize: 2
         },
-        DataList: [{username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
-          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
-          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
-          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
-          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
-          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
-          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
-          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
-          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12},
-          {username: "1aw2fr", email: '1243', mobile: 12345678909, role_name: 'afw', mg_state: 12}],
+        DataList: [{username: "数据源1", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.50" , role_name: 'raha'},
+            {username: "数据源2", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.51" , role_name: 'raha'},
+            {username: "数据源3", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.52" , role_name: 'raha'},
+            {username: "数据源4", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.53" , role_name: 'raha'},
+            {username: "数据源5", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.55" , role_name: 'raha'},
+            {username: "数据源6", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.56" , role_name: 'raha'},
+            {username: "数据源7", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.57" , role_name: 'raha'},
+            {username: "数据源8", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.58" , role_name: 'raha'},],
         // 添加用户对话框
         addDialogVisible: false,
         addDataForm: {},
