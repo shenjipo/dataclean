@@ -125,13 +125,15 @@
                                    :key="item.value"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="设备物理地址" prop="address">
+                <el-form-item label="设备所在地区" prop="address">
                     <div class="block">
                         <el-cascader
                                 v-model="value"
                                 :options="options"
                                 :props="{ expandTrigger: 'hover' }"
-                                @change="handleChange"></el-cascader>
+                                @change="handleChange">
+
+                        </el-cascader>
                     </div>
                 </el-form-item>
                 <el-form-item label="设备详细地址" prop="address">
@@ -201,7 +203,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="边缘端服务器" v-if="value02">
-                    <el-transfer v-model="edgeServer" :data="data"></el-transfer>
+                    <el-transfer v-model="edgeServer" :data="data" :titles="['备选服务器','选中服务器']"></el-transfer>
                 </el-form-item>
 
             </el-form>
