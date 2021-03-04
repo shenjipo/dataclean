@@ -56,6 +56,8 @@
               <!--修改按钮-->
               <el-button type="primary" icon="el-icon-view" size="mini" @click="gotoflightsData(scope.row)"></el-button>
             </el-tooltip>
+            <!--删除按钮-->
+            <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
           </template>
         </el-table-column>
       </el-table>
