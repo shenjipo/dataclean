@@ -140,7 +140,7 @@
               </el-submenu>
               <el-submenu index="3-5">
                   <template slot="title">轨迹数据管理</template>
-                  <el-menu-item index="/dataclean/datasource/VideoData/DataInfo">查看数据</el-menu-item>
+                  <el-menu-item index="/dataclean/datasource/trajectoryData/DataInfo">查看数据</el-menu-item>
               </el-submenu>
           </el-submenu>
         </el-menu>
