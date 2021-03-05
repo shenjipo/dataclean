@@ -12,15 +12,15 @@
             </el-form-item>
         </el-form>
 
-        <el-form inline="true" :v-model="flightstarget">
+        <el-form inline="true" :v-model="repairquota">
             <el-form-item label="修复查准率">
-                <el-input v-model="flightstarget.p" placeholder=""></el-input>
+                <el-input v-model="repairquota.p" placeholder=""></el-input>
             </el-form-item>
             <el-form-item label="修复召回率">
-                <el-input v-model="flightstarget.r" placeholder=""></el-input>
+                <el-input v-model="repairquota.r" placeholder=""></el-input>
             </el-form-item>
             <el-form-item label="修复F1">
-                <el-input v-model="flightstarget.f" placeholder=""></el-input>
+                <el-input v-model="repairquota.f" placeholder=""></el-input>
             </el-form-item>
         </el-form>
 
@@ -67,6 +67,7 @@ import axios from 'axios'
             return {
                 DataList:[{tuple_id:1,"是否正确数据":"是"},{tuple_id:2,"是否正确数据":"否"}],
                 flightstarget:{},
+                repairquota:{},
                 pagesize:10,
                 currentPage:1,
             }
@@ -93,7 +94,10 @@ import axios from 'axios'
                 axios.get('detection_run_detected_cell_XY',{params: this.flightstarget},
                     {'Access-Control-Allow-Origin':'*'}).then(res2 => {
                     // console.log(res2);
-                    this.DataList=res2.data
+                    // console.log(res2.data[0])
+                    // console.log(res2.data[1])
+                    this.flightstarget=res2.data[0].quota
+                    this.DataList=res2.data[1].data
                     this.$message('检测成功')
                 })
             },
