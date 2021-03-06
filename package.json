@@ -13,6 +13,8 @@
     "echarts": "^5.0.1",
     "element-ui": "^2.4.5",
     "leaflet": "^1.7.1",
+    "leaflet-plugin-trackplayback": "^1.0.5",
+    "leaflet-polylinedecorator": "^1.6.0",
     "less": "^4.1.0",
     "less-loader": "^7.3.0",
     "vue": "^2.6.11",
