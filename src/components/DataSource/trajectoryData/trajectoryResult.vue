@@ -92,12 +92,12 @@
         pagesize: 10,
         currentPage: 1,
         res: [
-          {lat: 30, lng: 116, time: 1502529980, info: [{key: 'name', value: 'ship1'}]},
-          {lat: 32, lng: 118, time: 1502539980, info: [{key: 'name', value: 'ship1'}]},
-          {lat: 34, lng: 120, time: 1502549980, info: [{key: 'name', value: 'ship1'}]},
-          {lat: 39, lng: 130, time: 1502559980, info: [{key: 'name', value: 'ship1'}]},
-          {lat: 33, lng: 116, time: 1502569980, info: [{key: 'name', value: 'ship1'}]},
-          {lat: 32, lng: 115, time: 1502579980, info: [{key: 'name', value: 'ship1'}]},
+          {lat: 30.25, lng: 120.17, time: 1502529980, info: [{key: 'name', value: 'ship1'}]},
+          {lat: 30.28, lng: 120.17, time: 1502539980, info: [{key: 'name', value: 'ship1'}]},
+          {lat: 30.32, lng: 120.13, time: 1502549980, info: [{key: 'name', value: 'ship1'}]},
+          {lat: 30.27, lng: 120.13, time: 1502559980, info: [{key: 'name', value: 'ship1'}]},
+          {lat: 30.20,  lng: 120.2, time: 1502569980, info: [{key: 'name', value: 'ship1'}]},
+          {lat: 30.17, lng: 120.27, time: 1502579980, info: [{key: 'name', value: 'ship1'}]},
         ],
         trackLineData: [],
         trackGroup: {}
