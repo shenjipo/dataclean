@@ -323,7 +323,7 @@
         addUserFormRules: {},
         regionType: [{value: 0, label: '其它'},
           {value: 1, label: '城市汽车'},
-          {value: 2, label: '飞机航班'},],
+          {value: 2, label: '飞机航班'}],
         equipmentType: [
           {value: 0, label: '物理设备'},
           {value: 1, label: '虚拟设备'}],
