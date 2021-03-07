@@ -17,7 +17,9 @@
                                 :options="options"
                                 :props="props"
                                 collapse-tags
-                                clearable>
+                                clearable
+                                v-model="selecetedData"
+                                @change="queryData">
                         </el-cascader>
                     </div>
                 </el-col>
@@ -221,6 +223,7 @@
 
 <script>
   import axios from '../../../api/axios'
+  import {area, city, coordinate, province} from '@/utils/region'
 
   export default {
     data() {
@@ -238,6 +241,7 @@
       return {
         value01: true,
         value02: true,
+        // 省市区选择器
         props: {multiple: true},
         options: [
           {
@@ -259,6 +263,8 @@
             ]
           }
         ],
+        selecetedData: {},
+        // 对话框是否显示
         resultDialogVisible: false,
         data: generateData(),
         edgeServer: [1],
@@ -269,14 +275,48 @@
           //当前每页显示多少条数据
           pagesize: 2
         },
-        DataList: [{username: "数据源1", app_area: '飞机航班', equ_type: "传感器", source_type:"轨迹数据", phy_address:"ai小镇", ip_address:"10.5.26.50" , role_name: 'raha'},
-          {username: "数据源2", app_area: '飞机航班', equ_type: "传感器", source_type:"轨迹数据", phy_address:"ai小镇", ip_address:"10.5.26.51" , role_name: 'raha'},
-          {username: "数据源3", app_area: '飞机航班', equ_type: "传感器", source_type:"轨迹数据", phy_address:"ai小镇", ip_address:"10.5.26.52" , role_name: 'raha'},
-          {username: "数据源4", app_area: '飞机航班', equ_type: "传感器", source_type:"轨迹数据", phy_address:"ai小镇", ip_address:"10.5.26.53" , role_name: 'raha'},
-          {username: "数据源5", app_area: '飞机航班', equ_type: "传感器", source_type:"轨迹数据", phy_address:"ai小镇", ip_address:"10.5.26.55" , role_name: 'raha'},
-          {username: "数据源6", app_area: '飞机航班', equ_type: "传感器", source_type:"轨迹数据", phy_address:"ai小镇", ip_address:"10.5.26.56" , role_name: 'raha'},
-          {username: "数据源7", app_area: '飞机航班', equ_type: "传感器", source_type:"轨迹数据", phy_address:"ai小镇", ip_address:"10.5.26.57" , role_name: 'raha'},
-          {username: "数据源8", app_area: '飞机航班', equ_type: "传感器", source_type:"轨迹数据", phy_address:"ai小镇", ip_address:"10.5.26.58" , role_name: 'raha'},],
+        DataList: [
+          {
+            username: "数据源1",
+            app_area: '飞机航班',
+            equ_type: "传感器",
+            source_type: "轨迹数据",
+            phy_address: "ai小镇",
+            ip_address: "10.5.26.50",
+            role_name: 'raha',
+            reigon: [1, 1, 1]
+          },
+          {
+            username: "数据源2",
+            app_area: '飞机航班',
+            equ_type: "传感器",
+            source_type: "轨迹数据",
+            phy_address: "ai小镇",
+            ip_address: "10.5.26.51",
+            role_name: 'raha',
+            reigon: [1, 1, 2]
+          },
+          {
+            username: "数据源2",
+            app_area: '飞机航班',
+            equ_type: "传感器",
+            source_type: "轨迹数据",
+            phy_address: "ai小镇",
+            ip_address: "10.5.26.51",
+            role_name: 'raha',
+            reigon: [1, 1, 8]
+          },
+          {
+            username: "数据源2",
+            app_area: '飞机航班',
+            equ_type: "传感器",
+            source_type: "轨迹数据",
+            phy_address: "ai小镇",
+            ip_address: "10.5.26.51",
+            role_name: 'raha',
+            reigon: [1, 1, 6]
+          },
+        ],
         // 添加用户对话框
         addDialogVisible: false,
         addDataForm: {},
@@ -330,6 +370,10 @@
 
     },
     methods: {
+      queryData(item) {
+        console.log(item);
+        console.log(this.selecetedData);
+      },
       //配置云边协同操作
       setConfig(row) {
         this.addNodeVisible = true;
@@ -371,11 +415,16 @@
       addDialogClosed() {
         this.$refs.addFormRef.resetFields()
       },
-      //进入对比页面
+      //进入详情页面
       gotoDataclean(val) {
+        let regionName = province[val.reigon[0]] + city[val.reigon[1]] + area[val.reigon[2]];
+        let latlng = coordinate[regionName];
+        //console.log(latlng);
         this.$router.push({
           path: '/dataclean/datasource/trajectoryData/trajectoryResult', query: {
-            dataId: val
+            dataRow: val,
+            coordinate:latlng,
+            region:regionName
           }
         });
       },

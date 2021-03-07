@@ -50,10 +50,19 @@
                            @current-change="handleCurrentChange"
             >
             </el-pagination>
-            <el-row class="btns">
-                <el-button type="primary" @click="openMap">在地图中显示轨迹</el-button>
-                <el-button type="primary" @click="testing">检测</el-button>
-                <el-button type="success" @click="repair">修复</el-button>
+            <el-row :gutter="20">
+                <el-col :span="12" >
+                    <el-tag style="display: inline-flex;justify-content: flex-start;margin-top: 20px">
+                        {{this.$route.query.region}}{{this.$route.query.coordinate}}
+                    </el-tag>
+                </el-col>
+                <el-col :span="12">
+                    <div class="btns">
+                        <el-button type="primary" @click="openMap">在地图中显示轨迹</el-button>
+                        <el-button type="primary" @click="testing">检测</el-button>
+                        <el-button type="success" @click="repair">修复</el-button>
+                    </div>
+                </el-col>
             </el-row>
             <!--            {{DataList}}-->
         </el-card>
@@ -71,6 +80,7 @@
   import "@/plugins/leaflet/leaflet.trackplayback.js";
   import customMarkerIcon from '@/assets/round_03.png'
   import 'leaflet-polylinedecorator'
+
   export default {
     data() {
       return {
@@ -93,12 +103,14 @@
         trackGroup: {}
       }
     },
-    created() {
-      axios.get('detection_dirty_data', {params: this.flightstarget},
-          {'Access-Control-Allow-Origin': '*'}).then(res => {
-        // console.log(res);
-        this.DataList = res.data
-      })
+    mounted: {},
+    mounted() {
+      console.log(this.$route.query.coordinate);
+      let param = {};
+      param.lat = parseFloat(this.$route.query.coordinate[1]);
+      param.lng = parseFloat(this.$route.query.coordinate[0]);
+      console.log(param)
+      this.vuexMap.setView(L.latLng(param.lat, param.lng), 13, false);
     },
     components: {
       Map
@@ -138,7 +150,7 @@
           });
           let tip = `${item.lng ? "经度: " + item.lng + "<br>" : ""}
             ${item.lat ? "纬度: " + item.lat + "<br>" : ""}
-            ${item.time ? "航速: " + item.time + "<br>" : ""}`;
+            ${item.time ? "时间: " + item.time + "<br>" : ""}`;
           let Icon = L.icon({
             iconUrl: customMarkerIcon,
             iconSize: [16, 16],
@@ -169,15 +181,15 @@
           opacity: 0.8
         }).addTo(this.vuexMap);
         //this.trackGroup.addLayer(polyline);
-        let arrow = L.polylineDecorator(polyline, {
-          patterns: [
-            {
-              offset: 25,
-              repeat: 100,
-              symbol: L.Symbol.arrowHead({pixelSize: 15, pathOptions: {fillOpacity: 0.8, weight: 0}})
-            }
-          ]
-        }).addTo(this.vuexMap);
+        // let arrow = L.polylineDecorator(polyline, {
+        //   patterns: [
+        //     {
+        //       offset: 25,
+        //       repeat: 100,
+        //       symbol: L.Symbol.arrowHead({pixelSize: 15, pathOptions: {fillOpacity: 0.8, weight: 0}})
+        //     }
+        //   ]
+        // }).addTo(this.vuexMap);
       },
       //打开地图
       openMap() {
@@ -239,6 +251,11 @@
 </script>
 
 <style lang="less">
+    .btnsleft{
+        padding-top: 20px;
+        display: flex;
+        justify-content: flex-start;
+    }
     .btns {
         padding-top: 20px;
         display: flex;
