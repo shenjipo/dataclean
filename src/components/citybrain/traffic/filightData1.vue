@@ -10,8 +10,18 @@
             <el-form-item label="检测F1">
                 <el-input v-model="flightstarget.f" placeholder=""></el-input>
             </el-form-item>
+            <br>
+            <el-form-item label="检测的时间">
+                <el-input v-model="flightstarget.p" placeholder="秒"></el-input>
+            </el-form-item>
+            <el-form-item label="检测记录数">
+                <el-input v-model="flightstarget.r" placeholder=""></el-input>
+            </el-form-item>
+            <el-form-item label="检测效率">
+                <el-input v-model="flightstarget.f" placeholder="条/秒"></el-input>
+            </el-form-item>
         </el-form>
-
+        <el-divider></el-divider>
         <el-form inline="true" :v-model="repairquota">
             <el-form-item label="修复查准率">
                 <el-input v-model="repairquota.p" placeholder=""></el-input>
@@ -22,8 +32,18 @@
             <el-form-item label="修复F1">
                 <el-input v-model="repairquota.f" placeholder=""></el-input>
             </el-form-item>
+            <br>
+            <el-form-item label="修复的时间">
+                <el-input v-model="repairquota.p" placeholder=""></el-input>
+            </el-form-item>
+            <el-form-item label="修复记录数">
+                <el-input v-model="repairquota.r" placeholder=""></el-input>
+            </el-form-item>
+            <el-form-item label="修复效率">
+                <el-input v-model="repairquota.f" placeholder=""></el-input>
+            </el-form-item>
         </el-form>
-
+        <el-divider></el-divider>
         <el-card>
             <el-table :data="DataList.slice((currentPage-1)*pagesize,currentPage*pagesize)"  border max-height="650"
                       :row-class-name="tableRowClassName" :cell-class-name="isRight">
@@ -52,7 +72,11 @@
             >
             </el-pagination>
             <el-row class="btns">
+                <el-progress :percentage="0" :text-inside="true" stroke-width="24" class="jin"></el-progress>
                 <el-button type="primary" @click="testing">检测</el-button>
+            </el-row>
+            <el-row class="btns">
+                <el-progress :percentage="0" :text-inside="true" stroke-width="24" class="jin"></el-progress>
                 <el-button type="success" @click="repair">修复</el-button>
             </el-row>
 <!--            {{DataList}}-->
@@ -70,6 +94,7 @@ import axios from 'axios'
                 repairquota:{},
                 pagesize:10,
                 currentPage:1,
+                checkpercent:'',
             }
         },
         created() {
@@ -106,7 +131,8 @@ import axios from 'axios'
                 axios.get('raha_correction_cell_xy',{params: this.flightstarget},
                     {'Access-Control-Allow-Origin':'*'}).then(res2 => {
                     // console.log(res2);
-                    this.DataList=res2.data
+                    this.repairquota=res2.data[0].quota
+                    this.DataList=res2.data[1].data
                     this.$message('修复成功')
                 })
             },
@@ -139,6 +165,12 @@ import axios from 'axios'
         padding-top: 20px;
         display: flex;
         justify-content: flex-end;
+    }
+
+    .jin{
+        width: 40%;
+        padding-top: 8px;
+        padding-right: 20px;
     }
 
     .el-table .warning-row {
