@@ -4,13 +4,13 @@
         <el-card>
             <!--搜索与添加区域-->
             <el-row :gutter=20>
-                <el-col :span=7>
+                <el-col :span="7">
                     <!--搜索与添加区域-->
                     <el-input placeholder="请输入数据名称" v-model="queryInfo.query" :clearable="true" @clear="">
                         <el-button slot="append" icon="el-icon-search" @click=""></el-button>
                     </el-input>
                 </el-col>
-                <el-col :span=5>
+                <el-col :span="5">
                     <div class="block">
                         <el-cascader
                                 style="width: 100%"
@@ -23,51 +23,66 @@
                         </el-cascader>
                     </div>
                 </el-col>
-                <el-col :span=5>
+                <el-col :span="5">
                     <el-button type="primary">筛选</el-button>
                 </el-col>
+                <el-col :span="5">
+                    <el-switch
+                            v-model="displayMode"
+                            active-text="列表显示"
+                            inactive-text="在地图上显示"
+                            inactive-color="#67C23A"
+                            @change="changeDisplayMode">
+                    </el-switch>
+                </el-col>
             </el-row>
-            <!--用户列表区域-->
-            <el-table :data="DataList" border stripe max-height="650">
-                <!--缩印列-->
-                <el-table-column type="selection" label="#"></el-table-column>
-                <el-table-column type="index" label="#"></el-table-column>
-                <el-table-column label="名称" prop="username"></el-table-column>
-                <el-table-column label="应用领域" prop="app_area"></el-table-column>
-                <el-table-column label="设备类型" prop="equ_type"></el-table-column>
-                <el-table-column label="数据源类型" prop="source_type"></el-table-column>
-                <el-table-column label="设备物理地址" prop="phy_address"></el-table-column>
-                <el-table-column label="设备网络地址" prop="ip_address"></el-table-column>
-                <!--<el-table-column label="数据类型" prop="mobile"></el-table-column>-->
-                <el-table-column label="清洗状态" prop="role_name">
-                    <el-tag>未清洗</el-tag>
-                </el-table-column>
-                <el-table-column label="算法" prop="role_name"></el-table-column>
-                <el-table-column label="清洗结果(F1)" prop="role_name">
-                    <el-tag type="success" @click="showResult">0.8<i class="el-icon-view"></i></el-tag>
-                </el-table-column>
-                <el-table-column label="操作" width="240px">
-                    <template slot-scope="scope">
-                        <!--配置结点按钮-->
-                        <el-tooltip class="item" effect="dark" content="配置结点" :enterable="false" placement="top">
-                            <el-button type="warning" icon="el-icon-setting" size="mini" @click="setConfig"></el-button>
-                        </el-tooltip>
-                        <!--开始清洗按钮-->
-                        <el-tooltip class="item" effect="dark" content="开始清洗" :enterable="false" placement="top">
-                            <!--开始清洗-->
-                            <el-button type="success" icon="el-icon-video-play" size="mini"></el-button>
-                        </el-tooltip>
-                        <!--查看数据详情结点按钮-->
-                        <el-tooltip class="item" effect="dark" content="查看详情" :enterable="false" placement="top">
-                            <!--修改按钮-->
-                            <el-button type="primary" icon="el-icon-view" size="mini"
-                                       @click="gotoDataclean(scope.row)"></el-button>
-                        </el-tooltip>
-                        <!--删除按钮-->
-                        <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
+            <!--数据源列表区域-->
+            <div v-if="displayMode">
+                <el-table :data="DataList" border stripe max-height="650">
+                    <!--缩印列-->
+                    <el-table-column type="selection" label="#"></el-table-column>
+                    <el-table-column type="index" label="#"></el-table-column>
+                    <el-table-column label="名称" prop="username"></el-table-column>
+                    <el-table-column label="应用领域" prop="app_area"></el-table-column>
+                    <el-table-column label="设备类型" prop="equ_type"></el-table-column>
+                    <el-table-column label="数据源类型" prop="source_type"></el-table-column>
+                    <el-table-column label="设备物理地址" prop="phy_address"></el-table-column>
+                    <el-table-column label="设备网络地址" prop="ip_address"></el-table-column>
+                    <!--<el-table-column label="数据类型" prop="mobile"></el-table-column>-->
+                    <el-table-column label="清洗状态" prop="role_name">
+                        <el-tag>未清洗</el-tag>
+                    </el-table-column>
+                    <el-table-column label="算法" prop="role_name"></el-table-column>
+                    <el-table-column label="清洗结果(F1)" prop="role_name">
+                        <el-tag type="success" @click="showResult">0.8<i class="el-icon-view"></i></el-tag>
+                    </el-table-column>
+                    <el-table-column label="操作" width="240px">
+                        <template slot-scope="scope">
+                            <!--配置结点按钮-->
+                            <el-tooltip class="item" effect="dark" content="配置结点" :enterable="false" placement="top">
+                                <el-button type="warning" icon="el-icon-setting" size="mini"
+                                           @click="setConfig"></el-button>
+                            </el-tooltip>
+                            <!--开始清洗按钮-->
+                            <el-tooltip class="item" effect="dark" content="开始清洗" :enterable="false" placement="top">
+                                <!--开始清洗-->
+                                <el-button type="success" icon="el-icon-video-play" size="mini"></el-button>
+                            </el-tooltip>
+                            <!--查看数据详情结点按钮-->
+                            <el-tooltip class="item" effect="dark" content="查看详情" :enterable="false" placement="top">
+                                <!--修改按钮-->
+                                <el-button type="primary" icon="el-icon-view" size="mini"
+                                           @click="gotoDataclean(scope.row)"></el-button>
+                            </el-tooltip>
+                            <!--删除按钮-->
+                            <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div style="width: 100%;height: 600px" v-else>
+                <Map style="width: 100%;height: 100%"></Map>
+            </div>
             <el-row style="margin-top: 20px">
                 <el-col :span=4>
                     <el-button type="primary" @click="addDialogVisible = true">添加外部数据</el-button>
@@ -130,7 +145,7 @@
                 <el-form-item label="设备所在地区" prop="address">
                     <div class="block">
                         <el-cascader
-                                v-model="value"
+                                v-model="cascaderValue"
                                 :options="options"
                                 :props="{ expandTrigger: 'hover' }"
                                 @change="handleChange">
@@ -222,8 +237,12 @@
 </template>
 
 <script>
+  import {mapGetters} from "vuex";
   import axios from '../../../api/axios'
   import {area, city, coordinate, province} from '@/utils/region'
+  import Map from '@/components/map/map'
+  import L from 'leaflet';
+  import marker1 from '@/assets/marker1.jpg'
 
   export default {
     data() {
@@ -239,6 +258,8 @@
         return data;
       };
       return {
+        cascaderValue: {},
+        displayMode: true,
         value01: true,
         value02: true,
         // 省市区选择器
@@ -275,6 +296,7 @@
           //当前每页显示多少条数据
           pagesize: 2
         },
+        //表格数据
         DataList: [
           {
             username: "数据源1",
@@ -365,11 +387,49 @@
           {value: 1, label: 'cloudServer02'},
           {value: 2, label: 'cloudServer03'},
         ],
-        fileList: []
+        fileList: [],
+        marker: {},
+        markers: []
       }
 
     },
+    components: {
+      Map
+    },
     methods: {
+      handleChange() {
+
+      },
+      changeDisplayMode(val) {
+        if (val === false) {
+          setTimeout(a => {
+            this.vuexMap.setView(L.latLng(30.42, 120.3));
+            this.DataList.forEach(item => {
+              let regionName = province[item.reigon[0]] + city[item.reigon[1]] + area[item.reigon[2]];
+              let latlng = coordinate[regionName];
+              console.log(L.latLng(latlng[1], latlng[0]));
+              let Icon = L.icon({
+                iconUrl: marker1,
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+              });
+              let tip = `${item.username ? "数据源名称: " + item.username + "<br>" : ""}
+            ${item.equ_type ? "设备类型: " + item.equ_type + "<br>" : ""}
+            ${item.source_type ? "数据类型: " + item.source_type + "<br>" : ""}
+            ${item.ip_address ? "设备网络地址: " + item.ip_address + "<br>" : ""}`;
+              let circleMarker = L.marker(L.latLng(latlng[1], latlng[0]), {
+                icon: Icon,
+                draggable: false,
+                opacity: 1,
+              }).unbindTooltip().bindTooltip(tip, {
+                direction: 'right',
+                opacity: 1,
+                className: 'ls_tooltip_ty'
+              }).addTo(this.vuexMap);
+            })
+          })
+        }
+      },
       queryData(item) {
         console.log(item);
         console.log(this.selecetedData);
@@ -423,8 +483,8 @@
         this.$router.push({
           path: '/dataclean/datasource/trajectoryData/trajectoryResult', query: {
             dataRow: val,
-            coordinate:latlng,
-            region:regionName
+            coordinate: latlng,
+            region: regionName
           }
         });
       },
@@ -441,7 +501,12 @@
         this.resultDialogVisible = true;
         this.$router.push('/dataclean/datasource/AdvantageVisualization')
       }
-    }
+    },
+    computed: {
+      ...mapGetters([
+        "vuexMap",
+      ])
+    },
   }
 </script>
 
