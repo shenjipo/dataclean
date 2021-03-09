@@ -17,6 +17,7 @@
     "leaflet-polylinedecorator": "^1.6.0",
     "less": "^4.1.0",
     "less-loader": "^7.3.0",
+    "timers": "^0.1.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vue-socket.io": "^3.0.10",
