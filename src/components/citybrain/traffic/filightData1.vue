@@ -76,8 +76,8 @@
                 <el-button type="primary" @click="getStatus();testing()">检测</el-button>
             </el-row>
             <el-row class="btns">
-                <el-progress :percentage="0" :text-inside="true" stroke-width="24" class="jin"></el-progress>
-                <el-button type="success" @click="repair">修复</el-button>
+                <el-progress :percentage="percentage2" :text-inside="true" stroke-width="24" class="jin"></el-progress>
+                <el-button type="success" @click="getStatus2();repair()" :disabled="button2">修复</el-button>
             </el-row>
 <!--            {{DataList}}-->
         </el-card>
@@ -96,11 +96,14 @@ import axios from 'axios'
                 currentPage:1,
                 checkpercent:'',
                 percentage:'',
+                percentage2:'',
+                button2:true,
             }
         },
         computed: {
             // 计算属性
-            statusData() { return this.percentage }
+            statusData() { return this.percentage },
+            statusData2() { return this.percentage2 }
         },
         watch: {
             statusData: function (val) {
@@ -109,6 +112,26 @@ import axios from 'axios'
                 if (val ==0) {
                     this.timer = window.setInterval(() => {
                         window.setTimeout(this.getStatus, 0)
+                    }, 200)
+                    console.log("789456")
+                }
+                // 当返回的新值为成功的时候,关闭定时器,结束轮询
+                if (val ==100) {
+                    console.log(val)
+                    window.clearInterval(this.timer)
+                }
+                // 当页面关闭的时候,结束轮询,否则就会一直发请求,
+                //使用$once(eventName, eventHandler)一次性监听事件
+                this.$once('hook:boforeDestory', () => {
+                    window.clearInterval(this.timer)
+                })
+            },
+            statusData2: function (val) {
+                // 当返回的新值为创建中的时候,保持3秒轮询
+
+                if (val ==0) {
+                    this.timer = window.setInterval(() => {
+                        window.setTimeout(this.getStatus2, 0)
                     }, 200)
                     console.log("789456")
                 }
@@ -151,6 +174,7 @@ import axios from 'axios'
                     this.flightstarget=res2.data[0].quota
                     this.DataList=res2.data[1].data
                     this.$message('检测成功')
+                    this.button2=false
                 })
             },
             getStatus() {
@@ -158,6 +182,13 @@ import axios from 'axios'
                     {'Access-Control-Allow-Origin':'*'}).then(res => {
                     console.log(res);
                     this.percentage=parseInt(res.data)
+                })
+            },
+            getStatus2() {
+                axios.get('correction_percent',{params: this.flightstarget},
+                    {'Access-Control-Allow-Origin':'*'}).then(res => {
+                    console.log(res);
+                    this.percentage2=parseInt(res.data)
                 })
             },
             repair(){
