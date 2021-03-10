@@ -1,7 +1,8 @@
 import Southcamera from '../components/camera/southcamera'
-import Northcamera from '../components/camera/northcamera'
+import EastExitCamera from '../components/camera/eastExitCamera'
+
 
 export default [
     {path:'/camera/southcamera', component: Southcamera},
-    {path:'/camera/northcamera', component: Northcamera},
+    {path:'/camera/eastexitcamera', component: EastExitCamera},
 ]

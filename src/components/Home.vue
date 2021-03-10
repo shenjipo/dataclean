@@ -111,7 +111,7 @@
             <el-submenu index="3-1">
               <template slot="title">十号楼</template>
               <el-menu-item index="/camera/southcamera">南门口摄像头</el-menu-item>
-              <el-menu-item index="/camera/northcamera">西门口摄像头</el-menu-item>
+              <el-menu-item index="/camera/eastexitcamera">东大门出口</el-menu-item>
             </el-submenu>
           </el-submenu>
           <el-submenu index="4">
