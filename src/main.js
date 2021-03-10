@@ -6,6 +6,11 @@ import './plugins/element.js'
 import './assets/css/global.css'
 import store from './store'
 
+import VideoPlayer from 'vue-video-player'
+import 'video.js/dist/video-js.css'
+import 'videojs-flash'
+Vue.use(VideoPlayer)
+
 import axios from 'axios'
 Vue.config.productionTip = false
 
