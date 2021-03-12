@@ -13,10 +13,14 @@
         </div>
         <div class="col2">
             <h1  style=" text-align:center;">处理后视频</h1>
-            <div class="video"></div>
-            <video width="550" height="550" class="video1" controls>
-                <source src="src/assets/video/movie.mp4" type="video/mp4">
-            </video>
+            <video-player  class="video-player vjs-custom-skin"
+                           ref="videoPlayer"
+                           :playsinline="true"
+                           :options="playerOptions"
+                           @play="onPlayerPlay($event)"
+                           @pause="onPlayerPause($event)"
+                           @ended="onPlayerEnded($event)"
+            ></video-player>
         </div>
     </div>
 </template>
@@ -43,7 +47,7 @@
                     // fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
                     sources: [{
                         type: "application/x-mpegURL",//这里的种类支持很多种：基本视频格式、直播、流媒体等，具体可以参看git网址项目
-                        src: "rtmp://10.252.7.222:1935/myapp/test2" //url地址
+                        src: "rtmp://10.0.105.87:1935/myapp/test2" //url地址
                     }],
                     // hls:true, //如果是播放m3u8必须加（需注释掉techOrder,不然会有报错）
                     techOrder: ['flash','flash'], //播放rtmp必须加
@@ -70,16 +74,17 @@
     }
     .col1 {
         float: left;
-        height: 650px;
+        height: 450px;
         width: 600px;
         background-color: #ffffff;
         padding: 20px;
     }
     .col2 {
         float: right;
-        height: 650px;
+        height: 450px;
         width: 600px;
         background-color: #ffffff;
+        padding: 20px;
     }
     .video1 {
         margin-left: 25px;

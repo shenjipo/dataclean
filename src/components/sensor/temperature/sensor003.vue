@@ -9,27 +9,27 @@
       <div class="tem-label">
         <h1 style="text-align: center">温度实时表</h1>
         <el-table
-          :data="tableData"
-          height="250"
-          border
-          style="width: 100%">
+                :data="tableData"
+                height="250"
+                border
+                style="width: 100%">
           <el-table-column
-            prop="date"
-            label="日期"
-            width="180">
+                  prop="date"
+                  label="日期"
+                  width="180">
           </el-table-column>
           <el-table-column
-            prop="clock"
-            label="时间"
-            width="180">
+                  prop="clock"
+                  label="时间"
+                  width="180">
           </el-table-column>
           <el-table-column
-            prop="temperature"
-            label="温度">
+                  prop="temperature"
+                  label="温度">
           </el-table-column>
           <el-table-column
-            prop="new_temperature"
-            label="修改温度">
+                  prop="new_temperature"
+                  label="修改温度">
           </el-table-column>
         </el-table>
       </div>

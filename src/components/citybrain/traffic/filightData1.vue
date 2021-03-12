@@ -178,14 +178,14 @@ import axios from 'axios'
                 })
             },
             getStatus() {
-                axios.get('detection_percent',{params: this.flightstarget},
+                axios.get('detection_percent',{},
                     {'Access-Control-Allow-Origin':'*'}).then(res => {
                     console.log(res);
                     this.percentage=parseInt(res.data)
                 })
             },
             getStatus2() {
-                axios.get('correction_percent',{params: this.flightstarget},
+                axios.get('correction_percent',{},
                     {'Access-Control-Allow-Origin':'*'}).then(res => {
                     console.log(res);
                     this.percentage2=parseInt(res.data)
@@ -193,7 +193,7 @@ import axios from 'axios'
             },
             repair(){
                 this.$message('开始修复，大约花费1分钟')
-                axios.get('raha_correction_cell_xy',{params: this.flightstarget},
+                axios.get('raha_correction_cell_xy',{},
                     {'Access-Control-Allow-Origin':'*'}).then(res2 => {
                     // console.log(res2);
                     this.repairquota=res2.data[0].quota
