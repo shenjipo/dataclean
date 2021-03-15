@@ -23,13 +23,16 @@
   </div>
 </template>
 
-<script>export default {
+<script>
+  import axios from "axios";
+
+  export default {
   data () {
     return {
       // 登录表单的数据绑定对象
       loginForm: {
-        username: '',
-        password: ''
+        username: 'admin',
+        password: '123456'
       },
       loginFormRules: {
         username: [
@@ -49,7 +52,14 @@
     },
     login () {
       // 登录
-        this.$router.push('/home');
+      axios.$get('http://localhost:8181/dataclean/login',{username:this.loginForm.username,password:this.loginForm.password}).then(res => {
+        if(res=="登录成功") {
+          this.$router.push('/home');
+        }
+
+        //this.flightstarget=res
+      });
+
     }
   }
 }
