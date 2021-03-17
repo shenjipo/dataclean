@@ -51,13 +51,14 @@
             >
             </el-pagination>
             <el-row :gutter="20">
-                <el-col :span="12" >
+                <el-col :span="12">
                     <el-tag style="display: inline-flex;justify-content: flex-start;margin-top: 20px">
                         {{this.$route.query.region}}{{this.$route.query.coordinate}}
                     </el-tag>
                 </el-col>
                 <el-col :span="12">
                     <div class="btns">
+                        <el-button type="primary" @click="openMapTest">显示轨迹</el-button>
                         <el-button type="primary" @click="openMap">在地图中显示轨迹</el-button>
                         <el-button type="primary" @click="testing">检测</el-button>
                         <el-button type="success" @click="repair">修复</el-button>
@@ -67,19 +68,21 @@
             <!--            {{DataList}}-->
         </el-card>
 
-        <div style="width: 100%;height: 600px">
+        <div style="width: 100%;height: 1200px">
             <Map style="width: 100%;height: 100%"></Map>
         </div>
     </div>
 </template>
 
 <script>
-  import axios from 'axios'
+  import axios from '@/api/axios.js'
   import {mapGetters} from "vuex";
   import Map from '@/components/map/map'
   import "@/plugins/leaflet/leaflet.trackplayback.js";
   import customMarkerIcon from '@/assets/round_03.png'
   import 'leaflet-polylinedecorator'
+  import {comm} from '@/global/common.js'
+  import {markerColor} from '@/utils/color.js'
 
   export default {
     data() {
@@ -92,15 +95,17 @@
         pagesize: 10,
         currentPage: 1,
         res: [
-          {lat: 30.25, lng: 120.17, time: 1502529980, info: [{key: 'name', value: 'ship1'}]},
-          {lat: 30.28, lng: 120.17, time: 1502539980, info: [{key: 'name', value: 'ship1'}]},
-          {lat: 30.32, lng: 120.13, time: 1502549980, info: [{key: 'name', value: 'ship1'}]},
-          {lat: 30.27, lng: 120.13, time: 1502559980, info: [{key: 'name', value: 'ship1'}]},
-          {lat: 30.20,  lng: 120.2, time: 1502569980, info: [{key: 'name', value: 'ship1'}]},
-          {lat: 30.17, lng: 120.27, time: 1502579980, info: [{key: 'name', value: 'ship1'}]},
+          // {lat: 30.25, lng: 120.17, time: 1502529980, info: [{key: 'name', value: 'ship1'}]},
+          // {lat: 30.28, lng: 120.17, time: 1502539980, info: [{key: 'name', value: 'ship1'}]},
+          // {lat: 30.32, lng: 120.13, time: 1502549980, info: [{key: 'name', value: 'ship1'}]},
+          // {lat: 30.27, lng: 120.13, time: 1502559980, info: [{key: 'name', value: 'ship1'}]},
+          // {lat: 30.20,  lng: 120.2, time: 1502569980, info: [{key: 'name', value: 'ship1'}]},
+          // {lat: 30.17, lng: 120.27, time: 1502579980, info: [{key: 'name', value: 'ship1'}]},
         ],
         trackLineData: [],
-        trackGroup: {}
+        trackGroup: {},
+        latTest: /^(\-|\+)?([0-8]?\d{1}\.\d{0,6}|90\.0{0,6}|[0-8]?\d{1}|90)$/,
+        lngTest: /^(\-|\+)?(((\d|[1-9]\d|1[0-7]\d|0{1,3})\.\d{0,6})|(\d|[1-9]\d|1[0-7]\d|0{1,3})|180\.0{0,6}|180)$/,
       }
     },
     mounted: {},
@@ -150,7 +155,7 @@
           });
           let tip = `${item.lng ? "经度: " + item.lng + "<br>" : ""}
             ${item.lat ? "纬度: " + item.lat + "<br>" : ""}
-            ${item.time ? "时间: " + item.time + "<br>" : ""}`;
+            ${item.time ? "时间: " + new Date(item.time) + "<br>" : ""}`;
           let Icon = L.icon({
             iconUrl: customMarkerIcon,
             iconSize: [16, 16],
@@ -180,21 +185,74 @@
           color: "#0073f5",
           opacity: 0.8
         }).addTo(this.vuexMap);
-        //this.trackGroup.addLayer(polyline);
-        // let arrow = L.polylineDecorator(polyline, {
-        //   patterns: [
-        //     {
-        //       offset: 25,
-        //       repeat: 100,
-        //       symbol: L.Symbol.arrowHead({pixelSize: 15, pathOptions: {fillOpacity: 0.8, weight: 0}})
-        //     }
-        //   ]
-        // }).addTo(this.vuexMap);
+      },
+      //开启轨迹
+      openMapTest() {
+        axios.$get(comm.WEB_URL + 'test5', {}).then(e => {
+          e.forEach(item => {
+            let tip = `${item.lng ? "经度: " + item.lng + "<br>" : ""}
+            ${item.lat ? "纬度: " + item.lat + "<br>" : ""}
+            ${item.time ? "时间: " + new Date(item.time) + "<br>" : ""}`;
+            L.circle(L.latLng(item.lat, item.lng),{
+              color: markerColor[item.flag],
+              fillColor: markerColor[item.flag],
+              fillOpacity: 0.50,
+              radius: 100
+            }).unbindTooltip().bindTooltip(tip, {
+                direction: 'right',
+                opacity: 1,
+                className: 'ls_tooltip_ty'
+              }).addTo(this.vuexMap);
+            // let Icon = L.icon({
+            //   iconUrl: customMarkerIcon,
+            //   iconSize: [16, 16],
+            //   iconAnchor: [8, 8]
+            // });
+            // let circleMarker = L.marker(L.latLng(item.lat, item.lng), {
+            //   icon: Icon,
+            //   draggable: false,
+            //   radius: 2,
+            //   color: '#f10808',
+            //   weight: 3,
+            //   opacity: 1,
+            //   fillColor: markerColor[item.flag],
+            //   fillOpacity: 1,
+            // }).unbindTooltip().bindTooltip(tip, {
+            //   direction: 'right',
+            //   opacity: 1,
+            //   className: 'ls_tooltip_ty'
+            // }).addTo(this.vuexMap);
+          })
+        });
       },
       //打开地图
       openMap() {
-        this.setPlayBackData()
+        axios.$get(comm.WEB_URL + 'test', {}).then(e => {
+          e.forEach(item => {
+            let temp1 = this.time_to_sec(item.time2);
+            let temp2 = new Date(item.time1).getTime();
+            //console.log(temp1,temp2,temp1+temp2);
+            let temp = temp1 * 1000 + temp2 - 8 * 3600 * 1000;
+            if (this.latTest.test(item.lat) && this.lngTest.test(item.lng)) {
+              this.res.push({lat: parseFloat(item.lat), lng: parseFloat(item.lng), time: temp});
+            } else {
+              console.log(item.lat, item.lng);
+            }
+          });
+          this.setPlayBackData()
+        });
+        //this.setPlayBackData()
         //this.$router.push('/dataclean/datasource/trajectoryData/resultInMap');
+      },
+      time_to_sec(time) {
+        if (time !== null) {
+          var s = "";
+          var hour = time.split(":")[0];
+          var min = time.split(":")[1];
+          var sec = time.split(":")[2];
+          s = Number(hour * 3600) + Number(min * 60) + Number(sec);
+          return s;
+        }
       },
       query() {
         axios.$get('raha_detection', {username: 'admin', password: 123456}).then(res => {
@@ -251,11 +309,12 @@
 </script>
 
 <style lang="less">
-    .btnsleft{
+    .btnsleft {
         padding-top: 20px;
         display: flex;
         justify-content: flex-start;
     }
+
     .btns {
         padding-top: 20px;
         display: flex;
