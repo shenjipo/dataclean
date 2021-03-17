@@ -2,7 +2,7 @@
   <el-container class="home-container">
 <!--    头部区域-->
     <el-header>
-      <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect"
+      <el-menu  class="el-menu-demo" mode="horizontal" @select="handleSelect"
                background-color="#545c64" text-color="#fff">
         <el-menu-item index="1">处理中心</el-menu-item>
         <el-submenu index="2">
@@ -162,6 +162,11 @@
         checked1: false,
         checked2: true
       };
+    },
+    methods:{
+      handleSelect(){
+
+      }
     }
 }
 </script>

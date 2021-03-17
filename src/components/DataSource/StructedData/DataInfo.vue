@@ -28,7 +28,7 @@
             <!--用户列表区域-->
             <el-table :data="DataList" border stripe max-height="650">
                 <!--缩印列-->
-                <el-table-column type="selection" label="#"></el-table-column>
+                <el-table-column type="selection" ></el-table-column>
                 <el-table-column type="index" label="#"></el-table-column>
                 <el-table-column label="名称" prop="username"></el-table-column>
                 <el-table-column label="应用领域" prop="app_area"></el-table-column>
@@ -97,7 +97,7 @@
                     <el-input v-model="addDataForm.name"></el-input>
                 </el-form-item>
                 <el-form-item label="应用领域" prop="region">
-                    <el-select v-model="selectType04" placeholder="选择类型">
+                    <el-select v-model="selectType04" placeholder="选择类型" @change="selectChange">
                         <el-option v-for="item in regionType" :label="item.label" :value="item.value"
                                    :key="item.value"></el-option>
                     </el-select>
@@ -132,7 +132,6 @@
                                 :options="options"
                                 :props="{ expandTrigger: 'hover' }"
                                 @change="handleChange">
-
                         </el-cascader>
                     </div>
                 </el-form-item>
@@ -203,7 +202,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="边缘端服务器" v-if="value02">
-                    <el-transfer v-model="edgeServer" :data="data" :titles="['备选服务器','选中服务器']"></el-transfer>
+                    <el-transfer v-model="edgeServer" :data="dataEdgeServer" :titles="['备选服务器','选中服务器']"></el-transfer>
                 </el-form-item>
 
             </el-form>
@@ -224,18 +223,19 @@
 
   export default {
     data() {
-      const generateData = _ => {
-        const data = [];
+      const generateData = () => {
+        const datas = [];
         for (let i = 1; i <= 5; i++) {
-          data.push({
+          datas.push({
             key: i,
             label: `边缘服务器 ${ i }`,
             // disabled: i % 4 === 0
           });
         }
-        return data;
+        return datas;
       };
       return {
+        value:0,
         value01: true,
         value02: true,
         props: {multiple: true},
@@ -260,7 +260,7 @@
           }
         ],
         resultDialogVisible: false,
-        data: generateData(),
+        dataEdgeServer: generateData(),
         edgeServer: [1],
         queryInfo: {
           query: '',
@@ -269,14 +269,78 @@
           //当前每页显示多少条数据
           pagesize: 2
         },
-        DataList: [{username: "数据源1", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.50" , role_name: 'raha'},
-            {username: "数据源2", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.51" , role_name: 'raha'},
-            {username: "数据源3", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.52" , role_name: 'raha'},
-            {username: "数据源4", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.53" , role_name: 'raha'},
-            {username: "数据源5", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.55" , role_name: 'raha'},
-            {username: "数据源6", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.56" , role_name: 'raha'},
-            {username: "数据源7", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.57" , role_name: 'raha'},
-            {username: "数据源8", app_area: '飞机航班', equ_type: "传感器", source_type:"结构化数据", phy_address:"ai小镇", ip_address:"10.5.26.58" , role_name: 'raha'},],
+        DataList: [{
+          username: "数据源1",
+          app_area: '飞机航班',
+          equ_type: "传感器",
+          source_type: "结构化数据",
+          phy_address: "ai小镇",
+          ip_address: "10.5.26.50",
+          role_name: 'raha'
+        },
+          {
+            username: "数据源2",
+            app_area: '飞机航班',
+            equ_type: "传感器",
+            source_type: "结构化数据",
+            phy_address: "ai小镇",
+            ip_address: "10.5.26.51",
+            role_name: 'raha'
+          },
+          {
+            username: "数据源3",
+            app_area: '飞机航班',
+            equ_type: "传感器",
+            source_type: "结构化数据",
+            phy_address: "ai小镇",
+            ip_address: "10.5.26.52",
+            role_name: 'raha'
+          },
+          {
+            username: "数据源4",
+            app_area: '飞机航班',
+            equ_type: "传感器",
+            source_type: "结构化数据",
+            phy_address: "ai小镇",
+            ip_address: "10.5.26.53",
+            role_name: 'raha'
+          },
+          {
+            username: "数据源5",
+            app_area: '飞机航班',
+            equ_type: "传感器",
+            source_type: "结构化数据",
+            phy_address: "ai小镇",
+            ip_address: "10.5.26.55",
+            role_name: 'raha'
+          },
+          {
+            username: "数据源6",
+            app_area: '飞机航班',
+            equ_type: "传感器",
+            source_type: "结构化数据",
+            phy_address: "ai小镇",
+            ip_address: "10.5.26.56",
+            role_name: 'raha'
+          },
+          {
+            username: "数据源7",
+            app_area: '飞机航班',
+            equ_type: "传感器",
+            source_type: "结构化数据",
+            phy_address: "ai小镇",
+            ip_address: "10.5.26.57",
+            role_name: 'raha'
+          },
+          {
+            username: "数据源8",
+            app_area: '飞机航班',
+            equ_type: "传感器",
+            source_type: "结构化数据",
+            phy_address: "ai小镇",
+            ip_address: "10.5.26.58",
+            role_name: 'raha'
+          },],
         // 添加用户对话框
         addDialogVisible: false,
         addDataForm: {},
@@ -330,6 +394,12 @@
 
     },
     methods: {
+      handleChange(){
+
+      },
+      selectChange(val) {
+        console.log(val);
+      },
       //配置云边协同操作
       setConfig(row) {
         this.addNodeVisible = true;
