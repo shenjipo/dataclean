@@ -52,7 +52,7 @@
             series: [{
               name: '召回率',
               type: 'bar',
-              data: [80, 90]
+              data: [85, 80]
             }]
           };
           // 使用刚指定的配置项和数据显示图表。
@@ -74,7 +74,7 @@
             series: [{
               name: '精确率',
               type: 'bar',
-              data: [80, 90]
+              data: [88, 82]
             }]
           };
           myChart02.setOption(option2);
@@ -86,16 +86,16 @@
             },
             tooltip: {},
             legend: {
-              data:['时间']
+              data:['时间(s)']
             },
             xAxis: {
               data: ["云边协同","云端"]
             },
             yAxis: {},
             series: [{
-              name: '时间',
+              name: '时间(s)',
               type: 'bar',
-              data: [800, 900]
+              data: [70, 90]
             }]
           };
           myChart03.setOption(option3);
@@ -128,19 +128,25 @@
               data: [2000, 4000, 6000, 8000, 10000, 12000, 14000]
             },
             yAxis: {
-              type: 'value'
+              type: 'value',
+              min:0,
+              max:100,
+              axisLabel: {
+                formatter: '{value} %'
+              },
+              name:'F1'
             },
             series: [
               {
                 name: '云边协同',
                 type: 'line',
-                stack: '总量',
+                stack: '总量1',
                 data: [40, 46, 57, 69, 70, 82, 85]
               },
               {
                 name: '云端',
                 type: 'line',
-                stack: '总量',
+                stack: '总量2',
                 data: [38, 42, 50, 55, 68, 79, 82]
               }
             ]
