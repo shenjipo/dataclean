@@ -188,11 +188,12 @@
       },
       //开启轨迹
       openMapTest() {
-        axios.$get(comm.WEB_URL + 'test5', {}).then(e => {
+        axios.$get(comm.WEB_URL + 'test6', {}).then(e => {
           e.forEach(item => {
             let tip = `${item.lng ? "经度: " + item.lng + "<br>" : ""}
             ${item.lat ? "纬度: " + item.lat + "<br>" : ""}
-            ${item.time ? "时间: " + new Date(item.time) + "<br>" : ""}`;
+            ${item.time ? "时间: " + new Date(item.time) + "<br>" : ""}
+            ${item.speed ? "速度: " + item.speed + "<br>" : ""}`;
             L.circle(L.latLng(item.lat, item.lng),{
               color: markerColor[item.flag],
               fillColor: markerColor[item.flag],
@@ -212,7 +213,7 @@
             //   icon: Icon,
             //   draggable: false,
             //   radius: 2,
-            //   color: '#f10808',
+            //   color: markerColor[item.flag],
             //   weight: 3,
             //   opacity: 1,
             //   fillColor: markerColor[item.flag],
@@ -228,6 +229,7 @@
       //打开地图
       openMap() {
         axios.$get(comm.WEB_URL + 'test', {}).then(e => {
+          console.log(e);
           e.forEach(item => {
             let temp1 = this.time_to_sec(item.time2);
             let temp2 = new Date(item.time1).getTime();
