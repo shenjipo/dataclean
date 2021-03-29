@@ -1,49 +1,37 @@
 <template>
-  <div class="row">
-    <div class="col1">
-      <h1  style=" text-align:center;">原始视频</h1>
-      <div class="video"></div>
-      <video width="550" height="550" class="video1" controls>
-        <source src="src/assets/video/movie.mp4" type="video/mp4">
-      </video>
+    <div>
+        <video id="videoElement" controls autoplay muted width="600px" height="400px"></video>
+        <button @click="play">播放</button>
     </div>
-    <div class="col2">
-      <h1  style=" text-align:center;">处理后视频</h1>
-      <div class="video"></div>
-      <video width="550" height="550" class="video1" controls>
-        <source src="src/assets/video/movie.mp4" type="video/mp4">
-      </video>
-    </div>
-  </div>
 </template>
 
 <script>
-  export default {
-
-  }
+    import flvjs from 'flv.js'
+    export default {
+        data () {
+            return {
+                msg: 'Welcome to Your Vue.js App',
+                flvPlayer:null
+            }
+        },
+        mounted() {
+            if (flvjs.isSupported()) {
+                var videoElement = document.getElementById('videoElement');
+                this.flvPlayer = flvjs.createPlayer({
+                    type: 'flv',
+                    isLive: true,
+                    hasAudio: false,
+                    url: 'http://1011.hlsplay.aodianyun.com/demo/game.flv'
+                });
+                this.flvPlayer.attachMediaElement(videoElement);
+                this.flvPlayer.load();
+                this.flvPlayer.play();
+            }
+        },
+        methods:{
+            play () {
+                this.flvPlayer.play();
+            }
+        }
+    }
 </script>
-
-<style lang="less" scoped>
-
-  .row {
-    height: 800px;
-    width: 1400px;
-    padding: 40px;
-  }
-  .col1 {
-    float: left;
-    height: 650px;
-    width: 600px;
-    background-color: #ffffff;
-  }
-  .col2 {
-    float: right;
-    height: 650px;
-    width: 600px;
-    background-color: #ffffff;
-  }
-  .video1 {
-    margin-left: 25px;
-  }
-
-</style>

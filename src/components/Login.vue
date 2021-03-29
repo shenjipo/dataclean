@@ -52,11 +52,13 @@
     },
     login () {
       // 登录
-      axios.$get('http://localhost:8181/dataclean/login',{username:this.loginForm.username,password:this.loginForm.password}).then(res => {
+      axios.$get('http://10.0.104.207:8181/dataclean/login',{username:this.loginForm.username,password:this.loginForm.password}).then(res => {
+        console.log(res)
         if(res=="登录成功") {
           this.$router.push('/home');
         }
-
+        else
+          this.$message.error("用户名或密码错误");
         //this.flightstarget=res
       });
 

@@ -23,10 +23,10 @@ axios.$get = function(url, params,myConfig){
 }
 axios.$post = function(url, params) {
     var headers = {
-        'Content-Type':'application/x-www-form-urlencoded',
+        'Content-Type':'application/json;charset=utf-8;',
     };
     return new Promise((resolve, reject) => {
-        axios.post(url, QS.stringify(params),
+        axios.post(url, JSON.stringify(params),
             {
                 headers:headers,
             }).then(res => {
@@ -40,7 +40,7 @@ axios.$post = function(url, params) {
 }
 axios.$put = function(url, params) {
     return new Promise((resolve, reject) => {
-        axios.put(url, QS.stringify(params),
+        axios.put(url, JSON.stringify(params),
             {
                 headers:{'Content-Type':'application/x-www-form-urlencoded'},
             },

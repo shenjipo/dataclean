@@ -198,6 +198,7 @@ import axios from 'axios'
                     // console.log(res2);
                     this.repairquota=res2.data[0].quota
                     this.DataList=res2.data[1].data
+                    console.log(this.DataList)
                     this.$message('修复成功')
                 })
             },
