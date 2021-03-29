@@ -6,8 +6,8 @@
             <el-row :gutter=20>
                 <el-col :span=7>
                     <!--搜索与添加区域-->
-                    <el-input placeholder="请输入数据名称" v-model="queryInfo.query" :clearable="true" @clear="">
-                        <el-button slot="append" icon="el-icon-search" @click=""></el-button>
+                    <el-input placeholder="请输入数据名称" v-model="queryInfo.query" :clearable="true" @clear="null">
+                        <el-button slot="append" icon="el-icon-search" @click="null"></el-button>
                     </el-input>
                 </el-col>
                 <el-col :span=5>
@@ -29,19 +29,20 @@
             <el-table :data="DataList" border stripe max-height="650">
                 <!--缩印列-->
                 <el-table-column type="selection" ></el-table-column>
-                <el-table-column type="index" label="#"></el-table-column>
-                <el-table-column label="名称" prop="username"></el-table-column>
+<!--                <el-table-column type="id" label="序号"></el-table-column>-->
+                <el-table-column label="id" prop="id"></el-table-column>
+                <el-table-column label="名称" prop="name"></el-table-column>
                 <el-table-column label="应用领域" prop="app_area"></el-table-column>
-                <el-table-column label="设备类型" prop="equ_type"></el-table-column>
-                <el-table-column label="数据源类型" prop="source_type"></el-table-column>
-                <el-table-column label="设备物理地址" prop="phy_address"></el-table-column>
+                <el-table-column label="设备类型" prop="type"></el-table-column>
+                <el-table-column label="数据源类型" prop="data_type"></el-table-column>
+                <el-table-column label="设备物理地址" prop="address"></el-table-column>
                 <el-table-column label="设备网络地址" prop="ip_address"></el-table-column>
                 <!--<el-table-column label="数据类型" prop="mobile"></el-table-column>-->
-                <el-table-column label="清洗状态" prop="role_name">
+                <el-table-column label="清洗状态" prop="state">
                     <el-tag>未清洗</el-tag>
                 </el-table-column>
-                <el-table-column label="算法" prop="role_name"></el-table-column>
-                <el-table-column label="清洗结果(F1)" prop="role_name">
+                <el-table-column label="算法" prop="algorithm"></el-table-column>
+                <el-table-column label="清洗结果(F1)" prop="result">
                     <el-tag type="success" @click="showResult">0.8<i class="el-icon-view"></i></el-tag>
                 </el-table-column>
                 <el-table-column label="操作" width="240px">
@@ -62,7 +63,7 @@
                                        @click="gotoDataclean(scope.row)"></el-button>
                         </el-tooltip>
                         <!--删除按钮-->
-                        <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+                        <el-button type="danger" icon="el-icon-delete" size="mini" @click="delete1(scope.row.id)"></el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -97,19 +98,19 @@
                     <el-input v-model="addDataForm.name"></el-input>
                 </el-form-item>
                 <el-form-item label="应用领域" prop="region">
-                    <el-select v-model="selectType04" placeholder="选择类型" @change="selectChange">
+                    <el-select v-model="selectType04" placeholder="选择类型" @change="selectChange1">
                         <el-option v-for="item in regionType" :label="item.label" :value="item.value"
                                    :key="item.value"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="设备类型">
-                    <el-select v-model="selectType01" placeholder="选择类型">
+                    <el-select v-model="selectType01" placeholder="选择类型" @change="selectChange2">
                         <el-option v-for="item in equipmentType" :label="item.label" :value="item.value"
                                    :key="item.value"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="数据源类型">
-                    <el-select v-model="selectType02" placeholder="选择类型">
+                    <el-select v-model="selectType02" placeholder="选择类型" @change="selectChange3">
                         <el-option v-for="item in dataSourceType" :label="item.label" :value="item.value"
                                    :key="item.value"></el-option>
                     </el-select>
@@ -120,7 +121,7 @@
                 <!--</el-select>-->
                 <!--</el-form-item>-->
                 <el-form-item label="协议">
-                    <el-select v-model="selectType05" placeholder="选择协议">
+                    <el-select v-model="selectType05" placeholder="选择协议" @change="selectChange4">
                         <el-option v-for="item in AgreementType" :label="item.label" :value="item.value"
                                    :key="item.value"></el-option>
                     </el-select>
@@ -136,10 +137,10 @@
                     </div>
                 </el-form-item>
                 <el-form-item label="设备详细地址" prop="address">
-                    <el-input v-model="addDataForm.physicaladdress"></el-input>
+                    <el-input v-model="addDataForm.address"></el-input>
                 </el-form-item>
                 <el-form-item label="网络地址" prop="address">
-                    <el-input v-model="addDataForm.address"></el-input>
+                    <el-input v-model="addDataForm.ip_address"></el-input>
                 </el-form-item>
                 <el-form-item label="端口" prop="port">
                     <el-input v-model="addDataForm.port"></el-input>
@@ -270,76 +271,76 @@
           pagesize: 2
         },
         DataList: [{
-          username: "数据源1",
+          name: "数据源1",
           app_area: '飞机航班',
-          equ_type: "传感器",
-          source_type: "结构化数据",
-          phy_address: "ai小镇",
+          type: "传感器",
+          data_type: "结构化数据",
+          address: "ai小镇",
           ip_address: "10.5.26.50",
-          role_name: 'raha'
+          algorithm: 'raha'
         },
           {
-            username: "数据源2",
-            app_area: '飞机航班',
-            equ_type: "传感器",
-            source_type: "结构化数据",
-            phy_address: "ai小镇",
-            ip_address: "10.5.26.51",
-            role_name: 'raha'
+              name: "数据源1",
+              app_area: '飞机航班',
+              type: "传感器",
+              data_type: "结构化数据",
+              address: "ai小镇",
+              ip_address: "10.5.26.50",
+              algorithm: 'raha'
           },
           {
-            username: "数据源3",
-            app_area: '飞机航班',
-            equ_type: "传感器",
-            source_type: "结构化数据",
-            phy_address: "ai小镇",
-            ip_address: "10.5.26.52",
-            role_name: 'raha'
+              name: "数据源2",
+              app_area: '飞机航班',
+              type: "传感器",
+              data_type: "结构化数据",
+              address: "ai小镇",
+              ip_address: "10.5.26.51",
+              algorithm: 'raha'
           },
           {
-            username: "数据源4",
-            app_area: '飞机航班',
-            equ_type: "传感器",
-            source_type: "结构化数据",
-            phy_address: "ai小镇",
-            ip_address: "10.5.26.53",
-            role_name: 'raha'
+              name: "数据源1",
+              app_area: '飞机航班',
+              type: "传感器",
+              data_type: "结构化数据",
+              address: "ai小镇",
+              ip_address: "10.5.26.50",
+              algorithm: 'raha'
           },
           {
-            username: "数据源5",
-            app_area: '飞机航班',
-            equ_type: "传感器",
-            source_type: "结构化数据",
-            phy_address: "ai小镇",
-            ip_address: "10.5.26.55",
-            role_name: 'raha'
+              name: "数据源1",
+              app_area: '飞机航班',
+              type: "传感器",
+              data_type: "结构化数据",
+              address: "ai小镇",
+              ip_address: "10.5.26.50",
+              algorithm: 'raha'
           },
           {
-            username: "数据源6",
-            app_area: '飞机航班',
-            equ_type: "传感器",
-            source_type: "结构化数据",
-            phy_address: "ai小镇",
-            ip_address: "10.5.26.56",
-            role_name: 'raha'
+              name: "数据源1",
+              app_area: '飞机航班',
+              type: "传感器",
+              data_type: "结构化数据",
+              address: "ai小镇",
+              ip_address: "10.5.26.50",
+              algorithm: 'raha'
           },
           {
-            username: "数据源7",
-            app_area: '飞机航班',
-            equ_type: "传感器",
-            source_type: "结构化数据",
-            phy_address: "ai小镇",
-            ip_address: "10.5.26.57",
-            role_name: 'raha'
+              name: "数据源1",
+              app_area: '飞机航班',
+              type: "传感器",
+              data_type: "结构化数据",
+              address: "ai小镇",
+              ip_address: "10.5.26.50",
+              algorithm: 'raha'
           },
           {
-            username: "数据源8",
-            app_area: '飞机航班',
-            equ_type: "传感器",
-            source_type: "结构化数据",
-            phy_address: "ai小镇",
-            ip_address: "10.5.26.58",
-            role_name: 'raha'
+              name: "数据源1",
+              app_area: '飞机航班',
+              type: "传感器",
+              data_type: "结构化数据",
+              address: "ai小镇",
+              ip_address: "10.5.26.50",
+              algorithm: 'raha'
           },],
         // 添加用户对话框
         addDialogVisible: false,
@@ -362,11 +363,11 @@
           {value: 3, label: '结构化'},
           {value: 4, label: '轨迹'},
         ],
-        selectType01: 0,
-        selectType02: 0,
-        selectType03: 0,
-        selectType04: 0,
-        selectType05: 0,
+        selectType01: "",
+        selectType02: "",
+        selectType03: "",
+        selectType04: "",
+        selectType05: "",
         AgreementType: [
           {value: 0, label: 'http'},
           {value: 1, label: 'https'},
@@ -393,75 +394,111 @@
       }
 
     },
-    methods: {
-      handleChange(){
-
+      created() {
+          axios.$get('http://10.0.104.207:8181//dataclean/source/findAll').then(res => {
+              console.log(res)
+              this.DataList=res
+          });
+          console.log(this.addDataForm)
       },
+    methods: {
+        handleChange(val){
+            this.addDataForm.province=val[0];
+            this.addDataForm.city=val[1];
+            this.addDataForm.area=val[2];
+        },
+        selectChange1(val) {
+            console.log(val);
+            this.addDataForm.app_area=this.regionType[val].label
+            console.log(this.addDataForm.app_area)
+        },
+        selectChange2(val) {
+            console.log(val);
+            this.addDataForm.type=this.equipmentType[val].label
+            console.log(this.addDataForm.type)
+        },
+        selectChange3(val) {
+            console.log(val);
+            this.addDataForm.data_type=this.dataType[val].label
+            console.log(this.addDataForm.data_type)
+        },
+        selectChange4(val) {
+            console.log(val);
+            this.addDataForm.agreement=this.AgreementType[val].label
+            console.log(this.addDataForm.agreement)
+        },
       selectChange(val) {
         console.log(val);
       },
       //配置云边协同操作
       setConfig(row) {
         this.addNodeVisible = true;
+        console.log(row);
       },
-      //测试数据源
-      testDataSource() {
-        let param = {
-          name: null,
-          region: null,
-          type: null,
-          socket: null,
-          address: null,
-          port: null,
-          username: null,
-          password: null
-        };
-        axios.$get('testData', param).then(res => {
-
-        });
-        this.$message.success('数据源连接成功！！！');
-      },
-      addDataSource() {
-        let param = {
-          name: null,
-          region: null,
-          type: null,
-          socket: null,
-          address: null,
-          port: null,
-          username: null,
-          password: null
-        };
-        axios.$get('addData', param).then(res => {
-
-        });
-        this.addDialogVisible = false;
-      },
-      // 监听 添加用户对话框的关闭事件
-      addDialogClosed() {
-        this.$refs.addFormRef.resetFields()
-      },
-      //进入对比页面
-      gotoDataclean(val) {
-        this.$router.push({
-          path: '/dataclean/datasource/dataCleanResult', query: {
-            dataId: val
-          }
-        });
-      },
-      submitUpload() {
-        this.$refs.upload.submit();
-      },
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePreview(file) {
-        console.log(file);
-      },
-      showResult() {
-        this.resultDialogVisible = true;
-        this.$router.push('/dataclean/datasource/AdvantageVisualization')
-      }
+        //测试数据源
+        testDataSource() {
+            let param = {
+                name: null,
+                region: null,
+                type: null,
+                socket: null,
+                address: null,
+                port: null,
+                username: null,
+                password: null
+            };
+            axios.$get('testData', param).then(res => {
+                console.log(res)
+            });
+            this.$message.success('数据源连接成功！！！');
+        },
+        addDataSource() {
+            axios.$post('http://10.0.104.207:8181/dataclean/source/add',this.addDataForm
+            ).then(res => {
+                if(res=="success")
+                {this.$message({
+                    message: '添加成功',
+                    type: 'success'
+                });}
+                else if(res=="error")
+                {
+                    this.$message.error('添加失败');
+                }
+            });
+            location.reload();
+            this.addDialogVisible = false;
+        },
+        // 监听 添加用户对话框的关闭事件
+        addDialogClosed() {
+            this.$refs.addFormRef.resetFields()
+        },
+        //进入对比页面
+        gotoDataclean(val) {
+            this.$router.push({
+                path: '/dataclean/datasource/dataCleanResult', query: {
+                    dataId: val
+                }
+            });
+        },
+        submitUpload() {
+            this.$refs.upload.submit();
+        },
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePreview(file) {
+            console.log(file);
+        },
+        showResult() {
+            this.resultDialogVisible = true;
+            this.$router.push('/dataclean/datasource/AdvantageVisualization');
+        },
+        delete1(val){
+            axios.$get('http://10.0.104.207:8181//dataclean/source/del',{"id":parseInt(val)}).then(res => {
+                console.log(res)
+            });
+            location.reload();
+        }
     }
   }
 </script>
