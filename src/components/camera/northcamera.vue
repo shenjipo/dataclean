@@ -1,7 +1,7 @@
 <template>
     <div>
-        <video id="videoElement" controls autoplay muted width="600px" height="400px"></video>
-        <button @click="play">播放</button>
+        <video id="videoElement" controls autoplay muted width="600" height="400"></video>
+<!--        <button @click="play">播放</button>-->
     </div>
 </template>
 
@@ -21,7 +21,7 @@
                     type: 'flv',
                     isLive: true,
                     hasAudio: false,
-                    url: 'http://1011.hlsplay.aodianyun.com/demo/game.flv'
+                    url: 'http://10.0.105.87:8002/live?port=1935&app=myapp&stream=test2'
                 });
                 this.flvPlayer.attachMediaElement(videoElement);
                 this.flvPlayer.load();

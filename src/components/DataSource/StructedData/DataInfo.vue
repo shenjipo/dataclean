@@ -91,6 +91,7 @@
             <!-- 内容主体 -->
             <el-form
                     :model="addDataForm"
+                    :rules="rules"
                     ref="addFormRef"
                     label-width="100px"
             >
@@ -139,7 +140,7 @@
                 <el-form-item label="设备详细地址" prop="address">
                     <el-input v-model="addDataForm.address"></el-input>
                 </el-form-item>
-                <el-form-item label="网络地址" prop="address">
+                <el-form-item label="网络地址" prop="ip_address">
                     <el-input v-model="addDataForm.ip_address"></el-input>
                 </el-form-item>
                 <el-form-item label="端口" prop="port">
@@ -235,6 +236,27 @@
         }
         return datas;
       };
+        /*ip正则验证*/
+        var validcodeip = (rule, value, callback) => {
+            let regexp = /^((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3}$/;
+            let valdata = value.split(',');
+            let isCorrect = true;
+            if (valdata.length) {
+                for (let i = 0; i < valdata.length; i++) {
+                    if (regexp.test(valdata[i]) == false) {
+                        isCorrect = false;
+                    }
+                }
+            }
+
+            if (value == '') {
+                return callback(new Error('请输入iP地址'));
+            } else if (!isCorrect) {
+                callback(new Error('请输入正确对ip地址'));
+            } else {
+                callback()
+            }
+        };
       return {
         value:0,
         value01: true,
@@ -260,6 +282,12 @@
             ]
           }
         ],
+          rules:{
+            ip_address:[
+                { required: true, message: '请输入ip', trigger: 'blur' },
+                {validator:validcodeip,trigger:'blur'}
+            ],
+          },
         resultDialogVisible: false,
         dataEdgeServer: generateData(),
         edgeServer: [1],
