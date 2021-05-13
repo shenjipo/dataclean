@@ -156,7 +156,7 @@ import axios from 'axios'
         },
         methods:{
             query(){
-                axios.$get('raha_detection',{username:'admin',password:123456}).then(res => {
+                axios.get('raha_detection',{username:'admin',password:123456}).then(res => {
                     // console.log(res);
                     this.flightstarget=res
                 });
