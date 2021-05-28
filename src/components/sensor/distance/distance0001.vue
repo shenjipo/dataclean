@@ -1,39 +1,39 @@
 <template>
   <div class="container">
-          <el-form inline="true" :v-model="test">
-            <el-form-item label="检测数据量">
-              <el-input v-model="test.sumdata" placeholder=""></el-input>
-            </el-form-item>
-            <el-form-item label="检测出的异常点数">
-              <el-input v-model="test.detection" placeholder=""></el-input>
-            </el-form-item>
-            <el-form-item label="未检测出的异常点数">
-              <el-input v-model="test.undetection" placeholder=""></el-input>
-            </el-form-item>
-            <el-form-item label="检测异常点错误数">
-              <el-input v-model="test.misdetection" placeholder=""></el-input>
-            </el-form-item>
-            <el-form-item label="召回率">
-              <el-input v-model="test.recall" placeholder=""></el-input>
-            </el-form-item>
-            <el-form-item label="精确率">
-              <el-input v-model="test.precision" placeholder=""></el-input>
-            </el-form-item>
-            <el-form-item label="F1">
-              <el-input v-model="test.F1" placeholder=""></el-input>
-            </el-form-item>
-            <el-form-item label="绝对误差">
-              <el-input v-model="test.error" placeholder=""></el-input>
-            </el-form-item>
-            <el-form-item label="相对误差">
-              <el-input v-model="test.erroravg" placeholder=""></el-input>
-            </el-form-item>
-            </el-form>
+    <el-form inline="true" :v-model="test">
+      <el-form-item label="检测数据量">
+        <el-input v-model="test.sumdata" placeholder=""></el-input>
+      </el-form-item>
+      <el-form-item label="检测出的异常点数">
+        <el-input v-model="test.detection" placeholder=""></el-input>
+      </el-form-item>
+      <el-form-item label="未检测出的异常点数">
+        <el-input v-model="test.undetection" placeholder=""></el-input>
+      </el-form-item>
+      <el-form-item label="检测异常点错误数">
+        <el-input v-model="test.misdetection" placeholder=""></el-input>
+      </el-form-item>
+      <el-form-item label="召回率">
+        <el-input v-model="test.recall" placeholder=""></el-input>
+      </el-form-item>
+      <el-form-item label="精确率">
+        <el-input v-model="test.precision" placeholder=""></el-input>
+      </el-form-item>
+      <el-form-item label="F1">
+        <el-input v-model="test.F1" placeholder=""></el-input>
+      </el-form-item>
+      <el-form-item label="绝对误差">
+        <el-input v-model="test.error" placeholder=""></el-input>
+      </el-form-item>
+      <el-form-item label="相对误差">
+        <el-input v-model="test.erroravg" placeholder=""></el-input>
+      </el-form-item>
+    </el-form>
 
     <el-card style="width: 100%;height:1000px;">
       <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-<!--      <button @click="addtime">start</button>-->
-<!--      <button @click="stop">stop</button>-->
+      <!--      <button @click="addtime">start</button>-->
+      <!--      <button @click="stop">stop</button>-->
       <div id="main" style="width: 100%;height:900px;"></div>
       <div class="block">
         <el-date-picker
@@ -60,21 +60,22 @@
       return {
         sign:"",
         option:{},
-        temperaturestarget:{},
+        temperaturestarget:{errorsum:0,
+                            erroravg:0},
         test:{},
         alldata:[],
         datavalue:[
-         ],
+        ],
         choicetime:[],
         dirtydata:[],
         xData:[],
         today:{start:new Date()-60*1000,
-               end:new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 -1
+          end:new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 -1
         }
       }
     },
     created() {
-        this.getoneday()
+      this.getoneday()
       this.sign=1
     },
     mounted(){
@@ -91,7 +92,7 @@
           trigger: 'axis'
         },
         legend: {               //设置区分（哪条线属于什么）
-          data:['温度','dirty温度']
+          data:['距离','dirty距离']
         },
         grid: {
           x:50,
@@ -121,7 +122,7 @@
           }
         },
         series: [{
-          name:'温度',
+          name:'距离',
           type: 'line',
           showSymbol: false,
           hoverAnimation: false,
@@ -138,7 +139,7 @@
           }
         },
           {
-            name:'dirty温度',
+            name:'dirty距离',
             type: 'line',
             symbol: 'circle',//折线点设置为实心点
             symbolSize: 4,   //折线点的大小
@@ -174,11 +175,11 @@
     },
     watch:{
       getDate: function (sign) {
-          if(sign==1){
-            this.timer = window.setInterval(() => {
-              window.setTimeout(this.addtime, 0)
-            }, 1000)
-          }
+        if(sign==1){
+          this.timer = window.setInterval(() => {
+            window.setTimeout(this.addtime, 0)
+          }, 1000)
+        }
         if (sign ==0) {
           window.clearInterval(this.timer)
         }
@@ -196,7 +197,7 @@
       },
       addtime(){
         var nowtime=parseInt(new Date().getTime()/1000-3)*1000;
-        axios.get('/sensor/onetemperature',{params:{time:nowtime}}).then(res=>{
+        axios.get('/sensor/distance/distance0001/data',{params:{time:nowtime}}).then(res=>{
           //console.log(res.data)
           if(res.data==""){console.log("无数据")}
           else{this.alldata.push(res.data)}
@@ -241,7 +242,6 @@
           this.$set(this.test,"error",(this.temperaturestarget.errorsum/this.temperaturestarget.detection).toFixed(3))
           this.$set(this.test,"erroravg",(this.temperaturestarget.erroravg*100/this.temperaturestarget.detection).toFixed(3)+"%")
         }
-
       },
       setdata(){
 
@@ -266,17 +266,17 @@
         this.today.end=this.choicetime[1].getTime()
         this.alldata.splice(0,this.datavalue.length)
         this.alldata.splice(0,this.dirtydata.length)
+        this.temperaturestarget.errorsum=0
+        this.temperaturestarget.erroravg=0
         this.getoneday()
       },
       getoneday(){
-        axios.get('/sensor/temperature',{params:{starttime:this.today.start,endtime:this.today.end}}).then(res=>{
+        axios.get('/sensor/distance/distance0001/datas',{params:{starttime:this.today.start,endtime:this.today.end}}).then(res=>{
           //console.log(res)
           //指标
           this.temperaturestarget.detection=0
           this.temperaturestarget.undetection=0
           this.temperaturestarget.misdetection=0
-          this.temperaturestarget.errorsum=0
-          this.temperaturestarget.erroravg=0
           this.alldata=res.data
           //数据总量
           this.temperaturestarget.sumdata=this.alldata.length

@@ -93,11 +93,21 @@
               <el-menu-item index="/sensor/temperature/sensor003">温度传感器003</el-menu-item>
             </el-submenu>
             <el-submenu index="2-2">
-              <template slot="title">湿度传感器</template>
-              <el-menu-item index="/sensor/humidity/sensor001">湿度传感器001</el-menu-item>
-              <el-menu-item index="/sensor/humidity/sensor002">湿度传感器002</el-menu-item>
-              <el-menu-item index="/sensor/humidity/sensor003">湿度传感器003</el-menu-item>
+              <template slot="title">距离传感器</template>
+              <el-menu-item index="/sensor/distance/distance0001">距离传感器0001</el-menu-item>
             </el-submenu>
+            <el-submenu index="2-3">
+               <template slot="title">CO2传感器</template>
+               <el-menu-item index="/sensor/co2/co20001">CO2传感器0001</el-menu-item>
+            </el-submenu>
+              <el-submenu index="2-4">
+                  <template slot="title">PM传感器</template>
+                  <el-menu-item index="/sensor/pm/pm0001">pm传感器0001</el-menu-item>
+              </el-submenu>
+              <el-submenu index="2-5">
+                  <template slot="title">开关传感器</template>
+                  <el-menu-item index="/sensor/io/io0001">开关传感器0001</el-menu-item>
+              </el-submenu>
           </el-submenu>
 <!--          菜单3-->
           <el-submenu index="3">
