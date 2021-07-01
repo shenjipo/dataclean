@@ -136,6 +136,8 @@
             <el-submenu index="3-1">
               <template slot="title">结构化数据管理</template>
               <el-menu-item index="/dataclean/datasource/StructedData/DataInfo">查看数据</el-menu-item>
+              <el-menu-item index="/dataclean/datasource/StructedData/testquota">测试指标</el-menu-item>
+                <el-menu-item index="/dataclean/datasource/StructedData/testdata">测试数据</el-menu-item>
             </el-submenu>
             <el-submenu index="3-2">
               <template slot="title">视频数据管理</template>

@@ -423,7 +423,7 @@
 
     },
       created() {
-          axios.$get('http://10.0.104.207:8181//dataclean/source/findAll').then(res => {
+          axios.$get('http://10.11.24.169:8181//dataclean/source/findAll').then(res => {
               console.log(res)
               this.DataList=res
           });

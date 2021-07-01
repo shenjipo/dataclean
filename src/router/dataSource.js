@@ -5,6 +5,8 @@ import VideoDataInfo from '@/components/DataSource/VideoData/DataInfo'
 import trajectoryDataInfo from '@/components/DataSource/trajectoryData/dataInfo'
 import trajectoryResult from '@/components/DataSource/trajectoryData/trajectoryResult'
 import resultInMap from '@/components/DataSource/trajectoryData/resultInMap'
+import testquota from '@/components/DataSource/StructedData/testquota'
+import testdata from '@/components/DataSource/StructedData/testdata'
 export default [
   {
     path: '/dataclean/datasource/StructedData/DataInfo', component: StructedDataInfo, children: [
@@ -26,4 +28,11 @@ export default [
   {
     path: '/dataclean/datasource/trajectoryData/resultInMap', component: resultInMap
   },
+  {
+    path: '/dataclean/datasource/structedData/testquota', component: testquota
+  },
+  {
+    path: '/dataclean/datasource/structedData/testdata', component: testdata
+  },
+
 ]
