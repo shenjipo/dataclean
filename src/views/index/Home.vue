@@ -44,7 +44,7 @@
                         active-text-color="#000" router>
                     <!--          介绍-->
                     <el-menu-item index="/introduct">
-                        <i class="el-icon-setting"></i>
+                        <i class="el-icon-question"></i>
                         <span>系统介绍</span>
                     </el-menu-item>
                     <!--          一级菜单-->
@@ -52,7 +52,7 @@
                         <!--              一级菜单的模板区域-->
                         <template slot="title">
                             <!--              图标-->
-                            <i class="el-icon-location"></i>
+                            <i class="el-icon-office-building"></i>
                             <!--              文本-->
                             <span>城市大脑数据</span>
                         </template>
@@ -82,21 +82,24 @@
                         <!--              一级菜单的模板区域-->
                         <template slot="title">
                             <!--              图标-->
-                            <i class="el-icon-location"></i>
+                            <i class="el-icon-cpu"></i>
                             <!--              文本-->
                             <span>传感器</span>
                         </template>
-                        <el-menu-item index="/sensor/temperature/sensor001">温度传感器</el-menu-item>
-                        <el-menu-item index="/home/distanceAll">距离传感器0001</el-menu-item>
-                        <el-menu-item index="/sensor/co2/co20001">CO2传感器0001</el-menu-item>
-                        <el-menu-item index="/sensor/pm/pm0001">pm传感器0001</el-menu-item>
+                        <el-menu-item index="/home/temperatureAll">温度传感器</el-menu-item>
+                        <el-menu-item index="/home/lightTemperatureAll">激光温度传感器</el-menu-item>
+                        <el-menu-item index="/home/distanceAll">距离传感器</el-menu-item>
+                        <el-menu-item index="/home/CO2All">CO2传感器0001</el-menu-item>
+                        <el-menu-item index="/home/PM25All">pm2.5传感器</el-menu-item>
+                        <el-menu-item index="/home/PM10All">pm10传感器</el-menu-item>
+                        <el-menu-item index="/home/pressureAll">压力传感器</el-menu-item>
                     </el-submenu>
                     <!--          菜单3-->
                     <el-submenu index="3">
                         <!--              一级菜单的模板区域-->
                         <template slot="title">
                             <!--              图标-->
-                            <i class="el-icon-location"></i>
+                            <i class="el-icon-camera-solid"></i>
                             <!--              文本-->
                             <span>摄像头</span>
                         </template>
@@ -111,7 +114,7 @@
                         <!--              一级菜单的模板区域-->
                         <template slot="title">
                             <!--              图标-->
-                            <i class="el-icon-location"></i>
+                            <i class="el-icon-setting"></i>
                             <!--              文本-->
                             <span>数据源管理</span>
                         </template>
