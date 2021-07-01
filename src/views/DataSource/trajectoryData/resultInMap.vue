@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import Map from '@/components/map/map'
+    import Map from '@/views/map/map'
   export default {
     name: "resultInMap",
     components:{

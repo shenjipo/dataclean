@@ -3,7 +3,7 @@
     <div class="background">
         <div class="login_box">
           <div class="avatar_box">
-            <img src="../assets/hdu_logo.png" alt="">
+            <img src="../../assets/hdu_logo.png" alt="">
           </div>
     <!--      登录表单区域-->
           <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px" class="login_from">
@@ -51,6 +51,7 @@
       this.$refs.loginFormRef.resetFields()
     },
     login () {
+      this.$router.push('/home');
       // 登录
       axios.get('http://10.11.24.169:8181/dataclean/login',{params:{username:this.loginForm.username,password:this.loginForm.password}}).then(res => {
         console.log(res)
@@ -75,7 +76,7 @@
 .background {
   width: 100%;
   height: 100%;
-    background-image: url("../assets/background.jpeg");
+    background-image: url("../../assets/background.jpeg");
     background-repeat: no-repeat;
     background-position: center top;
 }

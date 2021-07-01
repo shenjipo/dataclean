@@ -77,7 +77,7 @@
 <script>
   import axios from '@/api/axios.js'
   import {mapGetters} from "vuex";
-  import Map from '@/components/map/map'
+  import Map from '@/views/map/map'
   import "@/plugins/leaflet/leaflet.trackplayback.js";
   import customMarkerIcon from '@/assets/round_03.png'
   import 'leaflet-polylinedecorator'

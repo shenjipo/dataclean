@@ -240,7 +240,7 @@
   import {mapGetters} from "vuex";
   import axios from '../../../api/axios'
   import {area, city, coordinate, province} from '@/utils/region'
-  import Map from '@/components/map/map'
+  import Map from '@/views/map/map'
   import L from 'leaflet';
   import marker1 from '@/assets/marker1.jpg'
 

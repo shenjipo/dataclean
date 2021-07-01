@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../components/Login'
-import Home from '../components/Home'
-import Introduct from '../components/introduct'
+import Login from '../views/index/Login'
+import Home from '../views/index/Home'
+import Introduct from '../views/index/introduct'
 import Temperature from './temperature'
 import CityBrain from './citybrain'
 import dataSource from './dataSource'
 import camera from './camera'
 import Sensor from './sensor'
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   { path: '/', redirect: '/login' },

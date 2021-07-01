@@ -1,0 +1,74 @@
+<template>
+    <div>
+        <!--卡片视图区域-->
+        <el-card>
+            <!--用户列表区域-->
+            <el-table :data="dataList" border stripe max-height="650">
+                <!--缩印列-->
+                <el-table-column type="index"></el-table-column>
+                <el-table-column label="deviceName" prop="deviceName"></el-table-column>
+                <el-table-column label="操作" width="240px">
+                    <template slot-scope="scope">
+                        <!--查看数据详情结点按钮-->
+                        <el-tooltip class="item" effect="dark" content="查看详情" :enterable="false" placement="top">
+                            <!--修改按钮-->
+                            <el-button type="primary" icon="el-icon-view" size="mini"
+                                       @click="gotoData(scope.row)"></el-button>
+                        </el-tooltip>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="queryInfo.pageNum"
+                    :page-size="queryInfo.pagesize"
+                    :page-sizes="[10, 20, 50, 100]"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="queryInfo.total"
+            >
+            </el-pagination>
+        </el-card>
+    </div>
+</template>
+
+<script>
+
+  export default {
+    name: "distanceAll",
+    data() {
+      return {
+        dataList: [
+          {deviceName: 'dievice_0001'},
+          {deviceName: 'dievice_0002'},
+        ],
+        queryInfo:{
+          query: 'distance',
+          // 当前页数
+          pageNum: 1,
+          // 每页显示多少数据
+          pageSize: 10,
+          total: 0,
+        },
+      }
+    },
+    created() {
+
+    },
+    methods: {
+      gotoData() {
+
+      },
+      handleSizeChange() {
+
+      },
+      handleCurrentChange() {
+
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>
