@@ -6,7 +6,8 @@
             <el-table :data="dataList" border stripe max-height="650">
                 <!--缩印列-->
                 <el-table-column type="index"></el-table-column>
-                <el-table-column label="deviceName" prop="deviceName"></el-table-column>
+                <el-table-column label="deviceName" prop="name"></el-table-column>
+                <el-table-column label="指标" prop="r"></el-table-column>
                 <el-table-column label="操作" width="240px">
                     <template slot-scope="scope">
                         <!--查看数据详情结点按钮-->
@@ -33,8 +34,10 @@
 </template>
 
 <script>
+import axios from '@/api/axios.js';
+import {comm} from "../../../global/common";
 
-  export default {
+export default {
     name: "distanceAll",
     data() {
       return {
@@ -53,16 +56,34 @@
       }
     },
     created() {
-
+       this.getData()
     },
     methods: {
+        getData(){
+            let params = {
+                page:this.queryInfo.pageNum,
+                pageSize:this.queryInfo.pageSize
+            }
+            axios.$get(comm.WEB_URL+'sensorlist/distance',params).then(res => {
+                console.log(res)
+                this.dataList = res;
+                axios.$get(comm.WEB_URL+'sensorlist/sensorcount',{sensorType:'distance'}).then(res => {
+                    console.log(res);
+                    this.queryInfo.total = res;
+                })
+                // this.queryInfo.total = res.total;
+            })
+        },
       gotoData() {
 
       },
-      handleSizeChange() {
-
+      handleSizeChange(val) {
+            this.queryInfo.pageSize = val;
+            this.getData();
       },
-      handleCurrentChange() {
+      handleCurrentChange(val) {
+          this.queryInfo.pageNum = val;
+          this.getData();
 
       }
     }
