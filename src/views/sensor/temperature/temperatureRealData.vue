@@ -2,7 +2,19 @@
     <div class="container">
         <el-card>
             <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-            <div id="main" style="width: 800px;height:400px;">
+            <div style="display: flex">
+                <lineChart :id="id" :option-data="chartOptionData" style="width: 80%"></lineChart>
+                <div style="display: flex;flex-flow: column;width: 20%">
+                    <el-date-picker
+                            style="width: 100%"
+                            v-model="choicetime"
+                            type="datetimerange"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            @change="changetime">
+                    </el-date-picker>
+                </div>
 
             </div>
         </el-card>
@@ -40,11 +52,23 @@
 </template>
 
 <script>
+  import lineChart from '@/components/echartsGraphs/line/lineChart'
+
   export default {
     name: "temperatureRealData",
+    components: {
+      lineChart
+    },
     data() {
       return {
+        choicetime: null,
+        id: 'line',
         tableData: [],
+        chartOptionData: {
+          name: 'ch1',
+          cleanData: [['2021-05-01 03:20:00', 20], ['2021-05-01 03:20:01', 40],],
+          dirtyData: [['2021-05-01 03:20:00', 10], ['2021-05-01 03:20:01', 15],]
+        },
         deviceName: this.$route.params.name
       }
     },
