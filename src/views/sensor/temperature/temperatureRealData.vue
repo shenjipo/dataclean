@@ -12,13 +12,15 @@
                             range-separator="至"
                             start-placeholder="开始日期"
                             end-placeholder="结束日期"
-                            value-format="timestamp">
+                            value-format="timestamp"
+                            @change="changeTime"
+                    >
                     </el-date-picker>
                 </div>
             </div>
-            <div style="display: flex;justify-content: center">
-                <el-button v-if="mode===0" type="primary" @click="getDataByMode">获取时间段数据</el-button>
-                <el-button v-else type="primary" @click="getDataByMode">获取实时数据(2分钟)</el-button>
+            <div style="display: flex;justify-content: space-evenly">
+                <el-input-number v-model="num" :min="1" :max="60" label="分钟"></el-input-number>
+                <el-button type="primary" @click="buttonClick">获取实时数据</el-button>
             </div>
         </el-card>
         <el-card>
@@ -77,7 +79,8 @@
         deviceName: this.$route.params.name,
         //0获取实时数据 1获取时间段数据
         mode: 0,
-        fn: null
+        fn: null,
+        num: 1
       }
     },
     created() {
@@ -85,20 +88,14 @@
     },
 
     methods: {
-      //根据状态获取数据
-      getDataByMode() {
-        //实时 -> 固定
-        if (this.mode === 0) {
-            this.mode = 1;
-          clearInterval(this.fn);
-          this.getDataByFixedTime();
-        } else {
-          //固定 -> 实时
-          this.mode = 0;
-          this.fn = setInterval(() => {
-            this.getDataByRealTime()
-          },1000)
-        }
+      changeTime() {
+        clearInterval(this.fn);
+        this.getDataByFixedTime();
+      },
+      buttonClick(){
+        this.fn = setInterval(() => {
+          this.getDataByRealTime();
+        }, 2000);
       },
       //获取实时数据
       getDataByRealTime() {
@@ -106,7 +103,7 @@
         let params = {
           sensorname: this.deviceName,
           starttime: parseInt(currTime / 1000),
-          endtime: parseInt(currTime / 1000) - 120
+          endtime: parseInt(currTime / 1000) - 60 * this.num
         };
         this.getData(params);
       },
