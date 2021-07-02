@@ -79,19 +79,27 @@
       console.log(this.deviceName)
     },
     methods: {
-        getData(){
-            console.log(this.choicetime)
-            let params = {
-                sensorname:this.deviceName,
-                // starttime:1625215601,
-                // endtime:1625216150
-                starttime:this.choicetime[0]/1000,
-                endtime:this.choicetime[1]/1000
-            }
-            axios.$get(comm.WEB_URL+'testdata/datalist',params).then(res => {
-                console.log(res)
-            })
+      getData() {
+        console.log(this.choicetime)
+        let params = {
+          sensorname: this.deviceName,
+          starttime: this.choicetime[0] / 1000,
+          endtime: this.choicetime[1] / 1000
         }
+        axios.$get(comm.WEB_URL + 'testdata/datalist', params).then(res => {
+          this.chartOptionData.cleanData = []
+          this.chartOptionData.dirtyData = []
+          res.forEach(item => {
+            //数据没有错误
+            if (item.detectionresult === 0) {
+              this.chartOptionData.cleanData.push([item.repairtime * 1000, item.cleandata])
+            } else {
+              this.chartOptionData.cleanData.push([item.repairtime * 1000, item.repairdata]);
+              this.chartOptionData.dirtyData.push([item.repairtime * 1000, item.dirtydata])
+            }
+          })
+        })
+      }
     }
   }
 </script>
