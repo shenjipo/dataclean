@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div style="display: flex;justify-content: center">
-                <el-button v-if="mode===1" type="primary" @click="getDataByMode">获取时间段数据</el-button>
+                <el-button v-if="mode===0" type="primary" @click="getDataByMode">获取时间段数据</el-button>
                 <el-button v-else type="primary" @click="getDataByMode">获取实时数据(2分钟)</el-button>
             </div>
         </el-card>
@@ -140,10 +140,10 @@
     mounted() {
       this.fn = setInterval(() => {
         this.getDataByRealTime()
-      }, 1000)
+      }, 2000)
     },
     beforeDestroy() {
-      this.clearInterval(this.fn)
+      clearInterval(this.fn)
     }
   }
 </script>
