@@ -12,11 +12,12 @@
                             range-separator="至"
                             start-placeholder="开始日期"
                             end-placeholder="结束日期"
-                            @change="changetime">
+                            value-format="timestamp">
                     </el-date-picker>
                 </div>
 
             </div>
+            <el-button type="primary" @click="getData">测试</el-button>
         </el-card>
         <el-card>
             <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
@@ -53,6 +54,8 @@
 
 <script>
   import lineChart from '@/components/echartsGraphs/line/lineChart'
+  import axios from '@/api/axios.js';
+  import {comm} from "../../../global/common";
 
   export default {
     name: "temperatureRealData",
@@ -75,7 +78,21 @@
     created() {
       console.log(this.deviceName)
     },
-    methods: {}
+    methods: {
+        getData(){
+            console.log(this.choicetime)
+            let params = {
+                sensorname:this.deviceName,
+                // starttime:1625215601,
+                // endtime:1625216150
+                starttime:this.choicetime[0]/1000,
+                endtime:this.choicetime[1]/1000
+            }
+            axios.$get(comm.WEB_URL+'testdata/datalist',params).then(res => {
+                console.log(res)
+            })
+        }
+    }
   }
 </script>
 
