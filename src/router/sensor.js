@@ -79,7 +79,7 @@ export default [
   },
   {
     path: 'PM10All',
-    component: CO2All,
+    component: PM10All,
     name: 'PM10All'
   },
   {

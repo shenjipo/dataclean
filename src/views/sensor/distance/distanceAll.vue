@@ -61,10 +61,11 @@ export default {
     methods: {
         getData(){
             let params = {
+                type:this.queryInfo.query,
                 page:this.queryInfo.pageNum,
                 pageSize:this.queryInfo.pageSize
             }
-            axios.$get(comm.WEB_URL+'sensorlist/distance',params).then(res => {
+            axios.$get(comm.WEB_URL+'sensorlist/getsensor',params).then(res => {
                 console.log(res)
                 this.dataList = res;
                 axios.$get(comm.WEB_URL+'sensorlist/sensorcount',{sensorType:'distance'}).then(res => {

@@ -89,7 +89,7 @@
                         <el-menu-item index="/home/temperatureAll">温度传感器</el-menu-item>
                         <el-menu-item index="/home/lightTemperatureAll">激光温度传感器</el-menu-item>
                         <el-menu-item index="/home/distanceAll">距离传感器</el-menu-item>
-                        <el-menu-item index="/home/CO2All">CO2传感器0001</el-menu-item>
+                        <el-menu-item index="/home/CO2All">CO2传感器</el-menu-item>
                         <el-menu-item index="/home/PM25All">pm2.5传感器</el-menu-item>
                         <el-menu-item index="/home/PM10All">pm10传感器</el-menu-item>
                         <el-menu-item index="/home/pressureAll">压力传感器</el-menu-item>

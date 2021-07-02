@@ -45,7 +45,7 @@
           {deviceName: 'dievice_0002'},
         ],
         queryInfo:{
-          query: 'distance',
+          query: 'co2',
           // 当前页数
           pageNum: 1,
           // 每页显示多少数据
@@ -60,10 +60,11 @@
     methods: {
       getData(){
         let params = {
+            type:this.queryInfo.query,
           page:this.queryInfo.pageNum,
           pageSize:this.queryInfo.pageSize
         }
-        axios.$get(comm.WEB_URL+'sensorlist/distance',params).then(res => {
+        axios.$get(comm.WEB_URL+'sensorlist/getsensor',params).then(res => {
           console.log(res)
           this.dataList = res;
           axios.$get(comm.WEB_URL+'sensorlist/sensorcount',{sensorType:'distance'}).then(res => {
