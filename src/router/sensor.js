@@ -8,7 +8,10 @@ import CO2All from '../views/sensor/co2/CO2All';
 import PM10All from '../views/sensor/PM10/PM10All'
 import PM25All from '../views/sensor/PM25/PM25All'
 import pressureAll from '../views/sensor/pressure/pressureAll'
-import temperatureAll from '../views/sensor/temperature/temperatureAll'
+import ch1All from '../views/sensor/temperature/ch1All'
+import ch2All from '../views/sensor/temperature/ch2All'
+import ch3All from '../views/sensor/temperature/ch3All'
+import ch4All from '../views/sensor/temperature/ch4All'
 import lightTemperatureAll from '../views/sensor/lightTemperature/lightTemperatureAll'
 
 import distanceRealData from '../views/sensor/distance/distanceRealData'
@@ -20,6 +23,26 @@ import pressureRealData from '../views/sensor/pressure/pressureRealData'
 import temperatureRealData from '../views/sensor/temperature/temperatureRealData'
 
 export default [
+  {
+    path: 'ch1All',
+    component: ch1All,
+    name: 'ch1All'
+  },
+  {
+    path: 'ch2All',
+    component: ch2All,
+    name: 'ch2All'
+  },
+  {
+    path: 'ch3All',
+    component: ch3All,
+    name: 'ch3All'
+  },
+  {
+    path: 'ch4All',
+    component: ch4All,
+    name: 'ch4All'
+  },
 
   {
     path: 'lightTemperatureRealData',
@@ -62,11 +85,7 @@ export default [
     component: lightTemperatureAll,
     name: 'lightTemperatureAll'
   },
-  {
-    path: 'temperatureAll',
-    component: temperatureAll,
-    name: 'temperatureAll'
-  },
+
   {
     path: 'pressureAll',
     component: pressureAll,

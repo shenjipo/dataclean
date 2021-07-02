@@ -37,15 +37,15 @@
   import axios from '@/api/axios.js';
   import {comm} from "../../../global/common";
   export default {
-    name: "temperatureAll",
+    name: "ch4All",
     data() {
       return {
         dataList: [
-          {deviceName: 'dievice_0001'},
-          {deviceName: 'dievice_0002'},
+          {name: 'dievice_0001'},
+          {name: 'dievice_0002'},
         ],
         queryInfo:{
-          query: 'distance',
+          query: 'ch4',
           // 当前页数
           pageNum: 1,
           // 每页显示多少数据
@@ -60,10 +60,11 @@
     methods: {
       getData(){
         let params = {
+          type:this.queryInfo.query,
           page:this.queryInfo.pageNum,
           pageSize:this.queryInfo.pageSize
         }
-        axios.$get(comm.WEB_URL+'sensorlist/distance',params).then(res => {
+        axios.$get(comm.WEB_URL+'sensorlist/getsensor',params).then(res => {
           console.log(res)
           this.dataList = res;
           axios.$get(comm.WEB_URL+'sensorlist/sensorcount',{sensorType:'distance'}).then(res => {
@@ -74,6 +75,7 @@
         })
       },
       gotoData(val) {
+
         this.$router.push({name:'temperatureRealData',params:{name:val.name}})
       },
       handleSizeChange(val) {

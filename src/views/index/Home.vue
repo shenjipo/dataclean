@@ -86,7 +86,18 @@
                             <!--              文本-->
                             <span>传感器</span>
                         </template>
-                        <el-menu-item index="/home/temperatureAll">温度传感器</el-menu-item>
+                        <el-submenu index="2-1">
+                            <template slot="title">
+                                <!--              图标-->
+                                <i class="el-icon-loading"></i>
+                                <!--              文本-->
+                                <span>温度传感器</span>
+                            </template>
+                            <el-menu-item index="/home/ch1All">温度传感器1</el-menu-item>
+                            <el-menu-item index="/home/ch2All">温度传感器2</el-menu-item>
+                            <el-menu-item index="/home/ch3All">温度传感器3</el-menu-item>
+                            <el-menu-item index="/home/ch4All">温度传感器4</el-menu-item>
+                        </el-submenu>
                         <el-menu-item index="/home/lightTemperatureAll">激光温度传感器</el-menu-item>
                         <el-menu-item index="/home/distanceAll">距离传感器</el-menu-item>
                         <el-menu-item index="/home/CO2All">CO2传感器</el-menu-item>
