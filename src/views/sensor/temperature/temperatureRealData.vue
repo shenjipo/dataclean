@@ -3,7 +3,7 @@
         <el-card>
             <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
             <div style="display: flex">
-                <lineChart :id="id" :option-data="chartOptionData" style="width: 80%"></lineChart>
+                <lineChart :id="id" :option-data="chartOptionData" style="width: 80%" ref="lineChartRef"></lineChart>
                 <div style="display: flex;flex-flow: column;width: 20%">
                     <el-date-picker
                             style="width: 100%"
@@ -15,9 +15,11 @@
                             value-format="timestamp">
                     </el-date-picker>
                 </div>
-
             </div>
-            <el-button type="primary" @click="getData">测试</el-button>
+            <div style="display: flex;justify-content: center">
+                <el-button v-if="mode===1" type="primary" @click="getDataByMode">获取时间段数据</el-button>
+                <el-button v-else type="primary" @click="getDataByMode">获取实时数据(2分钟)</el-button>
+            </div>
         </el-card>
         <el-card>
             <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
@@ -69,26 +71,59 @@
         tableData: [],
         chartOptionData: {
           name: 'ch1',
-          cleanData: [['2021-05-01 03:20:00', 20], ['2021-05-01 03:20:01', 40],],
-          dirtyData: [['2021-05-01 03:20:00', 10], ['2021-05-01 03:20:01', 15],]
+          cleanData: [[1625225154826, 20], [1625225156826, 40],],
+          dirtyData: [[1625225154826, 10], [1625225156826, 15],]
         },
-        deviceName: this.$route.params.name
+        deviceName: this.$route.params.name,
+        //0获取实时数据 1获取时间段数据
+        mode: 0,
+        fn: null
       }
     },
     created() {
-      console.log(this.deviceName)
+      //console.log(this.deviceName)
     },
+
     methods: {
-      getData() {
-        console.log(this.choicetime)
+      //根据状态获取数据
+      getDataByMode() {
+        //实时 -> 固定
+        if (this.mode === 0) {
+            this.mode = 1;
+          clearInterval(this.fn);
+          this.getDataByFixedTime();
+        } else {
+          //固定 -> 实时
+          this.mode = 0;
+          this.fn = setInterval(() => {
+            this.getDataByRealTime()
+          },1000)
+        }
+      },
+      //获取实时数据
+      getDataByRealTime() {
+        let currTime = new Date().getTime();
+        let params = {
+          sensorname: this.deviceName,
+          starttime: parseInt(currTime / 1000),
+          endtime: parseInt(currTime / 1000) - 120
+        };
+        this.getData(params);
+      },
+      //获取固定时间数据
+      getDataByFixedTime() {
         let params = {
           sensorname: this.deviceName,
           starttime: this.choicetime[0] / 1000,
           endtime: this.choicetime[1] / 1000
-        }
+        };
+        this.getData(params);
+      },
+      //获取数据
+      getData(params) {
         axios.$get(comm.WEB_URL + 'testdata/datalist', params).then(res => {
-          this.chartOptionData.cleanData = []
-          this.chartOptionData.dirtyData = []
+          this.chartOptionData.cleanData = [];
+          this.chartOptionData.dirtyData = [];
           res.forEach(item => {
             //数据没有错误
             if (item.detectionresult === 0) {
@@ -97,9 +132,18 @@
               this.chartOptionData.cleanData.push([item.repairtime * 1000, item.repairdata]);
               this.chartOptionData.dirtyData.push([item.repairtime * 1000, item.dirtydata])
             }
-          })
+          });
+          this.$refs.lineChartRef.refresh(this.chartOptionData)
         })
       }
+    },
+    mounted() {
+      this.fn = setInterval(() => {
+        this.getDataByRealTime()
+      }, 1000)
+    },
+    beforeDestroy() {
+      this.clearInterval(this.fn)
     }
   }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div :id="id" :style="chartSize">
+    <div :id="id" :style="chartSize" ref="chartRef">
 
     </div>
 </template>
@@ -91,14 +91,22 @@
               }
             },
           ]
-        }
+        },
+        chart:null
       }
     },
     methods: {
+      refresh(val){
+        //刷新数据
+        let option = this.chart.getOption();
+        option.series[0].data = val.cleanData;
+        option.series[1].data = val.dirtyData;
+        this.chart.setOption(option);
+
+      },
       addChart() {
-        let temp = echarts.init(document.getElementById(this.id));
-        console.log(this.id);
-        temp.setOption(this.option, true)
+        this.chart = echarts.init(this.$refs.chartRef);
+        this.chart.setOption(this.option)
       },
     },
     mounted() {
