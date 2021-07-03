@@ -93,6 +93,10 @@
         this.getDataByFixedTime();
       },
       buttonClick(){
+        if(this.fn){
+            clearInterval(this.fn);
+        }
+
         this.fn = setInterval(() => {
           this.getDataByRealTime();
         }, 2000);
