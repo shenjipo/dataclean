@@ -130,6 +130,7 @@
         axios.$get(comm.WEB_URL + 'testdata/datalist', params).then(res => {
           this.chartOptionData.cleanData = [];
           this.chartOptionData.dirtyData = [];
+          console.log(res)
           res.forEach(item => {
             //数据没有错误
             if (item.detectionresult === 0) {
@@ -139,9 +140,11 @@
               this.chartOptionData.dirtyData.push([item.repairtime * 1000, item.dirtydata])
             }
           });
-          this.tableData = res.forEach(item => {
+            res.forEach(item => {
             item.repairttime = transofrmTime(item.repairttime)
           });
+            this.tableData = res;
+          console.log(res)
           this.$refs.lineChartRef.refresh(this.chartOptionData)
         })
       }
