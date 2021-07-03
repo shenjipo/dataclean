@@ -1,43 +1,43 @@
 <template>
     <div>
-    <!--卡片视图区域-->
-    <el-card>
-        <!--用户列表区域-->
-        <el-table :data="dataList" border stripe max-height="650">
-            <!--缩印列-->
-            <el-table-column type="index"></el-table-column>
-            <el-table-column label="deviceName" prop="name"></el-table-column>
-            <el-table-column label="指标" prop="r"></el-table-column>
-            <el-table-column label="操作" width="240px">
-                <template slot-scope="scope">
-                    <!--查看数据详情结点按钮-->
-                    <el-tooltip class="item" effect="dark" content="查看详情" :enterable="false" placement="top">
-                        <!--修改按钮-->
-                        <el-button type="primary" icon="el-icon-view" size="mini"
-                                   @click="gotoData(scope.row)"></el-button>
-                    </el-tooltip>
-                </template>
-            </el-table-column>
-        </el-table>
-        <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="queryInfo.pageNum"
-                :page-size="queryInfo.pagesize"
-                :page-sizes="[10, 20, 50, 100]"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="queryInfo.total"
-        >
-        </el-pagination>
-    </el-card>
-</div>
+        <!--卡片视图区域-->
+        <el-card>
+            <!--用户列表区域-->
+            <el-table :data="dataList" border stripe max-height="650">
+                <!--缩印列-->
+                <el-table-column type="index"></el-table-column>
+                <el-table-column label="deviceName" prop="name"></el-table-column>
+                <el-table-column label="指标" prop="r"></el-table-column>
+                <el-table-column label="操作" width="240px">
+                    <template slot-scope="scope">
+                        <!--查看数据详情结点按钮-->
+                        <el-tooltip class="item" effect="dark" content="查看详情" :enterable="false" placement="top">
+                            <!--修改按钮-->
+                            <el-button type="primary" icon="el-icon-view" size="mini"
+                                       @click="gotoData(scope.row)"></el-button>
+                        </el-tooltip>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="queryInfo.pageNum"
+                    :page-size="queryInfo.pagesize"
+                    :page-sizes="[10, 20, 50, 100]"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="queryInfo.total"
+            >
+            </el-pagination>
+        </el-card>
+    </div>
 </template>
 
 <script>
-import axios from '@/api/axios.js';
-import {comm} from "../../../global/common";
+  import axios from '@/api/axios.js';
+  import {comm} from "../../../global/common";
 
-export default {
+  export default {
     name: "distanceAll",
     data() {
       return {
@@ -45,7 +45,7 @@ export default {
           {name: 'dievice_0001'},
           {name: 'dievice_0002'},
         ],
-        queryInfo:{
+        queryInfo: {
           query: 'distance',
           // 当前页数
           pageNum: 1,
@@ -56,36 +56,36 @@ export default {
       }
     },
     created() {
-       this.getData()
+      this.getData()
     },
     methods: {
-        getData(){
-            let params = {
-                type:this.queryInfo.query,
-                page:this.queryInfo.pageNum,
-                pageSize:this.queryInfo.pageSize
-            }
-            axios.$get(comm.WEB_URL+'sensorlist/getsensor',params).then(res => {
-                console.log(res)
-                this.dataList = res;
-                axios.$get(comm.WEB_URL+'sensorlist/sensorcount',{sensorType:'distance'}).then(res => {
-                    console.log(res);
-                    this.queryInfo.total = res;
-                })
-                // this.queryInfo.total = res.total;
-            })
-        },
+      getData() {
+        let params = {
+          type: this.queryInfo.query,
+          page: this.queryInfo.pageNum,
+          pageSize: this.queryInfo.pageSize
+        }
+        axios.$get(comm.WEB_URL + 'sensorlist/getsensor', params).then(res => {
+          console.log(res)
+          this.dataList = res;
+          axios.$get(comm.WEB_URL + 'sensorlist/sensorcount', {sensorType: this.queryInfo.query}).then(res => {
+            console.log(res);
+            this.queryInfo.total = res;
+          })
+          // this.queryInfo.total = res.total;
+        })
+      },
       gotoData(val) {
 
-        this.$router.push({name:'distanceRealData',params:{name:val.name}})
+        this.$router.push({name: 'distanceRealData', params: {name: val.name}})
       },
       handleSizeChange(val) {
-            this.queryInfo.pageSize = val;
-            this.getData();
+        this.queryInfo.pageSize = val;
+        this.getData();
       },
       handleCurrentChange(val) {
-          this.queryInfo.pageNum = val;
-          this.getData();
+        this.queryInfo.pageNum = val;
+        this.getData();
 
       }
     }

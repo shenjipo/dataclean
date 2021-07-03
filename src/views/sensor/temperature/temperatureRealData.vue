@@ -33,22 +33,26 @@
                         border
                         style="width: 100%">
                     <el-table-column
-                            prop="date"
-                            label="日期"
+                            prop="sensorname"
+                            label="设备名"
                             width="180">
                     </el-table-column>
                     <el-table-column
-                            prop="clock"
+                            prop="repairtime"
                             label="时间"
                             width="180">
                     </el-table-column>
                     <el-table-column
-                            prop="temperature"
-                            label="温度">
+                            prop="cleandata"
+                            label="原始值">
                     </el-table-column>
                     <el-table-column
-                            prop="new_temperature"
-                            label="修改温度">
+                            prop="dirtydata"
+                            label="脏数据">
+                    </el-table-column>
+                    <el-table-column
+                            prop="repairdata"
+                            label="修复值">
                     </el-table-column>
                 </el-table>
             </div>
@@ -60,6 +64,7 @@
   import lineChart from '@/components/echartsGraphs/line/lineChart'
   import axios from '@/api/axios.js';
   import {comm} from "../../../global/common";
+    import {transofrmTime} from "../../../utils/time";
 
   export default {
     name: "temperatureRealData",
@@ -72,7 +77,7 @@
         id: 'line',
         tableData: [],
         chartOptionData: {
-          name: 'ch1',
+          name: this.deviceName,
           cleanData: [[1625225154826, 20], [1625225156826, 40],],
           dirtyData: [[1625225154826, 10], [1625225156826, 15],]
         },
@@ -133,6 +138,9 @@
               this.chartOptionData.cleanData.push([item.repairtime * 1000, item.repairdata]);
               this.chartOptionData.dirtyData.push([item.repairtime * 1000, item.dirtydata])
             }
+          });
+          this.tableData = res.forEach(item => {
+            item.repairttime = transofrmTime(item.repairttime)
           });
           this.$refs.lineChartRef.refresh(this.chartOptionData)
         })
