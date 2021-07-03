@@ -66,7 +66,7 @@
         axios.$get(comm.WEB_URL+'sensorlist/distance',params).then(res => {
           console.log(res)
           this.dataList = res;
-          axios.$get(comm.WEB_URL+'sensorlist/sensorcount',{sensorType:'distance'}).then(res => {
+          axios.$get(comm.WEB_URL+'sensorlist/sensorcount',{sensorType:'ch2'}).then(res => {
             console.log(res);
             this.queryInfo.total = res;
           })

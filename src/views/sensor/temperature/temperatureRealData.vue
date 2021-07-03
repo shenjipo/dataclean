@@ -84,7 +84,7 @@
       }
     },
     created() {
-      //console.log(this.deviceName)
+      console.log(this.deviceName)
     },
 
     methods: {
@@ -106,8 +106,8 @@
         let currTime = new Date().getTime();
         let params = {
           sensorname: this.deviceName,
-          starttime: parseInt(currTime / 1000),
-          endtime: parseInt(currTime / 1000) - 60 * this.num
+          endtime: parseInt(currTime / 1000),
+            starttime: parseInt(currTime / 1000) - 60 * this.num
         };
         this.getData(params);
       },
