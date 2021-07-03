@@ -24,12 +24,12 @@
             </div>
         </el-card>
         <el-card>
-            <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
             <div class="tem-label">
-                <h1 style="text-align: center">温度实时表</h1>
+                <h1 style="text-align: center">数据实时表</h1>
                 <el-table
                         :data="tableData"
                         height="250"
+                        max-height="400"
                         border
                         style="width: 100%">
                     <el-table-column
@@ -64,7 +64,7 @@
   import lineChart from '@/components/echartsGraphs/line/lineChart'
   import axios from '@/api/axios.js';
   import {comm} from "../../../global/common";
-    import {transofrmTime} from "../../../utils/time";
+  import {transofrmTime} from "../../../utils/time";
 
   export default {
     name: "temperatureRealData",
@@ -144,7 +144,7 @@
             item.repairttime = transofrmTime(item.repairttime)
           });
             this.tableData = res;
-          console.log(res)
+
           this.$refs.lineChartRef.refresh(this.chartOptionData)
         })
       }

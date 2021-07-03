@@ -24,31 +24,35 @@
             </div>
         </el-card>
         <el-card>
-            <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
             <div class="tem-label">
-                <h1 style="text-align: center">温度实时表</h1>
+                <h1 style="text-align: center">数据实时表</h1>
                 <el-table
                         :data="tableData"
                         height="250"
+                        max-height="400"
                         border
                         style="width: 100%">
                     <el-table-column
-                            prop="date"
-                            label="日期"
+                            prop="sensorname"
+                            label="设备名"
                             width="180">
                     </el-table-column>
                     <el-table-column
-                            prop="clock"
+                            prop="repairtime"
                             label="时间"
                             width="180">
                     </el-table-column>
                     <el-table-column
-                            prop="temperature"
-                            label="温度">
+                            prop="cleandata"
+                            label="原始值">
                     </el-table-column>
                     <el-table-column
-                            prop="new_temperature"
-                            label="修改温度">
+                            prop="dirtydata"
+                            label="脏数据">
+                    </el-table-column>
+                    <el-table-column
+                            prop="repairdata"
+                            label="修复值">
                     </el-table-column>
                 </el-table>
             </div>
@@ -60,6 +64,8 @@
   import lineChart from '@/components/echartsGraphs/line/lineChart'
   import axios from '@/api/axios.js';
   import {comm} from "../../../global/common";
+  import {transofrmTime} from "../../../utils/time";
+
   export default {
     name: "pressureRealData",
     components: {
@@ -90,8 +96,8 @@
         clearInterval(this.fn);
         this.getDataByFixedTime();
       },
-      buttonClick(){
-        if(this.fn){
+      buttonClick() {
+        if (this.fn) {
           clearInterval(this.fn);
         }
 
@@ -132,6 +138,10 @@
               this.chartOptionData.dirtyData.push([item.repairtime * 1000, item.dirtydata])
             }
           });
+          res.forEach(item => {
+            item.repairttime = transofrmTime(item.repairttime)
+          });
+          this.tableData = res;
           this.$refs.lineChartRef.refresh(this.chartOptionData)
         })
       }
