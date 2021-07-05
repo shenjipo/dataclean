@@ -16,7 +16,7 @@
 </template>
 
 <script>
-    import {transofrmTimeMs} from "../utils/time";
+    import {transofrmTime} from "../utils/time";
 
     export default {
     name: "condition",
@@ -27,8 +27,8 @@
           realDirtyData: 200,
           checkedDirtyData: 190,
           repairData: 180,
-          startTime: 1625452099888,
-          endTime: 1625452100888
+          startTime: 1625452099,
+          endTime: 1625452100
         },
       }
     },
@@ -43,15 +43,21 @@
         return (this.conditions.checkedDirtyData / this.conditions.realDirtyData).toFixed(2)
       },
       startTime(){
-        return transofrmTimeMs(this.conditions.startTime)
+        return transofrmTime(this.conditions.startTime)
       },
       endTime(){
-        return transofrmTimeMs(this.conditions.endTime)
+        return transofrmTime(this.conditions.endTime)
       }
     },
     methods: {
-      fn(){
+      updateData(val){
 
+          this.conditions.total = val.typeDataCount;
+          this.conditions.realDirtyData = val.typeDirtyDataCount;
+          this.conditions.checkedDirtyData = val.typeRightDetectionDataCount;
+          this.conditions.realDirtyData = val.typeRightDetectionDataCount;
+          this.conditions.startTime = val.startTime;
+          this.conditions.endTime = val.endTime;
       }
     }
   }

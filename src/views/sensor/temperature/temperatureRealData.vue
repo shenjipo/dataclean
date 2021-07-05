@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <el-card>
-            <condition></condition>
+            <condition ref="conditionRef"></condition>
         </el-card>
         <el-card>
             <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
@@ -134,7 +134,7 @@
         axios.$get(comm.WEB_URL + 'testdata/datalist', params).then(res => {
           this.chartOptionData.cleanData = [];
           this.chartOptionData.dirtyData = [];
-          console.log(res)
+
           res.forEach(item => {
             //数据没有错误
             if (item.detectionresult === 0) {
@@ -149,7 +149,17 @@
           });
             this.tableData = res;
 
-          this.$refs.lineChartRef.refresh(this.chartOptionData)
+          this.$refs.lineChartRef.refresh(this.chartOptionData);
+          let params1 = {
+              sensorType: params.sensorname,
+              startTime:params.starttime,
+              endTime:params.endtime
+          }
+          axios.$get(comm.WEB_URL+'test/typeTestQuote',params1).then(res => {
+              res.startTime = params1.startTime;
+              res.endTime = params1.endTime;
+              this.$refs.conditionRef.updateData(res)
+          })
         })
       }
     },
