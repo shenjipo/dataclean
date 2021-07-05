@@ -86,6 +86,27 @@
         this.getData();
 
       }
+      /*
+      * sensorType
+      * startTime endTime
+      * 时间段1-60秒
+      *
+      * 数据量
+      * 每个传感器有多少条数据
+      * 脏数据量
+      *
+      * 检测出的错误数据量
+      * 修复成功的数据量
+      *
+      *
+      * sensorType
+      * startTime endTime
+      * 单个传感器
+      * 脏数据量
+      * 检测出的错误数据量
+      * 修复成功的数据量
+      * */
+
     }
   }
 </script>
