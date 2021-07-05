@@ -22,7 +22,13 @@ import pm25RealData from '../views/sensor/PM25/pm25RealData'
 import pressureRealData from '../views/sensor/pressure/pressureRealData'
 import temperatureRealData from '../views/sensor/temperature/temperatureRealData'
 
+import index from '../views/sensor/index'
 export default [
+  {
+    path: 'index',
+    component: index,
+    name: 'index'
+  },
   {
     path: 'ch1All',
     component: ch1All,

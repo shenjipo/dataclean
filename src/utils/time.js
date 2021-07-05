@@ -9,3 +9,15 @@ export function transofrmTime(time) {
 
   return year + '-' + month + '-' + day + ' ' + hours + ':' + mins + ':' + seconds;
 }
+
+export function transofrmTimeMs(time) {
+  let year = new Date(time).getFullYear();
+  let month = new Date(time).getMonth() + 1;
+  let day = new Date(time).getDate();
+
+  let hours = new Date(time).getHours();
+  let mins = new Date(time).getMinutes();
+  let seconds = new Date(time).getSeconds();
+
+  return year + '-' + month + '-' + day + ' ' + hours + ':' + mins + ':' + seconds;
+}
