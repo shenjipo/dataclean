@@ -68,7 +68,8 @@
   import axios from '@/api/axios.js';
   import {comm} from "../../../global/common";
   import {transofrmTime} from "../../../utils/time";
-    import condition from '../../../components/condition'
+  import condition from '../../../components/condition'
+
   export default {
     name: "temperatureRealData",
     components: {
@@ -101,9 +102,9 @@
         clearInterval(this.fn);
         this.getDataByFixedTime();
       },
-      buttonClick(){
-        if(this.fn){
-            clearInterval(this.fn);
+      buttonClick() {
+        if (this.fn) {
+          clearInterval(this.fn);
         }
 
         this.fn = setInterval(() => {
@@ -116,7 +117,7 @@
         let params = {
           sensorname: this.deviceName,
           endtime: parseInt(currTime / 1000),
-            starttime: parseInt(currTime / 1000) - 60 * this.num
+          starttime: parseInt(currTime / 1000) - 60 * this.num
         };
         this.getData(params);
       },
@@ -144,21 +145,21 @@
               this.chartOptionData.dirtyData.push([item.repairtime * 1000, item.dirtydata])
             }
           });
-            res.forEach(item => {
+          res.forEach(item => {
             item.repairttime = transofrmTime(item.repairttime)
           });
-            this.tableData = res;
+          this.tableData = res;
 
           this.$refs.lineChartRef.refresh(this.chartOptionData);
           let params1 = {
-              sensorType: params.sensorname,
-              startTime:params.starttime,
-              endTime:params.endtime
+            sensorType: params.sensorname,
+            startTime: params.starttime,
+            endTime: params.endtime
           }
-          axios.$get(comm.WEB_URL+'test/typeTestQuote',params1).then(res => {
-              res.startTime = params1.startTime;
-              res.endTime = params1.endTime;
-              this.$refs.conditionRef.updateData(res)
+          axios.$get(comm.WEB_URL + 'test/typeTestQuote', params1).then(res => {
+            res.startTime = params1.startTime;
+            res.endTime = params1.endTime;
+            this.$refs.conditionRef.updateData(res)
           })
         })
       }
