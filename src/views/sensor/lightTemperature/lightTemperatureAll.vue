@@ -75,7 +75,7 @@
         })
       },
       gotoData(val) {
-        this.$router.push({name:'distanceRealData',params:{name:val.name}})
+        this.$router.push({name:'lightTemperatureRealData',params:{name:val.name}})
       },
       handleSizeChange(val) {
         this.queryInfo.pageSize = val;

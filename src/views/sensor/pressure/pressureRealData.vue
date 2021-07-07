@@ -1,6 +1,9 @@
 <template>
     <div class="container">
         <el-card>
+            <condition ref="conditionRef"></condition>
+        </el-card>
+        <el-card>
             <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
             <div style="display: flex">
                 <lineChart :id="id" :option-data="chartOptionData" style="width: 80%" ref="lineChartRef"></lineChart>
@@ -65,11 +68,12 @@
   import axios from '@/api/axios.js';
   import {comm} from "../../../global/common";
   import {transofrmTime} from "../../../utils/time";
-
+  import condition from '../../../components/condition'
   export default {
     name: "pressureRealData",
     components: {
-      lineChart
+      lineChart,
+      condition
     },
     data() {
       return {
@@ -143,6 +147,17 @@
           });
           this.tableData = res;
           this.$refs.lineChartRef.refresh(this.chartOptionData)
+
+          let params1 = {
+            sensorType: params.sensorname,
+            startTime: params.starttime,
+            endTime: params.endtime
+          };
+          axios.$get(comm.WEB_URL + 'test/typeTestQuote', params1).then(res => {
+            res.startTime = params1.startTime;
+            res.endTime = params1.endTime;
+            this.$refs.conditionRef.updateData(res)
+          })
         })
       }
     },
