@@ -40,9 +40,10 @@
     },
     data() {
       return {
-        sensorType: 'distance',
+        sensorType: 'all',
         selectTImes: null,
         options: [
+            {value: 'all', label: '所有传感器'},
           {value: 'distance', label: '距离'},
           {value: 'temperature', label: '激光温度'},
           {value: 'pm2_5', label: 'PM2.5'},

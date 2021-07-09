@@ -48,7 +48,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="dirtydata"
-                            label="脏数据">
+                            label="待检测数据">
                     </el-table-column>
                     <el-table-column
                             prop="repairdata"
