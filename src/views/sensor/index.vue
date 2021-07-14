@@ -21,7 +21,7 @@
                 <el-button type="primary" @click="buttonClick">
                     查看指标
                 </el-button>
-                <el-input-number v-model="num" :min="1" :max="60" label="分钟"></el-input-number>
+              
             </div>
         </el-card>
     </div>
