@@ -7,10 +7,13 @@
             <el-tag type="success">修复数据量:{{conditions.repairData}}</el-tag>
         </div>
         <div style="display: flex;justify-content: space-around;margin-top: 20px">
-            <el-link type="priamry" :underline="false">时间:  {{startTime}}  -  {{endTime}}</el-link>
+
             <el-tag type="warning">清洗速度:{{cleanSpeed}}条/s</el-tag>
             <el-tag type="warning">错误发现率:{{detection}}%</el-tag>
             <el-tag type="warning">修复率:{{repair}}%</el-tag>
+        </div>
+        <div style="display: flex;justify-content: space-around;margin-top: 20px">
+            <el-link type="priamry" :underline="false">时间:  {{startTime}}  -  {{endTime}}</el-link>
         </div>
     </div>
 </template>
@@ -37,10 +40,10 @@
         return (this.conditions.total / (this.conditions.endTime - this.conditions.startTime)).toFixed(2)
       },
       repair() {
-        return (this.conditions.repairData / this.conditions.checkedDirtyData).toFixed(2)
+        return ((this.conditions.repairData / this.conditions.checkedDirtyData)*100).toFixed(2)
       },
       detection() {
-        return (this.conditions.checkedDirtyData / this.conditions.realDirtyData).toFixed(2)
+        return ((this.conditions.checkedDirtyData / this.conditions.realDirtyData)*100).toFixed(2)
       },
       startTime(){
         return transofrmTime(this.conditions.startTime)
@@ -51,11 +54,11 @@
     },
     methods: {
       updateData(val){
-
+          console.log(val)
           this.conditions.total = val.typeDataCount;
           this.conditions.realDirtyData = val.typeDirtyDataCount;
           this.conditions.checkedDirtyData = val.typeRightDetectionDataCount;
-          this.conditions.realDirtyData = val.typeRightDetectionDataCount;
+          this.conditions.repairData = val.typeRepairSuccessDataCount;
           this.conditions.startTime = val.startTime;
           this.conditions.endTime = val.endTime;
       }

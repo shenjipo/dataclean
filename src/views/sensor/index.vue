@@ -40,9 +40,10 @@
     },
     data() {
       return {
-        sensorType: 'distance',
+        sensorType: 'all',
         selectTImes: null,
         options: [
+            {value: 'all', label: '所有传感器'},
           {value: 'distance', label: '距离'},
           {value: 'temperature', label: '激光温度'},
           {value: 'pm2_5', label: 'PM2.5'},
@@ -83,7 +84,7 @@
 
         this.fn = setInterval(() => {
           this.getDataByRealTime();
-        }, 2000);
+        }, 10000);
       },
       //获取指定时间数据
       getDataByFixedTime() {
