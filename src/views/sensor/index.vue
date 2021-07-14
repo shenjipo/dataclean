@@ -21,7 +21,6 @@
                 <el-button type="primary" @click="buttonClick">
                     查看指标
                 </el-button>
-              
             </div>
         </el-card>
     </div>

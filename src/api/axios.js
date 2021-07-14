@@ -5,27 +5,25 @@ axios.defaults.baseURL = 'http://10.11.24.118:8181/dataclean/'
 axios.defaults.crossDomain = true;
 //axios.defaults.withCredentials = true;
 axios.defaults.timeout = 30000;
-
+var loading = null;
 //请求拦截
 axios.interceptors.request.use(config => {
-  var loading = Loading.service({
+  loading = Loading.service({
     lock: false,
     text: 'Loading',
     fullscreen: false,
     spinner: 'el-icon-loading',
-    background: 'rgba(0, 0, 0, 0.7)'
+    background: 'rgba(0, 0, 0, 0.5)'
   });
-
+  setTimeout(() => {
+    loading.close()
+  },10000)
+  return config
 });
 //响应拦截
 axios.interceptors.response.use(config => {
-  var loading = Loading.service({
-    lock: false,
-    text: 'Loading',
-    spinner: 'el-icon-loading',
-    background: 'rgba(0, 0, 0, 0.7)'
-  });
   loading.close();
+
   return config
 });
 axios.$get = function (url, params, myConfig) {
