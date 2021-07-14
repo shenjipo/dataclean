@@ -84,7 +84,7 @@
 
         this.fn = setInterval(() => {
           this.getDataByRealTime();
-        }, 2000);
+        }, 10000);
       },
       //获取指定时间数据
       getDataByFixedTime() {
