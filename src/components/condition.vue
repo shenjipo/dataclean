@@ -11,7 +11,7 @@
             <el-tag type="warning">清洗速度:{{cleanSpeed}}条/s</el-tag>
             <el-tag type="warning">错误发现率:{{detection}}%</el-tag>
             <el-tag type="warning">修复率:{{repair}}%</el-tag>
-            <el-tag type="warning">清洗延迟:{{delay}}%</el-tag>
+            <el-tag type="warning">清洗延迟:{{delay}}秒</el-tag>
         </div>
         <div style="display: flex;justify-content: space-around;margin-top: 20px">
             <el-link type="priamry" :underline="false">时间: {{startTime}} - {{endTime}}</el-link>
