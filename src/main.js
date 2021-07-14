@@ -10,7 +10,10 @@ import VideoPlayer from 'vue-video-player'
 import 'video.js/dist/video-js.css'
 import 'videojs-flash'
 Vue.use(VideoPlayer)
+import { Message } from 'element-ui'
 
+// 挂载到$message上
+Vue.prototype.$message = Message
 import axios from 'axios'
 Vue.config.productionTip = false
 

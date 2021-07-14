@@ -6,13 +6,12 @@
         <el-card>
             <div style="display: flex;justify-content: space-around">
                 <el-date-picker
-                        v-model="selectTImes"
+                        v-model="selectTimes"
                         type="datetimerange"
                         range-separator="至"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
                         value-format="timestamp"
-                        @change="changeTime"
                 >
                 </el-date-picker>
                 <el-select v-model="sensorType">
@@ -41,9 +40,9 @@
     data() {
       return {
         sensorType: 'all',
-        selectTImes: null,
+        selectTimes: [],
         options: [
-            {value: 'all', label: '所有传感器'},
+          {value: 'all', label: '所有传感器'},
           {value: 'distance', label: '距离'},
           {value: 'temperature', label: '激光温度'},
           {value: 'pm2_5', label: 'PM2.5'},
@@ -53,7 +52,7 @@
           {value: 'ch2', label: '温度2'},
           {value: 'ch3', label: '温度3'},
           {value: 'ch4', label: '温度4'},
-          {value: 'co2', label: '二氧化钛'},
+          {value: 'co2', label: '二氧化碳'},
         ],
         fn: null,
         num: 2
@@ -63,35 +62,29 @@
 
     },
     beforeDestroy() {
-      clearInterval(this.fn)
+
     },
     mounted() {
-      this.fn = setInterval(() => {
-        this.getDataByRealTime()
-      }, 2000)
+
     },
     methods: {
       //时间选择事件
-      changeTime() {
-        clearInterval(this.fn);
-        this.getDataByFixedTime();
-      },
+      // changeTime() {
+      //   this.getDataByFixedTime();
+      // },
       //按钮点击事件
       buttonClick() {
-        if (this.fn) {
-          clearInterval(this.fn);
-        }
-
-        this.fn = setInterval(() => {
-          this.getDataByRealTime();
-        }, 10000);
+        this.getDataByFixedTime();
       },
       //获取指定时间数据
       getDataByFixedTime() {
+        if (this.selectTimes.length < 2) {
+          return this.$message.error('请选择时间')
+        }
         let parmas = {
           sensorType: this.sensorType,
-          startTime: this.selectTImes[0] / 1000,
-          endTime: this.selectTImes[1] / 1000
+          startTime: this.selectTimes[0] / 1000,
+          endTime: this.selectTimes[1] / 1000
         };
         this.getData(parmas)
       },
@@ -112,6 +105,7 @@
           res.startTime = parmas.startTime;
           res.endTime = parmas.endTime;
           this.$refs.conditionRef.updateData(res);
+          this.$message.success('查询成功!!!')
         })
       }
     }
