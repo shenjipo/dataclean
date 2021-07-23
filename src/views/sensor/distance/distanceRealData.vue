@@ -23,7 +23,7 @@
             </div>
             <div style="display: flex;justify-content: space-evenly">
                 <el-input-number v-model="num" :min="1" :max="60" label="分钟"></el-input-number>
-                <el-button type="primary" @click="buttonClick">获取实时数据</el-button>
+                <el-button type="primary" @click="changeTime">获取实时数据</el-button>
             </div>
         </el-card>
         <el-card>
@@ -69,6 +69,7 @@
   import {comm} from "../../../global/common";
   import {transofrmTime} from "../../../utils/time";
   import condition from '../../../components/condition'
+
   export default {
     name: "distanceRealData",
     components: {
@@ -97,17 +98,12 @@
 
     methods: {
       changeTime() {
-        clearInterval(this.fn);
+
         this.getDataByFixedTime();
       },
-      buttonClick(){
-        if(this.fn){
-          clearInterval(this.fn);
-        }
+      buttonClick() {
+        this.getDataByRealTime();
 
-        this.fn = setInterval(() => {
-          this.getDataByRealTime();
-        }, 2000);
       },
       //获取实时数据
       getDataByRealTime() {
@@ -161,14 +157,6 @@
         })
       }
     },
-    mounted() {
-      this.fn = setInterval(() => {
-        this.getDataByRealTime()
-      }, 2000)
-    },
-    beforeDestroy() {
-      clearInterval(this.fn)
-    }
   }
 </script>
 
