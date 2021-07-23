@@ -150,6 +150,7 @@
             startTime: params.starttime,
             endTime: params.endtime
           }
+
           axios.$get(comm.WEB_URL + 'test/typeTestQuote', params1).then(res => {
             res.startTime = params1.startTime;
             res.endTime = params1.endTime;
