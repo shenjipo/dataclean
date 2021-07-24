@@ -23,7 +23,13 @@ import pressureRealData from '../views/sensor/pressure/pressureRealData'
 import temperatureRealData from '../views/sensor/temperature/temperatureRealData'
 
 import index from '../views/sensor/index'
+import custom from '../views/sensor/custom'
 export default [
+  {
+    path:'custom',
+    component: custom,
+    name: 'custom'
+  },
   {
     path: 'index',
     component: index,

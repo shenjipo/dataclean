@@ -23,6 +23,23 @@
                 </el-button>
             </div>
         </el-card>
+        <el-card>
+            <!--<el-button style="float: right" type="primary">查看数据</el-button>-->
+            <el-table>
+                <el-table-column
+                        label="设备名称">
+                </el-table-column>
+                <el-table-column
+                        label="接收时间">
+                </el-table-column>
+                <el-table-column
+                        label="清洗时间">
+                </el-table-column>
+                <el-table-column
+                        label="清洗时间">
+                </el-table-column>
+            </el-table>
+        </el-card>
     </div>
 </template>
 

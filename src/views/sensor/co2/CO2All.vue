@@ -16,6 +16,7 @@
                             <el-button type="primary" icon="el-icon-view" size="mini"
                                        @click="gotoData(scope.row)"></el-button>
                         </el-tooltip>
+                        <el-button type="primary" @click="saveSensors(scope.row)" size="mini">添加自定义</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -36,6 +37,8 @@
 <script>
   import axios from '@/api/axios.js';
   import {comm} from "../../../global/common";
+  import {mapMutations} from "vuex";
+
   export default {
     name: "CO2All",
     data() {
@@ -44,7 +47,7 @@
           {deviceName: 'dievice_0001'},
           {deviceName: 'dievice_0002'},
         ],
-        queryInfo:{
+        queryInfo: {
           query: 'co2',
           // 当前页数
           pageNum: 1,
@@ -58,16 +61,19 @@
       this.getData()
     },
     methods: {
-      getData(){
+      saveSensors(val){
+        this.$store.commit('SAVEVSENSOR',val)
+      },
+      getData() {
         let params = {
-            type:this.queryInfo.query,
-          page:this.queryInfo.pageNum,
-          pageSize:this.queryInfo.pageSize
+          type: this.queryInfo.query,
+          page: this.queryInfo.pageNum,
+          pageSize: this.queryInfo.pageSize
         }
-            axios.$get(comm.WEB_URL+'sensorlist/getsensor',params).then(res => {
+        axios.$get(comm.WEB_URL + 'sensorlist/getsensor', params).then(res => {
           console.log(res)
           this.dataList = res;
-          axios.$get(comm.WEB_URL+'sensorlist/sensorcount',{sensorType:this.queryInfo.query}).then(res => {
+          axios.$get(comm.WEB_URL + 'sensorlist/sensorcount', {sensorType: this.queryInfo.query}).then(res => {
             console.log(res);
             this.queryInfo.total = res;
           })
@@ -75,7 +81,7 @@
         })
       },
       gotoData(val) {
-        this.$router.push({name:'distanceRealData',params:{name:val.name}})
+        this.$router.push({name: 'distanceRealData', params: {name: val.name}})
       },
       handleSizeChange(val) {
         this.queryInfo.pageSize = val;
@@ -107,6 +113,11 @@
       * 修复成功的数据量
       * */
 
+    },
+    computed: {
+      ...mapMutations([
+        'SAVEVSENSOR'
+      ])
     }
   }
 </script>

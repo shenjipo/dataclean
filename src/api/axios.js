@@ -7,25 +7,25 @@ axios.defaults.crossDomain = true;
 axios.defaults.timeout = 30000;
 var loading = null;
 //请求拦截
-axios.interceptors.request.use(config => {
-  loading = Loading.service({
-    lock: false,
-    text: 'Loading',
-    fullscreen: false,
-    spinner: 'el-icon-loading',
-    background: 'rgba(0, 0, 0, 0.5)'
-  });
-  setTimeout(() => {
-    loading.close()
-  },10000)
-  return config
-});
-//响应拦截
-axios.interceptors.response.use(config => {
-  loading.close();
-
-  return config
-});
+// axios.interceptors.request.use(config => {
+//   loading = Loading.service({
+//     lock: false,
+//     text: 'Loading',
+//     fullscreen: false,
+//     spinner: 'el-icon-loading',
+//     background: 'rgba(0, 0, 0, 0.5)'
+//   });
+//   setTimeout(() => {
+//     loading.close()
+//   },10000)
+//   return config
+// });
+// //响应拦截
+// axios.interceptors.response.use(config => {
+//   loading.close();
+//
+//   return config
+// });
 axios.$get = function (url, params, myConfig) {
   return new Promise((resolve, reject) => {
     let config = {
