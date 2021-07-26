@@ -83,7 +83,6 @@
       handleCurrentChange(val) {
         this.queryInfo.pageNum = val;
         this.getData();
-
       }
     }
   }

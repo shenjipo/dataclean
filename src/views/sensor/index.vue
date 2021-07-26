@@ -24,21 +24,51 @@
             </div>
         </el-card>
         <el-card>
-            <!--<el-button style="float: right" type="primary">查看数据</el-button>-->
-            <el-table>
+
+            <el-table :data="datas">
                 <el-table-column
+                        prop="sensorname"
                         label="设备名称">
                 </el-table-column>
                 <el-table-column
-                        label="接收时间">
+                        prop="starttime"
+                        label="接收数据时间">
                 </el-table-column>
                 <el-table-column
-                        label="清洗时间">
+                        prop="repairtime"
+                        label="清洗结束时间">
                 </el-table-column>
                 <el-table-column
-                        label="清洗时间">
+                        prop="cleaningtime"
+                        label="清洗用时/秒">
+                </el-table-column>
+                <el-table-column
+                        prop="dirtydata"
+                        label="接收值">
+                </el-table-column>
+                <el-table-column
+                        prop="cleandata"
+                        label="原始值">
+                </el-table-column>
+                <el-table-column
+                        prop="detectionresult"
+                        label="检测结果">
+                </el-table-column>
+                <el-table-column
+                        prop="repairdata"
+                        label="修复值">
                 </el-table-column>
             </el-table>
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="queryInfo.pageNum"
+                    :page-size="queryInfo.pagesize"
+                    :page-sizes="[10, 20, 50, 100]"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="queryInfo.total"
+            >
+            </el-pagination>
         </el-card>
     </div>
 </template>
@@ -71,7 +101,15 @@
           {value: 'co2', label: '二氧化碳'},
         ],
         fn: null,
-        num: 2
+        num: 2,
+          queryInfo:{
+              // 当前页数
+              pageNum: 1,
+              // 每页显示多少数据
+              pageSize: 10,
+              total: 0,
+          },
+          datas:[]
       }
     },
     created() {
@@ -84,6 +122,27 @@
 
     },
     methods: {
+        handleSizeChange(val) {
+            this.queryInfo.pageSize = val;
+            this.queryDatas();
+        },
+        handleCurrentChange(val) {
+            this.queryInfo.pageNum = val;
+            this.queryDatas();
+        },
+        queryDatas(){
+            let currTime = new Date().getTime();
+            let parmas = {
+                sensorType: this.sensorType,
+                startTime: this.selectTimes[0] / 1000,
+                endTime: this.selectTimes[1] / 1000,
+                page:this.queryInfo.pageNum,
+                pageSize:this.queryInfo.pageSize
+            }
+            axios.$get(comm.WEB_URL+'testdata/datas',parmas).then(res => {
+                this.datas = res;
+            })
+        },
       //时间选择事件
       // changeTime() {
       //   this.getDataByFixedTime();
@@ -114,14 +173,16 @@
         };
         this.getData(parmas)
       },
-      //获取数据
+      //获取指标数据
       getData(parmas) {
-
         axios.$get(comm.WEB_URL + 'test/typeTestQuote', parmas).then(res => {
+            this.queryInfo.total = res.typeDataCount;
           res.startTime = parmas.startTime;
           res.endTime = parmas.endTime;
           this.$refs.conditionRef.updateData(res);
           this.$message.success('查询成功!!!')
+            this.queryInfo.pageNum = 1;
+            this.queryDatas();
         })
       }
     }
