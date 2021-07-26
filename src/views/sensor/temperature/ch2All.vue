@@ -16,6 +16,7 @@
                             <el-button type="primary" icon="el-icon-view" size="mini"
                                        @click="gotoData(scope.row)"></el-button>
                         </el-tooltip>
+                        <el-button type="primary" @click="saveSensors(scope.row)" size="mini">添加自定义</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -58,6 +59,9 @@
       this.getData()
     },
     methods: {
+      saveSensors(val){
+        this.$store.commit('SAVEVSENSOR',val)
+      },
       getData(){
         let params = {
           type:this.queryInfo.query,
