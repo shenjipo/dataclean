@@ -3,6 +3,22 @@
         <el-card>
             <condition></condition>
         </el-card>
+        <el-card>
+            <div style="display: flex;justify-content: space-around">
+                <el-date-picker
+                        v-model="selectTimes"
+                        type="datetimerange"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        value-format="timestamp"
+                >
+                </el-date-picker>
+                <el-button type="primary" @click="buttonClick">
+                    查看指标
+                </el-button>
+            </div>
+        </el-card>
         <el-card v-for="item in sensors" :key="item.name">
             <div style="display: flex;justify-content: space-around">
                 <span>传感器名称: {{item.name}}</span>
@@ -54,12 +70,35 @@
   export default {
     name: "custom",
     data() {
-      return {}
+      return {
+        selectTimes:[]
+      }
     },
     components: {
       condition
     },
     methods: {
+      buttonClick(){
+        let that = this;
+        this.sensors.forEach(item => {
+          that.getDataByFixedTime(item)
+        })
+      },
+      //获取固定时间数据
+      getDataByFixedTime(val) {
+        let params = {
+          sensorname: val.deviceName,
+          starttime: this.choicetime[0] / 1000,
+          endtime: this.choicetime[1] / 1000
+        };
+        this.getData(params);
+      },
+      //获取数据
+      getData(params) {
+        axios.$get(comm.WEB_URL + 'testdata/datalist', params).then(res => {
+          this.tableData = res;
+        })
+      },
       remove(val) {
         this.$store.commit('RWMOVESENSOR', val);
       }
