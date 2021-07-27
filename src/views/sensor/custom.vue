@@ -19,13 +19,13 @@
                 </el-button>
             </div>
         </el-card>
-        <el-card v-for="item in sensors" :key="item.name">
+        <el-card v-for="(item,index) in sensors" :key="index">
             <div style="display: flex;justify-content: space-around">
                 <span>传感器名称: {{item.name}}</span>
                 <el-button type="primary" @click="remove(item)">删除</el-button>
             </div>
 
-            <el-table :data="item.datas">
+            <el-table :data="sensorData.get(item.name)" max-height="400">
                 <el-table-column
                         prop="sensorname"
                         label="设备名称">
@@ -66,38 +66,55 @@
 <script>
   import {mapGetters, mapMutations} from "vuex";
   import condition from '../../components/condition';
-
+  import axios from '@/api/axios.js';
+  import {comm} from "../../global/common";
   export default {
     name: "custom",
     data() {
       return {
-        selectTimes:[]
+        selectTimes:[],
+          sensorData:new Map(),
       }
     },
     components: {
       condition
     },
-    methods: {
+   watch:{
+       sensorData(){
+            console.log(555)
+       }
+   },
+
+      methods: {
       buttonClick(){
         let that = this;
+
         this.sensors.forEach(item => {
+
           that.getDataByFixedTime(item)
         })
       },
       //获取固定时间数据
       getDataByFixedTime(val) {
+
         let params = {
-          sensorname: val.deviceName,
-          starttime: this.choicetime[0] / 1000,
-          endtime: this.choicetime[1] / 1000
+          sensorname: val.name,
+          starttime: this.selectTimes[0] / 1000,
+          endtime: this.selectTimes[1] / 1000
         };
-        this.getData(params);
+
+        this.getData(params,val);
       },
       //获取数据
-      getData(params) {
+      getData(params,val) {
         axios.$get(comm.WEB_URL + 'testdata/datalist', params).then(res => {
-          this.tableData = res;
+
+            this.sensorData.set(val.name,res)
+            console.log(this.sensorData)
+            //强制刷新组件
+            this.$forceUpdate()
         })
+
       },
       remove(val) {
         this.$store.commit('RWMOVESENSOR', val);
