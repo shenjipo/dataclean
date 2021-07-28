@@ -8,19 +8,24 @@ import CityBrain from './citybrain'
 import dataSource from './dataSource'
 import camera from './camera'
 import Sensor from './sensor'
+import group from './group'
+
 Vue.use(VueRouter);
 
 const routes = [
-  { path: '/', redirect: '/login' },
-  { path: '/login', component: Login },
-  { path: '/home', component: Home,children:[
-          {path:'/introduct',component:Introduct},
-          ...Temperature,
-          ...CityBrain,
-          ...dataSource,
-          ...camera,
-          ...Sensor,
-    ]},
+  {path: '/', redirect: '/login'},
+  {path: '/login', component: Login},
+  {
+    path: '/home', component: Home, children: [
+      {path: '/introduct', component: Introduct},
+      ...Temperature,
+      ...CityBrain,
+      ...dataSource,
+      ...camera,
+      ...Sensor,
+      ...group
+    ]
+  },
 
 ];
 
