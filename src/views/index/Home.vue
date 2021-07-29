@@ -104,7 +104,6 @@
                         <el-menu-item index="/home/PM25All">pm2.5传感器</el-menu-item>
                         <el-menu-item index="/home/PM10All">pm10传感器</el-menu-item>
                         <el-menu-item index="/home/pressureAll">压力传感器</el-menu-item>
-                        <el-menu-item index="/home/custom">自定义页面</el-menu-item>
                         <el-menu-item index="/home/groups">分组查看</el-menu-item>
                         <el-menu-item index="/home/index">指标汇总</el-menu-item>
                     </el-submenu>
