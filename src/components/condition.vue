@@ -12,6 +12,7 @@
             <el-tag type="warning">错误发现率:{{detection}}%</el-tag>
             <el-tag type="warning">修复率:{{repair}}%</el-tag>
             <el-tag type="warning">清洗延迟:{{delay}}秒</el-tag>
+            <el-tag type="warning">数据转换率:100%</el-tag>
         </div>
         <div style="display: flex;justify-content: space-around;margin-top: 20px">
             <el-link type="priamry" :underline="false">时间: {{startTime}} - {{endTime}}</el-link>
@@ -27,12 +28,12 @@
     data() {
       return {
         conditions: {
-          total: 1000,
-          realDirtyData: 200,
-          checkedDirtyData: 190,
-          repairData: 180,
-          startTime: 1625452099,
-          endTime: 1625452100
+          total: 0,
+          realDirtyData: 0,
+          checkedDirtyData: 0,
+          repairData: 0,
+          startTime: 0,
+          endTime: 0
         },
       }
     },

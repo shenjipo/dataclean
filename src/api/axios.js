@@ -4,7 +4,7 @@ import {Loading} from 'element-ui'
 axios.defaults.baseURL = 'http://10.11.24.118:8181/dataclean/'
 axios.defaults.crossDomain = true;
 //axios.defaults.withCredentials = true;
-axios.defaults.timeout = 30000;
+axios.defaults.timeout = 60000;
 var loading = null;
 //请求拦截
 // axios.interceptors.request.use(config => {

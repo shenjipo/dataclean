@@ -41,7 +41,7 @@
                             width="180">
                     </el-table-column>
                     <el-table-column
-                            prop="repairtime"
+                            prop="starttime"
                             label="时间"
                             width="180">
                     </el-table-column>
@@ -82,8 +82,8 @@
         tableData: [],
         chartOptionData: {
           name: this.deviceName,
-          cleanData: [[1625225154826, 20], [1625225156826, 40],],
-          dirtyData: [[1625225154826, 10], [1625225156826, 15],]
+          cleanData: [],
+          dirtyData: []
         },
         deviceName: this.$route.params.name,
         //0获取实时数据 1获取时间段数据
@@ -141,7 +141,7 @@
             }
           });
           res.forEach(item => {
-            item.repairttime = transofrmTime(item.repairttime)
+            item.starttime = transofrmTime(item.starttime)
           });
           this.tableData = res;
           this.$refs.lineChartRef.refresh(this.chartOptionData)
@@ -151,7 +151,7 @@
             startTime: params.starttime,
             endTime: params.endtime
           };
-          axios.$get(comm.WEB_URL + 'test/typeTestQuote', params1).then(res => {
+          axios.$get(comm.WEB_URL + 'test/sensorTestQuote', params1).then(res => {
             res.startTime = params1.startTime;
             res.endTime = params1.endTime;
             this.$refs.conditionRef.updateData(res)

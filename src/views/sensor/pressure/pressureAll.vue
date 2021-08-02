@@ -7,7 +7,7 @@
                 <!--缩印列-->
                 <el-table-column type="index"></el-table-column>
                 <el-table-column label="deviceName" prop="name"></el-table-column>
-                <el-table-column label="指标" prop="r"></el-table-column>
+
                 <el-table-column label="操作" width="240px">
                     <template slot-scope="scope">
                         <!--查看数据详情结点按钮-->

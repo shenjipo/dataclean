@@ -92,6 +92,7 @@
             this.queryGroup();
         },
         methods: {
+
             handleSizeChange(val) {
                 this.queryInfo.pageSize = val;
                 this.queryGroup();
@@ -132,6 +133,8 @@
                         if (res < 0)
                             return this.$message.error('插入传感器失败')
                         this.$message.success('添加成功')
+                        this.saveVisible = false;
+                        this.queryGroup();
                     })
                 })
             },

@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-card>
-            <condition></condition>
+            <condition ref="conditionRef"></condition>
         </el-card>
         <el-card>
             <div style="display: flex;justify-content: space-around">
@@ -31,11 +31,7 @@
                 </el-table-column>
                 <el-table-column
                         prop="starttime"
-                        label="接收数据时间">
-                </el-table-column>
-                <el-table-column
-                        prop="repairtime"
-                        label="清洗结束时间">
+                        label="时间">
                 </el-table-column>
                 <el-table-column
                         prop="cleaningtime"
@@ -67,6 +63,7 @@
     import condition from '../../../components/condition';
     import axios from '@/api/axios.js';
     import {comm} from "../../../global/common";
+    import {transofrmTime} from "../../../utils/time";
 
     export default {
         name: "custom",
@@ -87,13 +84,33 @@
             }
         },
         methods:{
+            //获取指标数据
+            getIndexData(parmas) {
+                axios.$get(comm.WEB_URL + 'test/customsensorquote', parmas).then(res => {
+                    console.log(res)
+                    this.queryInfo.total = res.typeDataCount;
+                    res.startTime = parmas.startTime;
+                    res.endTime = parmas.endTime;
+                    this.$refs.conditionRef.updateData(res);
+                    this.$message.success('查询成功指标!!!')
+                })
+            },
             buttonClick(){
                 let that = this;
-
+                let params = {
+                    sensorList: [],
+                    startTime: this.selectTimes[0] / 1000,
+                    endTime: this.selectTimes[1] / 1000
+                };
                 this.sensors.forEach(item => {
-
+                    params.sensorList.push(item.sensorname)
+                })
+                params.sensorList = params.sensorList.join(',')
+                this.getIndexData(params)
+                this.sensors.forEach(item => {
                     that.getDataByFixedTime(item)
                 })
+
             },
             //获取固定时间数据
             getDataByFixedTime(val) {
@@ -110,8 +127,11 @@
             //
             getData(params,val) {
                 axios.$get(comm.WEB_URL + 'testdata/datalist', params).then(res => {
+                    res.forEach(item => {
+                        item.starttime = transofrmTime(item.starttime);
+                    })
                     this.sensorData.set(val.sensorname,res)
-                    console.log(this.sensorData)
+
                     //强制刷新组件
                     this.$forceUpdate()
                 })
@@ -123,7 +143,7 @@
                     groupId:this.groupId
                 }
                 axios.$get(comm.WEB_URL+'groupdata/getsensor',parmas).then(res => {
-                    console.log(res)
+
                     this.sensors = res.sensorList;
 
                 })

@@ -32,11 +32,7 @@
                 </el-table-column>
                 <el-table-column
                         prop="starttime"
-                        label="接收数据时间">
-                </el-table-column>
-                <el-table-column
-                        prop="repairtime"
-                        label="清洗结束时间">
+                        label="时间">
                 </el-table-column>
                 <el-table-column
                         prop="cleaningtime"
@@ -77,6 +73,7 @@
   import condition from '../../components/condition'
   import axios from '@/api/axios.js';
   import {comm} from "../../global/common";
+    import {transofrmTime} from "../../utils/time";
 
   export default {
     name: "index",
@@ -140,6 +137,9 @@
                 pageSize:this.queryInfo.pageSize
             }
             axios.$get(comm.WEB_URL+'testdata/datas',parmas).then(res => {
+                res.forEach(item => {
+                    item.starttime = transofrmTime(item.starttime);
+                })
                 this.datas = res;
             })
         },
