@@ -23,6 +23,7 @@
                     查看指标
                 </el-button>
                 <i class="el-icon-loading" v-if="loading" style="margin-left: 60px"></i>
+                <el-tag v-if="loading" style="margin-left: 60px">查询大约需要{{queryTime}}分钟</el-tag>
             </div>
         </el-card>
         <el-card>
@@ -84,6 +85,7 @@
     },
     data() {
       return {
+        queryTime:null,
           loading:false,
         sensorType: 'all',
         selectTimes: [],
@@ -164,6 +166,7 @@
           startTime: this.selectTimes[0] / 1000,
           endTime: this.selectTimes[1] / 1000
         };
+        this.queryTime = (parmas.endTime-parmas.startTime)/3600;
         this.getData(parmas)
       },
       //获取实时数据
