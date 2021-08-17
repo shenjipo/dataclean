@@ -4,8 +4,9 @@
             <condition ref="conditionRef"></condition>
         </el-card>
         <el-card>
-            <div style="display: flex;justify-content: space-around">
+            <div style="display: flex;">
                 <el-date-picker
+                        style="margin-left: 60px"
                         v-model="selectTimes"
                         type="datetimerange"
                         range-separator="至"
@@ -14,13 +15,14 @@
                         value-format="timestamp"
                 >
                 </el-date-picker>
-                <el-select v-model="sensorType">
+                <el-select v-model="sensorType" style="margin-left: 60px">
                     <el-option v-for="item in options" :key="item.value" :label="item.label"
                                :value="item.value"></el-option>
                 </el-select>
-                <el-button type="primary" @click="buttonClick">
+                <el-button type="primary" @click="buttonClick" style="margin-left: 60px">
                     查看指标
                 </el-button>
+                <i class="el-icon-loading" v-if="loading" style="margin-left: 60px"></i>
             </div>
         </el-card>
         <el-card>
@@ -82,6 +84,7 @@
     },
     data() {
       return {
+          loading:false,
         sensorType: 'all',
         selectTimes: [],
         options: [
@@ -175,6 +178,7 @@
       },
       //获取指标数据
       getData(parmas) {
+          this.loading = true;
         axios.$get(comm.WEB_URL + 'test/typeTestQuote', parmas).then(res => {
             this.queryInfo.total = res.typeDataCount;
           res.startTime = parmas.startTime;
@@ -183,6 +187,9 @@
           this.$message.success('查询成功!!!')
             this.queryInfo.pageNum = 1;
             this.queryDatas();
+            this.loading = false;
+        }).catch(res => {
+            this.loading = false;
         })
       }
     }
