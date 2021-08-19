@@ -12,7 +12,7 @@
             <el-tag type="warning">错误发现率:{{detection}}%</el-tag>
             <el-tag type="warning">修复率:{{repair}}%</el-tag>
             <el-tag type="warning">清洗延迟:{{delay}}秒</el-tag>
-            <el-tag type="warning">数据转换率:100%</el-tag>
+            <el-tag type="warning">数据转换率:{{conditions.conversion}}%</el-tag>
         </div>
         <div style="display: flex;justify-content: space-around;margin-top: 20px">
             <el-link type="priamry" :underline="false">时间: {{startTime}} - {{endTime}}</el-link>
@@ -67,6 +67,7 @@
         this.conditions.startTime = val.startTime;
         this.conditions.endTime = val.endTime;
         this.conditions.delay = val.typeDataDelay;
+        this.conditions.conversion=val.typeConversion;
       }
     }
   }

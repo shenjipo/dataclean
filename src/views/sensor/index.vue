@@ -20,10 +20,10 @@
                                :value="item.value"></el-option>
                 </el-select>
                 <el-button type="primary" @click="buttonClick" style="margin-left: 60px">
-                    查看指标
+                    计算指标
                 </el-button>
                 <i class="el-icon-loading" v-if="loading" style="margin-left: 60px"></i>
-                <el-tag v-if="loading" style="margin-left: 60px">查询大约需要{{queryTime}}分钟</el-tag>
+                <el-tag v-if="loading" style="margin-left: 60px">计算大约需要{{queryTime}}分钟</el-tag>
             </div>
         </el-card>
         <el-card>
@@ -166,7 +166,7 @@
           startTime: this.selectTimes[0] / 1000,
           endTime: this.selectTimes[1] / 1000
         };
-        this.queryTime = (parmas.endTime-parmas.startTime)/3600;
+        this.queryTime = (((parmas.endTime-parmas.startTime)/3600)*4).toFixed(2);
         this.getData(parmas)
       },
       //获取实时数据
