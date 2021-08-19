@@ -4,6 +4,7 @@
             <condition ref="conditionRef"></condition>
         </el-card>
         <el-card>
+
             <div style="display: flex;">
                 <el-date-picker
                         style="margin-left: 60px"
@@ -19,6 +20,7 @@
                     <el-option v-for="item in options" :key="item.value" :label="item.label"
                                :value="item.value"></el-option>
                 </el-select>
+                <el-button type="primary" style="margin-left: 60px" @click="openDialog">开始清洗</el-button>
                 <el-button type="primary" @click="buttonClick" style="margin-left: 60px">
                     计算指标
                 </el-button>
@@ -69,6 +71,24 @@
             >
             </el-pagination>
         </el-card>
+
+        <el-dialog
+                title="配置清洗参数"
+                :visible.sync="dialogVisible"
+                width="30%">
+            <el-form :model="form">
+                <el-form-item label="清洗算法" :label-width="80">
+                    <el-select v-model="form.algorithm" placeholder="请选择活动区域">
+                        <el-option label="清洗算法1" value="1"></el-option>
+                        <el-option label="清洗算法2" value="2"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item style="margin-top: 60px">
+                    <el-button type="primary" @click="startClean">确定</el-button>
+                    <el-button type="info" style="float: right" @click="closeDialog">取消</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
     </div>
 </template>
 
@@ -76,7 +96,7 @@
   import condition from '../../components/condition'
   import axios from '@/api/axios.js';
   import {comm} from "../../global/common";
-    import {transofrmTime} from "../../utils/time";
+  import {transofrmTime} from "../../utils/time";
 
   export default {
     name: "index",
@@ -85,8 +105,12 @@
     },
     data() {
       return {
-        queryTime:null,
-          loading:false,
+        form: {
+          algorithm: '1'
+        },
+        dialogVisible: false,
+        queryTime: null,
+        loading: false,
         sensorType: 'all',
         selectTimes: [],
         options: [
@@ -104,14 +128,14 @@
         ],
         fn: null,
         num: 2,
-          queryInfo:{
-              // 当前页数
-              pageNum: 1,
-              // 每页显示多少数据
-              pageSize: 10,
-              total: 0,
-          },
-          datas:[]
+        queryInfo: {
+          // 当前页数
+          pageNum: 1,
+          // 每页显示多少数据
+          pageSize: 10,
+          total: 0,
+        },
+        datas: []
       }
     },
     created() {
@@ -124,30 +148,47 @@
 
     },
     methods: {
-        handleSizeChange(val) {
-            this.queryInfo.pageSize = val;
-            this.queryDatas();
-        },
-        handleCurrentChange(val) {
-            this.queryInfo.pageNum = val;
-            this.queryDatas();
-        },
-        queryDatas(){
-            let currTime = new Date().getTime();
-            let parmas = {
-                sensorType: this.sensorType,
-                startTime: this.selectTimes[0] / 1000,
-                endTime: this.selectTimes[1] / 1000,
-                page:this.queryInfo.pageNum,
-                pageSize:this.queryInfo.pageSize
-            }
-            axios.$get(comm.WEB_URL+'testdata/datas',parmas).then(res => {
-                res.forEach(item => {
-                    item.starttime = transofrmTime(item.starttime);
-                })
-                this.datas = res;
-            })
-        },
+      //发送清洗开始请求
+      startClean() {
+        let params = {
+          algorithm: this.form.algorithm
+        };
+        axios.$get('http://10.11.24.154:8080/choosealgorithm', params).then(res => {
+            console.log(res)
+        })
+      },
+      //关闭清洗配置对话框
+      closeDialog() {
+        this.dialogVisible = false;
+      },
+      //打开清洗配置对话框
+      openDialog() {
+        this.dialogVisible = true;
+      },
+      handleSizeChange(val) {
+        this.queryInfo.pageSize = val;
+        this.queryDatas();
+      },
+      handleCurrentChange(val) {
+        this.queryInfo.pageNum = val;
+        this.queryDatas();
+      },
+      queryDatas() {
+        let currTime = new Date().getTime();
+        let parmas = {
+          sensorType: this.sensorType,
+          startTime: this.selectTimes[0] / 1000,
+          endTime: this.selectTimes[1] / 1000,
+          page: this.queryInfo.pageNum,
+          pageSize: this.queryInfo.pageSize
+        }
+        axios.$get(comm.WEB_URL + 'testdata/datas', parmas).then(res => {
+          res.forEach(item => {
+            item.starttime = transofrmTime(item.starttime);
+          })
+          this.datas = res;
+        })
+      },
       //时间选择事件
       // changeTime() {
       //   this.getDataByFixedTime();
@@ -166,7 +207,7 @@
           startTime: this.selectTimes[0] / 1000,
           endTime: this.selectTimes[1] / 1000
         };
-        this.queryTime = (((parmas.endTime-parmas.startTime)/3600)*4).toFixed(2);
+        this.queryTime = (((parmas.endTime - parmas.startTime) / 3600) * 4).toFixed(2);
         this.getData(parmas)
       },
       //获取实时数据
@@ -181,18 +222,18 @@
       },
       //获取指标数据
       getData(parmas) {
-          this.loading = true;
+        this.loading = true;
         axios.$get(comm.WEB_URL + 'test/typeTestQuote', parmas).then(res => {
-            this.queryInfo.total = res.typeDataCount;
+          this.queryInfo.total = res.typeDataCount;
           res.startTime = parmas.startTime;
           res.endTime = parmas.endTime;
           this.$refs.conditionRef.updateData(res);
           this.$message.success('查询成功!!!')
-            this.queryInfo.pageNum = 1;
-            this.queryDatas();
-            this.loading = false;
+          this.queryInfo.pageNum = 1;
+          this.queryDatas();
+          this.loading = false;
         }).catch(res => {
-            this.loading = false;
+          this.loading = false;
         })
       }
     }
