@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {Loading} from 'element-ui'
 
-axios.defaults.baseURL = 'http://10.11.24.118:8181/dataclean/'
+axios.defaults.baseURL = 'http://10.11.24.169:8181/dataclean/'
 axios.defaults.crossDomain = true;
 //axios.defaults.withCredentials = true;
 axios.defaults.timeout = 600000;

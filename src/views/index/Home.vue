@@ -60,6 +60,7 @@
                             <template slot="title">智慧交通系统</template>
                             <el-menu-item index="/dataclean/citybrain/traffic/queryFilghtsData">飞机航班数据</el-menu-item>
                             <el-menu-item index="/dataclean/citybrain/traffic/queryCarsData">城市汽车数据</el-menu-item>
+                            <el-menu-item index="/dataclean/citybrain/traffic/licensePlate">汽车车牌转换</el-menu-item>
                         </el-submenu>
                         <el-menu-item index="/citybrain/travel/travel">智慧旅游系统</el-menu-item>
                         <el-menu-item index="1-3">重大活动监测</el-menu-item>
@@ -89,7 +90,7 @@
                         <el-submenu index="2-1">
                             <template slot="title">
                                 <!--              图标-->
-                                <i class="el-icon-loading"></i>
+<!--                                <i class="el-icon-loading"></i>-->
                                 <!--              文本-->
                                 <span>温度传感器</span>
                             </template>
@@ -104,6 +105,7 @@
                         <el-menu-item index="/home/PM25All">pm2.5传感器</el-menu-item>
                         <el-menu-item index="/home/PM10All">pm10传感器</el-menu-item>
                         <el-menu-item index="/home/pressureAll">压力传感器</el-menu-item>
+                        <el-menu-item index="/home/trajectory">轨迹传感器</el-menu-item>
                         <el-menu-item index="/home/groups">分组查看</el-menu-item>
                         <el-menu-item index="/home/index">指标汇总</el-menu-item>
                     </el-submenu>

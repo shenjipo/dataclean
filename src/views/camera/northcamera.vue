@@ -21,7 +21,7 @@
                     type: 'flv',
                     isLive: true,
                     hasAudio: false,
-                    url: 'http://10.0.105.87:8002/live?port=1935&app=myapp&stream=test2'
+                    url: 'http://10.11.24.154:8002/flv?port=1935&app=myapp&stream=test2'
                 });
                 this.flvPlayer.attachMediaElement(videoElement);
                 this.flvPlayer.load();
