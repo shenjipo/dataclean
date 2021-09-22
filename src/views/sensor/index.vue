@@ -20,7 +20,7 @@
                     <el-option v-for="item in options" :key="item.value" :label="item.label"
                                :value="item.value"></el-option>
                 </el-select>
-                <el-button type="primary" style="margin-left: 60px" @click="openDialog">开始清洗</el-button>
+                <el-button type="primary" style="margin-left: 60px" @click="openDialog">配置清洗算法</el-button>
                 <el-button type="primary" @click="buttonClick" style="margin-left: 60px">
                     计算指标
                 </el-button>
@@ -77,14 +77,14 @@
                 :visible.sync="dialogVisible"
                 width="30%">
             <el-form :model="form">
-                <el-form-item label="清洗算法" :label-width="80">
+                <el-form-item label="清洗算法" label-width="80">
                     <el-select v-model="form.algorithm" placeholder="请选择活动区域">
-                        <el-option label="清洗算法1" value="1"></el-option>
-                        <el-option label="清洗算法2" value="2"></el-option>
+                        <el-option label="离群点检测+LSTM修复" value="0"></el-option>
+                        <el-option label="离群点检测+插值修复" value="1"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item style="margin-top: 60px">
-                    <el-button type="primary" @click="startClean">确定</el-button>
+                    <el-button type="primary" @click="startClean">选择该算法</el-button>
                     <el-button type="info" style="float: right" @click="closeDialog">取消</el-button>
                 </el-form-item>
             </el-form>
@@ -151,11 +151,14 @@
       //发送清洗开始请求
       startClean() {
         let params = {
-          algorithm: this.form.algorithm
+          tag: this.form.algorithm
         };
         axios.$get('http://10.11.24.154:8080/choosealgorithm', params).then(res => {
             console.log(res)
         })
+
+          this.dialogVisible = false;
+        return this.$message.success('配置成功')
       },
       //关闭清洗配置对话框
       closeDialog() {
