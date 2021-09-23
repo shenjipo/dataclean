@@ -19,7 +19,7 @@
     <el-submenu index="1-1">
       <template slot="title">智慧交通系统</template>
       <el-menu-item index="/dataclean/traffic/queryFilghtsData">飞机航班数据</el-menu-item>
-      <el-menu-item index="/dataclean/traffic/queryCarsData">城市汽车数据</el-menu-item>
+      <el-menu-item index="/dataclean/traffic/queryCarsData">出租车GPS数据</el-menu-item>
     </el-submenu>
     <el-menu-item index="1-2">智慧旅游系统</el-menu-item>
     <el-menu-item index="1-3">重大活动监测</el-menu-item>
