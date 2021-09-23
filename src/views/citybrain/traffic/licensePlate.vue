@@ -1,21 +1,28 @@
 <template>
     <div>
-        <!--卡片视图区域-->
+        <el-card>
+            <el-tag style="margin-right: 20px">总数据量:{{conditions.sum}}</el-tag>
+            <el-tag type="danger" style="margin-right: 20px">识别正确据量:{{conditions.right}}</el-tag>
+            <el-tag type="info" style="margin-right: 20px">识别错误数据量:{{conditions.error}}</el-tag>
+            <el-tag type="success" style="margin-right: 20px">数据转换率:{{conditions.conversion}}%</el-tag>
+        </el-card>
         <el-card>
             <!--用户列表区域-->
-            <el-table :data="dataList" border stripe max-height="650">
+            <el-table :data="dataList" border stripe max-height="880" width=80%>
                 <!--缩印列-->
                 <el-table-column type="index"></el-table-column>
                 <el-table-column label="识别车牌" prop="getnumber"></el-table-column>
                 <el-table-column label="真实车牌" prop="realnumber"></el-table-column>
-                <el-table-column label="地址" prop="url"></el-table-column>
-                <el-table-column label="操作" width="240px">
-                    <template slot-scope="scope">
-                        {{scope.row.url}}
-                        <el-popover placement="top-start" title="" trigger="hover">
+                <el-table-column label="Y/N" prop="result"></el-table-column>
+                <el-table-column
+                        prop="url"
+                        label="图片"
+                        sortable
+                        width="180">
 
-                            <img src="@/assets/carnumber/云A1CL0V.jpg" alt="" style="width: 150px;height: 150px">
-                        </el-popover>
+                    <!--插入图片链接的代码-->
+                    <template slot-scope="scope">
+                        <img  :src="scope.row.url" style="width: 150px;height: 50px">
                     </template>
                 </el-table-column>
             </el-table>
@@ -42,7 +49,7 @@
         data() {
             return {
                 // url:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-                url:'@/assets/test.jpeg',
+                url:'/carnumber/云A1CL0V.jpg',
                 dataList: [
                     {name: 'dievice_0001'},
                     {name: 'dievice_0002'},
@@ -55,10 +62,12 @@
                     pageSize: 10,
                     total: 0,
                 },
+                conditions:[],
             }
         },
         created() {
             this.getData()
+            this.getQuota()
         },
         methods: {
             // getImgUrl(namea){
@@ -82,6 +91,14 @@
                         console.log(res);
                         this.queryInfo.total = res;
                     })
+                    // this.queryInfo.total = res.total;
+                })
+            },
+            getQuota(){
+                axios.$get(comm.WEB_URL + 'citybrain/traffic/getQuota').then(res => {
+                    this.conditions = res;
+                    this.conditions.error=this.conditions.sum-this.conditions.right
+                    this.conditions.conversion=(this.conditions.right*100/this.conditions.sum).toFixed(3)
                     // this.queryInfo.total = res.total;
                 })
             },

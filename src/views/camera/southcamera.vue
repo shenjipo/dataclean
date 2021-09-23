@@ -1,24 +1,41 @@
 <template>
-  <div class="row">
-    <div class="col1">
-      <h1  style=" text-align:center;">原始视频</h1>
-      <video-player  class="video-player vjs-custom-skin"
-                     ref="videoPlayer"
-                     :playsinline="true"
-                     :options="playerOptions"
-                     @play="onPlayerPlay($event)"
-                     @pause="onPlayerPause($event)"
-                     @ended="onPlayerEnded($event)"
-      ></video-player>
+  <div>
+    <div class="row">
+      <div class="col1">
+        <h1  style=" text-align:center;">原始视频</h1>
+        <video width="450" height="450" class="video1" controls>
+          <source src="../../assets/video/movie.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col2">
+        <h1  style=" text-align:center;">处理后视频</h1>
+        <div class="video"></div>
+        <video width="450" height="450" class="video1" controls>
+          <source src="../../assets/video/camera-395-447-colour-b.mp4" type="video/mp4">
+        </video>
+      </div>
     </div>
-    <div class="col2">
-      <h1  style=" text-align:center;">处理后视频</h1>
-      <div class="video"></div>
-      <video width="550" height="550" class="video1" controls>
-        <source src="src/assets/video/movie.mp4" type="video/mp4">
-      </video>
+    <div class="row">
+      <div class="col1">
+        <h1  style=" text-align:center;">原始视频</h1>
+        <video width="450" height="450" class="video1" controls>
+          <source src="../../assets/video/camera-395-447-colour-label.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="col2">
+        <h1  style=" text-align:center;">处理后视频</h1>
+        <div class="video"></div>
+        <video width="450" height="450" class="video1" controls>
+          <source src="../../assets/video/camera-395-447-colour-recover.mp4" type="video/mp4">
+        </video>
+      </div>
     </div>
   </div>
+
+
+
+
+
 </template>
 
 <script>
@@ -64,20 +81,20 @@
 <style lang="less" scoped>
 
   .row {
-    height: 800px;
+    height: 600px;
     width: 1400px;
-    padding: 40px;
+    padding: 0px;
   }
   .col1 {
     float: left;
-    height: 650px;
-    width: 600px;
+    height: 550px;
+    width: 550px;
     background-color: #ffffff;
   }
   .col2 {
     float: right;
-    height: 650px;
-    width: 600px;
+    height: 550px;
+    width: 550px;
     background-color: #ffffff;
   }
   .video1 {

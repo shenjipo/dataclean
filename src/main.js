@@ -12,6 +12,7 @@ import 'videojs-flash'
 Vue.use(VideoPlayer)
 import { Message } from 'element-ui'
 
+
 // 挂载到$message上
 Vue.prototype.$message = Message
 import axios from 'axios'
