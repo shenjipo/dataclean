@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-card>
-            <condition ref="conditionRef"></condition>
+            <condition_gps ref="conditionRef"></condition_gps>
         </el-card>
 
         <el-card>
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-    import condition from '../../../components/condition'
+    import condition_gps from '../../../components/condition_gps'
     import {comm} from "../../../global/common";
 
     import axios from '@/api/axios.js';
@@ -82,18 +82,28 @@
             }
         },
         components: {
-            condition
+            condition_gps
         },
         created() {
             this.queryDatas();
+            this.getIndex();
         },
         methods: {
+            //获取指标数据
+            getIndex() {
+                axios.$get(comm.WEB_URL+'citybrain/gps/getQuota').then(res => {
+                    this.$refs.conditionRef.updateData(res);
+                })
+            },
             queryDatas() {
                 let parmas = {
                     page: this.queryInfo.pageNum,
                     pageSize: this.queryInfo.pageSize
                 }
                 axios.$get(comm.WEB_URL + 'citybrain/gps/getGpss', parmas).then(res => {
+                    axios.$get(comm.WEB_URL+'citybrain/gps/getCount').then(res => {
+                        this.queryInfo.total = res;
+                    })
                     this.datas = res;
                 })
             },
