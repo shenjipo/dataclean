@@ -1,52 +1,49 @@
-<!--<template>-->
-<!--    <div>-->
-<!--        <el-row :gutter="12">-->
-<!--            <el-col :span="8">-->
-<!--                <video id="videoElement" controls autoplay muted width="600" height="400"></video>-->
-<!--            </el-col>-->
-<!--            <el-col>-->
-<!--                <video id="videoElement2" controls autoplay muted width="600" height="400"></video>-->
-<!--            </el-col>-->
-<!--        </el-row>-->
-<!--        <el-row>-->
-<!--            <el-col>-->
-<!--                <video id="videoElement3" controls autoplay muted width="600" height="400"></video>-->
-<!--            </el-col>-->
-<!--            <el-col>-->
-<!--                <video id="videoElement4" controls autoplay muted width="600" height="400"></video>-->
-<!--            </el-col>-->
-<!--        </el-row>-->
-<!--        &lt;!&ndash;        <button @click="play">播放</button>&ndash;&gt;-->
-<!--    </div>-->
-<!--</template>-->
+<template>
+    <div>
+        <div class="row">
+            <h4  style=" text-align:center;">监控视频</h4>
+            <video id="videoElement" controls autoplay muted width="1200" height="800" style="padding-left: 40px"></video>
+            <!--        <button @click="play">播放</button>-->
+        </div>
 
-<!--<script>-->
-<!--    import flvjs from 'flv.js'-->
-<!--    export default {-->
-<!--        data () {-->
-<!--            return {-->
-<!--                msg: 'Welcome to Your Vue.js App',-->
-<!--                flvPlayer:null-->
-<!--            }-->
-<!--        },-->
-<!--        mounted() {-->
-<!--            if (flvjs.isSupported()) {-->
-<!--                var videoElement = document.getElementById('videoElement');-->
-<!--                this.flvPlayer = flvjs.createPlayer({-->
-<!--                    type: 'mp4',-->
-<!--                    isLive: true,-->
-<!--                    hasAudio: false,-->
-<!--                    url: require('../../assets/video/movie.mp4')-->
-<!--                });-->
-<!--                this.flvPlayer.attachMediaElement(videoElement);-->
-<!--                this.flvPlayer.load();-->
-<!--                this.flvPlayer.play();-->
-<!--            }-->
-<!--        },-->
-<!--        methods:{-->
-<!--            play () {-->
-<!--                this.flvPlayer.play();-->
-<!--            }-->
-<!--        }-->
-<!--    }-->
-<!--</script>-->
+    </div>
+</template>
+
+<script>
+    import flvjs from 'flv.js'
+    export default {
+        data () {
+            return {
+                msg: 'Welcome to Your Vue.js App',
+                flvPlayer:null
+            }
+        },
+        mounted() {
+            if (flvjs.isSupported()) {
+                var videoElement = document.getElementById('videoElement');
+                this.flvPlayer = flvjs.createPlayer({
+                    type: 'flv',
+                    isLive: true,
+                    hasAudio: false,
+                    // url: require('../../assets/video/camera-395-447.mp4')
+                    url: "http://10.11.24.154:8002/flv?port=1935&app=myapp&stream=test2"
+                });
+                this.flvPlayer.attachMediaElement(videoElement);
+                this.flvPlayer.load();
+                this.flvPlayer.play();
+            }
+        },
+        methods:{
+            play () {
+                this.flvPlayer.play();
+            }
+        }
+    }
+</script>
+<style>
+    .row {
+        height: 800px;
+        width: 1200px;
+        padding-left: 100px;
+    }
+</style>

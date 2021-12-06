@@ -9,6 +9,10 @@
                         label="ID">
                 </el-table-column>
                 <el-table-column
+                        prop="time"
+                        label="时间">
+                </el-table-column>
+                <el-table-column
                         prop="lon"
                         label="经度">
                 </el-table-column>
@@ -69,6 +73,9 @@
                     this.stop()
                 })
             }
+        },
+        beforeDestroy() {
+            clearInterval(this.timer)
         },
         methods: {
             queryDatas() {
