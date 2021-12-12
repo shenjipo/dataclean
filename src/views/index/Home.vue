@@ -60,7 +60,7 @@
                             <template slot="title">智慧交通系统</template>
                             <el-menu-item index="/dataclean/citybrain/traffic/mobileGps">行人位置获取</el-menu-item>
                             <el-menu-item index="/dataclean/citybrain/traffic/queryFilghtsData">GPS与道路转换</el-menu-item>
-                            <el-menu-item index="/dataclean/citybrain/traffic/queryCarsData">轨迹数据</el-menu-item>
+                            <el-menu-item index="/home/trajectory_interpolation">轨迹数据</el-menu-item>
                             <el-menu-item index="/dataclean/citybrain/traffic/licensePlate">汽车车牌转换</el-menu-item>
                         </el-submenu>
                         <el-menu-item index="/citybrain/travel/travel">智慧旅游系统</el-menu-item>
@@ -91,7 +91,7 @@
                         <el-submenu index="2-1">
                             <template slot="title">
                                 <!--              图标-->
-<!--                                <i class="el-icon-loading"></i>-->
+                                <!--                                <i class="el-icon-loading"></i>-->
                                 <!--              文本-->
                                 <span>温度传感器</span>
                             </template>
