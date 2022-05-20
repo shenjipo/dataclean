@@ -1,9 +1,9 @@
 <template>
     <div>
         <el-card style="display: flex;justify-content: center">
-            <el-tag>修复率 {{cleanIndex.repair_rate}}</el-tag>
+            <el-tag>修复成功率(修复误差小于100米) {{cleanIndex.repair_rate}}</el-tag>
             <el-tag>修复失败数量 {{cleanIndex.error_repair_count}}</el-tag>
-            <el-tag>修复成功率 {{cleanIndex.correct_repair_count}}</el-tag>
+            <el-tag>修复成功数量 {{cleanIndex.correct_repair_count}}</el-tag>
             <el-tag>所有修复数量 {{cleanIndex.all_repiar_count}}</el-tag>
         </el-card>
 

@@ -41,5 +41,4 @@ Vue.use(Cascader);
 Vue.use(InputNumber);
 Vue.use(Link);
 Vue.use(Popover);
-//全局挂载
-Vue.prototype.$message = Message;
+
