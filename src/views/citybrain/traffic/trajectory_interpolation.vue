@@ -85,7 +85,6 @@
           this.cleanIndex.error_repair_count = res.error_repair_count;
           this.cleanIndex.repair_rate = res.repair_rate;
           this.cleanIndex.all_repiar_count = res.all_repiar_count;
-
         })
       },
       queryListDatas() {
