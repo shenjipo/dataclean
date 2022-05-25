@@ -6,7 +6,8 @@ import licensePlate from '../views/citybrain/traffic/licensePlate'
 import mobileGps from '../views/citybrain/traffic/mobileGps'
 import trajectoryDetail from '../views/citybrain/traffic/trajectoryDetail'
 import trajectory_detection from '../views/citybrain/traffic/trajectory_detection'
-
+import trajectory_interpolation2 from '@/views/citybrain/traffic/trajectory_interpolation2'
+import trajectoryDetail2 from '../views/citybrain/traffic/trajectoryDetail2'
 export default [
     {path: '/dataclean/citybrain/traffic/queryFilghtsData', component: flights},
     {path: 'trajectory_interpolation', component: trajectory_interpolation, name: 'trajectory_interpolation'},
@@ -16,4 +17,6 @@ export default [
     {path: '/dataclean/citybrain/traffic/licensePlate', component: licensePlate},
     {path: '/dataclean/citybrain/traffic/mobileGps', component: mobileGps},
     {path: 'trajectoryDetail', component: trajectoryDetail, name: 'trajectoryDetail'},
+    {path: 'trajectory_interpolation2', component: trajectory_interpolation2, name: 'trajectory_interpolation2'},
+    {path: 'trajectoryDetail2', component: trajectoryDetail2, name: 'trajectoryDetail2'},
 ]

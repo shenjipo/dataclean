@@ -61,6 +61,7 @@
                             <el-menu-item index="/dataclean/citybrain/traffic/mobileGps">行人位置获取</el-menu-item>
                             <el-menu-item index="/dataclean/citybrain/traffic/queryFilghtsData">GPS与道路转换</el-menu-item>
                             <el-menu-item index="/home/trajectory_interpolation">轨迹数据修复</el-menu-item>
+                            <el-menu-item index="/home/trajectory_interpolation2">轨迹数据修复2</el-menu-item>
                             <el-menu-item index="/home/trajectory_detection">轨迹数据异常检测</el-menu-item>
                             <el-menu-item index="/dataclean/citybrain/traffic/licensePlate">汽车车牌转换</el-menu-item>
                         </el-submenu>
