@@ -1,47 +1,37 @@
 <template>
     <div>
         <el-card style="display: flex;justify-content: center">
-            <el-tag>检测成功率 {{detectionIndex.pred_success_ratio}}</el-tag>
-            <el-tag>检测失败数量 {{detectionIndex.error_detection_count}}</el-tag>
-            <el-tag>检测成功数量 {{detectionIndex.correct_detection_count}}</el-tag>
-            <el-tag>所有检测数量 {{detectionIndex.total}}</el-tag>
+            <el-tag>检测召回率 {{detectionMetric.recall}}</el-tag>
+            <el-tag>所有异常轨迹点数量 {{detectionMetric.true_anomaly}}</el-tag>
+            <el-tag>检测到的轨迹异常点数量 {{detectionMetric.pred_anomaly}}</el-tag>
+            <el-tag>所有轨迹点数量 {{detectionMetric.length}}</el-tag>
         </el-card>
         <el-card>
             <el-table :data="datas">
                 <el-table-column
-                        prop="trajIndex"
+                        prop="index"
                         label="索引">
                 </el-table-column>
                 <el-table-column
-                        prop="pred"
-                        label="真实标签">
+                        prop="complete_len"
+                        label="轨迹点数">
                 </el-table-column>
                 <el-table-column
-                        prop="true"
-                        label="预测标签">
+                        prop="true_anomaly"
+                        label="异常轨迹点数量">
                 </el-table-column>
                 <el-table-column
-                        label="预测的异常种类">
+                        prop="pred_anomaly"
+                        label="检测到的异常点数量">
+                </el-table-column>
+                <el-table-column label="操作">
                     <template slot-scope="scope">
-                        {{map[scope.row.pred]}}
-                    </template>
-                </el-table-column>
-                <el-table-column
-                        label="预测结果">
-                    <template slot-scope="scope">
-                        <el-tag v-if="scope.row.res ===0" type="success">正确</el-tag>
-                        <el-tag v-else type="danger">错误</el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                        label="轨迹图片">
-                    <template slot-scope="scope">
-                        <el-image
-                                style="max-height: 100px"
-                                :src=scope.row.image
-                                :preview-src-list=[scope.row.image]>
-                        </el-image>
-                        <!--<img :src=scope.row.image alt="图片加载失败" style="max-height: 100px">-->
+                        <!--查看数据详情结点按钮-->
+                        <el-tooltip class="item" effect="dark" content="查看详情" :enterable="false" placement="top">
+                            <!--查看详情按钮-->
+                            <el-button type="primary" icon="el-icon-view" size="mini"
+                                       @click="gotoTrajDetailData(scope.row)"></el-button>
+                        </el-tooltip>
                     </template>
                 </el-table-column>
             </el-table>
@@ -56,19 +46,18 @@
             >
             </el-pagination>
         </el-card>
-
     </div>
 </template>
 
 <script>
     import {comm} from "../../../global/common";
-    import axios from '@/api/axios.js';
 
+    import axios from '@/api/axios.js';
     export default {
         name: "trajectory_detection",
         data() {
             return {
-                datas: [],
+                detectionMetric: {},
                 queryInfo: {
                     // 当前页数
                     pageNum: 1,
@@ -76,17 +65,29 @@
                     pageSize: 10,
                     total: 0,
                 },
-                detectionIndex: {},
-                map: {
-                    0: '全局绕路',
-                    1: '局部绕路',
-                    2: '正常轨迹',
-                    3: '局部捷径',
-                    4: '全局捷径'
-                }
+                datas: [],
             }
         },
         methods: {
+            //获取指标数据
+            getIndex() {
+                return axios.$get(comm.Traj_Url + 'getDectionIndex').then(res => {
+                    this.queryInfo.total = res.count;
+                    this.detectionMetric.recall = res.recall;
+                    this.detectionMetric.true_anomaly = res.true_anomaly;
+                    this.detectionMetric.pred_anomaly = res.pred_anomaly;
+                    this.detectionMetric.length = res.length;
+                })
+            },
+            queryListDatas() {
+                let parmas = {
+                    page: this.queryInfo.pageNum,
+                    pageSize: this.queryInfo.pageSize
+                };
+                axios.$get(comm.Traj_Url + 'getGeoDetectionList', parmas).then(res => {
+                    this.datas = res;
+                })
+            },
             handleSizeChange(val) {
                 this.queryInfo.pageSize = val;
                 this.queryListDatas();
@@ -95,34 +96,15 @@
                 this.queryInfo.pageNum = val;
                 this.queryListDatas();
             },
-            //获取指标数据
-            getIndex() {
-                return axios.$get(comm.Traj_Url + 'getDetectionIndex').then(res => {
-                    this.queryInfo.total = res.length;
-                    this.detectionIndex.total = res.length;
-                    this.detectionIndex.error_detection_count = res.error_detection_count;
-                    this.detectionIndex.correct_detection_count = res.correct_detection_count;
-                    this.detectionIndex.pred_success_ratio = res.pred_success_ratio;
-                })
-            },
-            queryListDatas() {
-                let parmas = {
-                    page: this.queryInfo.pageNum,
-                    pageSize: this.queryInfo.pageSize
-                };
-                axios.$get(comm.Traj_Url + 'getDetectionList', parmas).then(res => {
-                    this.datas = res;
-                    this.datas.forEach(item => {
-                        item.image = 'data:;base64,' + item.image
-                    })
-                })
-            },
+            gotoTrajDetailData(val) {
+                this.$router.push({name: 'trajectory_detection_detail', params: {index: val.index}})
+            }
         },
         created() {
             this.getIndex().then(res => {
                 this.queryListDatas();
-            })
-        }
+            });
+        },
     }
 </script>
 

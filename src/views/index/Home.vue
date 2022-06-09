@@ -63,6 +63,7 @@
                             <el-menu-item index="/home/trajectory_interpolation">轨迹数据修复</el-menu-item>
                             <el-menu-item index="/home/trajectory_interpolation2">轨迹数据修复2</el-menu-item>
                             <el-menu-item index="/home/trajectory_detection">轨迹数据异常检测</el-menu-item>
+                            <el-menu-item index="/home/trajectory_detection2">轨迹数据异常检测2</el-menu-item>
                             <el-menu-item index="/dataclean/citybrain/traffic/licensePlate">汽车车牌转换</el-menu-item>
                         </el-submenu>
                         <el-menu-item index="/citybrain/travel/travel">智慧旅游系统</el-menu-item>
