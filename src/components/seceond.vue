@@ -38,7 +38,7 @@
               <el-menu-item index="/dataclean/traffic/queryFilghtsData">飞机航班数据</el-menu-item>
               <el-menu-item index="/dataclean/traffic/queryCarsData">城市汽车数据</el-menu-item>
             </el-submenu>
-            <el-menu-item index="1-2">智慧旅游系统</el-menu-item>
+            <el-menu-item index="1-2">智能文本检测系统</el-menu-item>
             <el-menu-item index="1-3">重大活动监测</el-menu-item>
             <el-submenu index="1-4">
               <template slot="title">公共设施管理</template>

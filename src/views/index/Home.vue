@@ -66,7 +66,7 @@
                             <el-menu-item index="/home/trajectory_detection2">轨迹数据异常检测2</el-menu-item>
                             <el-menu-item index="/dataclean/citybrain/traffic/licensePlate">汽车车牌转换</el-menu-item>
                         </el-submenu>
-                        <el-menu-item index="/citybrain/travel/travel">智慧旅游系统</el-menu-item>
+                        <el-menu-item index="/home/text">智能文本检测系统</el-menu-item>
                         <el-menu-item index="1-3">重大活动监测</el-menu-item>
                         <el-submenu index="1-4">
                             <template slot="title">公共设施管理</template>
@@ -173,19 +173,19 @@
 
 <script>
 
-  export default {
-    data() {
-      return {
-        checked1: false,
-        checked2: true
-      };
-    },
-    methods: {
-      handleSelect() {
+    export default {
+        data() {
+            return {
+                checked1: false,
+                checked2: true
+            };
+        },
+        methods: {
+            handleSelect() {
 
-      }
+            }
+        }
     }
-  }
 </script>
 
 <style lang="less" scoped>
