@@ -22,11 +22,12 @@
             if (flvjs.isSupported()) {
                 var videoElement = document.getElementById('videoElement');
                 this.flvPlayer = flvjs.createPlayer({
-                    type: 'flv',
+                    type: 'm3u8',
                     isLive: true,
                     hasAudio: false,
-                    // url: require('../../assets/video/camera-395-447.mp4')
-                    url: "http://10.11.24.154:8002/flv?port=1935&app=myapp&stream=test2"
+                    // url: '../../assets/video/movie.mp4'
+                    // url: "http://10.11.24.154:8002/flv?port=1935&app=myapp&stream=test2"
+                    url:"http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8"
                 });
                 this.flvPlayer.attachMediaElement(videoElement);
                 this.flvPlayer.load();

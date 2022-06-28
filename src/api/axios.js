@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://10.11.24.169:8181/dataclean/'
+axios.defaults.baseURL = 'http://172.20.10.5:8181/dataclean/'
 axios.defaults.crossDomain = true;
 //axios.defaults.withCredentials = true;
 axios.defaults.timeout = 600000;
