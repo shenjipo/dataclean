@@ -19,7 +19,6 @@
                         label="图片"
                         sortable
                         width="180">
-
                     <!--插入图片链接的代码-->
                     <template slot-scope="scope">
                         <img  :src="scope.row.url" style="width: 150px;height: 50px">

@@ -14,12 +14,16 @@
                         label="原始文本">
                 </el-table-column>
                 <el-table-column
-                        prop="detection_text"
                         label="检测的文本">
+                    <template slot-scope="scope">
+                        <span v-html="scope.row.detection_text"></span>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="recover_text"
                         label="修复的文本">
+                    <template slot-scope="scope">
+                        <span v-html="scope.row.recover_text"></span>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         prop="true_error_index"
@@ -103,6 +107,15 @@
                 };
                 axios.$get(comm.Traj_Url + 'getTextList', parmas).then(res => {
                     this.datas = res;
+                    this.datas.forEach(item => {
+                        if (item.detection_error_index.length > 1) {
+                            let indexs = item.detection_error_index.split(',').map(item => {
+                                return parseInt(item) - 1
+                            })
+                            item.detection_text = this.ChangeColor(item.detection_text, [...indexs], 'Red')
+                            item.recover_text = this.ChangeColor(item.recover_text, [...indexs], 'Green')
+                        }
+                    })
                 })
             },
             handleSizeChange(val) {
@@ -113,6 +126,20 @@
                 this.queryInfo.pageNum = val;
                 this.queryListDatas();
             },
+            ChangeColor(obj, a, color) {
+                let obj1 = "";
+                let add = 25 + color.length - 3;  //“一”的长度是1，“<font color="Red">一</font>”的长度是26，差了25，需要增加
+                for (let i = 0; i < a.length; i++) {
+                    obj1 = obj.substr(0, a[i]) + obj.charAt(a[i]).fontcolor(color) + obj.substr(a[i] + 1);//替换指定位置，变成红色
+                    obj = obj1;  //用新的字符串循环替换
+                    if (i < a.length - 1) { //注意这里i 的边界值
+                        a[i + 1] = a[i + 1] + add  //下一次替换时位置要后移
+                    }
+                    add = add + 25 + color.length - 3; //每增加一次循环，后移位置增加
+                }
+                return obj;
+            },
+
         },
         created() {
             this.getIndex().then(res => {

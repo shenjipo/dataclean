@@ -1,7 +1,9 @@
 <template>
     <div>
         <el-card style="display: flex;justify-content: center">
-            <el-tag>检测召回率 {{detectionMetric.recall}}</el-tag>
+            <el-tag>检测召回率 {{detectionMetric.r}}</el-tag>
+            <el-tag>检测精确率率 {{detectionMetric.p}}</el-tag>
+            <el-tag>检测f1 {{detectionMetric.f1}}</el-tag>
             <el-tag>所有异常轨迹点数量 {{detectionMetric.true_anomaly}}</el-tag>
             <el-tag>检测到的轨迹异常点数量 {{detectionMetric.pred_anomaly}}</el-tag>
             <el-tag>所有轨迹点数量 {{detectionMetric.length}}</el-tag>
@@ -53,6 +55,7 @@
     import {comm} from "../../../global/common";
 
     import axios from '@/api/axios.js';
+
     export default {
         name: "trajectory_detection",
         data() {
@@ -73,7 +76,9 @@
             getIndex() {
                 return axios.$get(comm.Traj_Url + 'getDectionIndex').then(res => {
                     this.queryInfo.total = res.count;
-                    this.detectionMetric.recall = res.recall;
+                    this.detectionMetric.r = res.r;
+                    this.detectionMetric.p = res.p;
+                    this.detectionMetric.f1 = res.f1;
                     this.detectionMetric.true_anomaly = res.true_anomaly;
                     this.detectionMetric.pred_anomaly = res.pred_anomaly;
                     this.detectionMetric.length = res.length;
